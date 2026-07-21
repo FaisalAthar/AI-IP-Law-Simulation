@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advise Dave — IP Law Client Consultation | LAW65004</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#20293a;
+    --ink-soft:#4a5468;
+    --paper:#faf8f1;
+    --pad-yellow:#f7efc7;
+    --pad-yellow-deep:#efe3a0;
+    --rule-blue:#c7d3e6;
+    --margin-red:#a13d3d;
+    --brass:#9c7a2e;
+    --brass-soft:#e4d6a7;
+    --green:#3f6b4f;
+    --green-soft:#dbe8de;
+    --shadow:0 8px 24px rgba(32,41,58,0.12);
+    --radius:3px;
+    --serif:"Source Serif 4", Georgia, serif;
+    --sans:"Public Sans", -apple-system, sans-serif;
+    --mono:"IBM Plex Mono", monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    font-family:var(--sans);
+    color:var(--ink);
+    min-height:100vh;
+    background-image:
+      linear-gradient(var(--paper), var(--paper)),
+      repeating-linear-gradient(to bottom, transparent 0, transparent 33px, var(--rule-blue) 33px, var(--rule-blue) 34px);
+    background-blend-mode:normal;
+  }
+
+  a{color:var(--brass);}
+
+  /* ---------- Header / case tab ---------- */
+  .file-tab-wrap{
+    max-width:980px;
+    margin:0 auto;
+    padding:20px 20px 0;
+  }
+  .file-tab{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:var(--radius) var(--radius) 0 0;
+    padding:14px 22px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .file-tab .title{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:1.25rem;
+    letter-spacing:0.01em;
+  }
+  .file-tab .meta{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    color:#c9cfdd;
+    letter-spacing:0.03em;
+  }
+  .stamp{
+    font-family:var(--mono);
+    font-weight:600;
+    font-size:0.68rem;
+    letter-spacing:0.08em;
+    padding:6px 12px;
+    border:2px solid var(--margin-red);
+    color:var(--margin-red);
+    border-radius:2px;
+    transform:rotate(-3deg);
+    text-transform:uppercase;
+    background:rgba(161,61,61,0.06);
+    white-space:nowrap;
+  }
+  .stamp.complete{
+    border-color:var(--green);
+    color:var(--green);
+    background:rgba(63,107,79,0.08);
+  }
+
+  .toolbar{
+    background:#fff;
+    border:1px solid #e4ddc7;
+    border-top:none;
+    padding:8px 18px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    flex-wrap:wrap;
+    font-size:0.82rem;
+  }
+  .toolbar button{
+    background:none;
+    border:1px solid #d8d0b4;
+    color:var(--ink-soft);
+    padding:6px 12px;
+    border-radius:2px;
+    cursor:pointer;
+    font-family:var(--sans);
+    font-size:0.78rem;
+    font-weight:600;
+    transition:background 0.15s, color 0.15s;
+  }
+  .toolbar button:hover{background:var(--pad-yellow);color:var(--ink);}
+  .toolbar .spacer{flex:1;}
+  .toolbar .status-dot{
+    width:8px;height:8px;border-radius:50%;
+    background:#c94b4b; display:inline-block; margin-right:6px;
+  }
+  .toolbar .status-dot.ok{background:var(--green);}
+
+  /* ---------- Mood meter ---------- */
+  .mood-pill{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:0.78rem;
+    color:var(--ink-soft);
+    white-space:nowrap;
+  }
+  .mood-dot{
+    width:9px;height:9px;border-radius:50%;
+    display:inline-block;
+    background:#c9754b;
+    transition:background 0.4s ease;
+  }
+  .mood-dot.mood-furious{background:#a13d3d;}
+  .mood-dot.mood-frustrated{background:#c9754b;}
+  .mood-dot.mood-wary{background:var(--brass);}
+  .mood-dot.mood-warming{background:#4b7fc9;}
+  .mood-dot.mood-reassured{background:var(--green);}
+
+  .mood-bar-track{
+    max-width:980px;
+    margin:0 auto;
+    height:4px;
+    background:#e4ddc7;
+    overflow:hidden;
+  }
+  .mood-bar-fill{
+    height:100%;
+    width:30%;
+    background:#c9754b;
+    transition:width 0.5s ease, background 0.4s ease;
+  }
+  .mood-bar-fill.mood-furious{background:#a13d3d;}
+  .mood-bar-fill.mood-frustrated{background:#c9754b;}
+  .mood-bar-fill.mood-wary{background:var(--brass);}
+  .mood-bar-fill.mood-warming{background:#4b7fc9;}
+  .mood-bar-fill.mood-reassured{background:var(--green);}
+
+  /* ---------- Layout ---------- */
+  .layout{
+    max-width:980px;
+    margin:0 auto 60px;
+    padding:0 20px;
+    display:grid;
+    grid-template-columns:260px 1fr;
+    gap:18px;
+    align-items:start;
+  }
+  @media (max-width:760px){
+    .layout{grid-template-columns:1fr;}
+  }
+
+  .panel{
+    background:#fffdf6;
+    border:1px solid #e4ddc7;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+  }
+
+  /* ---------- Case brief ---------- */
+  .brief{
+    padding:16px 16px 18px;
+    position:sticky;
+    top:20px;
+    max-height:calc(100vh - 40px);
+    overflow-y:auto;
+  }
+  .brief h2{
+    font-family:var(--serif);
+    font-size:0.95rem;
+    margin:0 0 10px;
+    border-bottom:1px solid var(--brass-soft);
+    padding-bottom:6px;
+    color:var(--ink);
+  }
+  .brief .field-label{
+    font-family:var(--mono);
+    font-size:0.62rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--brass);
+    margin-top:12px;
+  }
+  .brief p{
+    font-size:0.82rem;
+    line-height:1.5;
+    color:var(--ink-soft);
+    margin:4px 0 0;
+  }
+  .case-file-empty{
+    font-size:0.78rem;
+    font-style:italic;
+    color:var(--ink-soft);
+    margin-top:6px;
+    line-height:1.5;
+  }
+  .case-file-group{
+    margin-top:12px;
+  }
+  .case-file-group summary{
+    font-family:var(--mono);
+    font-size:0.62rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--brass);
+    cursor:pointer;
+    outline:none;
+  }
+  .case-file-group summary::marker{color:var(--brass);}
+  .case-file-group p{margin:6px 0 0;}
+  .case-file-group .greg-box{margin-top:6px;}
+  .greg-box{
+    margin-top:14px;
+    background:var(--pad-yellow);
+    border-left:3px solid var(--margin-red);
+    padding:10px 10px 10px 12px;
+    border-radius:2px;
+  }
+  .greg-box .field-label{margin-top:0;color:var(--margin-red);}
+  .greg-box ul{
+    margin:6px 0 0;
+    padding-left:16px;
+    font-size:0.78rem;
+    line-height:1.5;
+    color:var(--ink);
+  }
+  .brief-toggle{
+    display:none;
+  }
+  @media (max-width:760px){
+    .brief{position:static; max-height:none;}
+    .brief.collapsed .brief-body{display:none;}
+    .brief-toggle{
+      display:block; width:100%; text-align:left; background:none; border:none;
+      font-family:var(--serif); font-size:0.95rem; padding:14px 16px; cursor:pointer; color:var(--ink);
+    }
+  }
+
+  /* ---------- Chat ---------- */
+  .chat-panel{display:flex; flex-direction:column; min-height:560px;}
+  .chat-scroll{
+    flex:1;
+    padding:20px 20px 6px;
+    overflow-y:auto;
+    max-height:62vh;
+  }
+  .msg{
+    max-width:80%;
+    margin-bottom:14px;
+    display:flex;
+    flex-direction:column;
+  }
+  .msg .who{
+    font-family:var(--mono);
+    font-size:0.62rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:4px;
+  }
+  .msg .bubble{
+    padding:10px 13px;
+    border-radius:6px;
+    font-size:0.92rem;
+    line-height:1.5;
+  }
+  .msg.dave{align-items:flex-start;}
+  .msg.dave .bubble{
+    background:#fff;
+    border:1px solid #e4ddc7;
+    border-top-left-radius:2px;
+    color:var(--ink);
+  }
+  .msg.you{align-items:flex-end; margin-left:auto;}
+  .msg.you .bubble{
+    background:var(--ink);
+    color:var(--paper);
+    border-top-right-radius:2px;
+  }
+  .msg.you .who{text-align:right;}
+  .msg.system-note{
+    max-width:100%;
+    align-items:center;
+    margin:10px 0;
+  }
+  .msg.system-note .bubble{
+    background:none;
+    color:var(--brass);
+    font-family:var(--mono);
+    font-size:0.68rem;
+    letter-spacing:0.04em;
+  }
+
+  .typing{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    color:var(--ink-soft);
+    padding:0 20px 10px;
+  }
+
+  .input-row{
+    border-top:1px solid #e4ddc7;
+    padding:14px 16px;
+    display:flex;
+    gap:10px;
+  }
+  .input-row textarea{
+    flex:1;
+    resize:none;
+    border:1px solid #d8d0b4;
+    border-radius:3px;
+    padding:10px 12px;
+    font-family:var(--sans);
+    font-size:0.92rem;
+    line-height:1.4;
+    background:var(--pad-yellow);
+    color:var(--ink);
+    min-height:44px;
+    max-height:140px;
+  }
+  .input-row textarea:focus{outline:2px solid var(--brass); outline-offset:1px;}
+  .input-row button{
+    background:var(--ink);
+    color:var(--paper);
+    border:none;
+    padding:0 20px;
+    border-radius:3px;
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:0.85rem;
+    cursor:pointer;
+  }
+  .input-row button:disabled{opacity:0.45; cursor:not-allowed;}
+  .input-row button:hover:not(:disabled){background:#333f57;}
+
+  .end-session-row{
+    padding:0 16px 16px;
+    display:flex;
+    justify-content:flex-end;
+  }
+  .end-session-row button{
+    background:none;
+    border:1px solid var(--margin-red);
+    color:var(--margin-red);
+    padding:7px 14px;
+    border-radius:3px;
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:0.78rem;
+    cursor:pointer;
+  }
+  .end-session-row button:hover{background:rgba(161,61,61,0.08);}
+
+  /* ---------- Modal (settings + assessment) ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(32,41,58,0.55);
+    display:none; align-items:center; justify-content:center; padding:20px; z-index:50;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal{
+    background:#fffdf6;
+    border-radius:var(--radius);
+    max-width:480px;
+    width:100%;
+    padding:22px 24px;
+    box-shadow:var(--shadow);
+    max-height:88vh;
+    overflow-y:auto;
+  }
+  .modal h3{
+    font-family:var(--serif);
+    margin:0 0 4px;
+  }
+  .modal .sub{
+    font-size:0.78rem;
+    color:var(--ink-soft);
+    margin:0 0 16px;
+  }
+  .modal-wide{
+    max-width:640px;
+  }
+  .modal-wide h2{
+    font-family:var(--serif);
+    font-size:1.3rem;
+    margin:0 0 2px;
+  }
+  .modal-wide .rubric-name{
+    font-family:var(--mono);
+    font-size:0.7rem;
+    color:var(--ink-soft);
+    letter-spacing:0.03em;
+    margin-bottom:18px;
+  }
+  .field{margin-bottom:14px;}
+  .field label{
+    display:block;
+    font-family:var(--mono);
+    font-size:0.68rem;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    color:var(--brass);
+    margin-bottom:5px;
+  }
+  .field input{
+    width:100%;
+    border:1px solid #d8d0b4;
+    border-radius:3px;
+    padding:8px 10px;
+    font-family:var(--mono);
+    font-size:0.82rem;
+    background:#fff;
+    color:var(--ink);
+  }
+  .field input:focus{outline:2px solid var(--brass); outline-offset:1px;}
+  .field .hint{font-size:0.72rem; color:var(--ink-soft); margin-top:4px; line-height:1.4;}
+  .modal-actions{display:flex; justify-content:flex-end; gap:8px; margin-top:6px;}
+  .modal-actions button{
+    padding:8px 16px; border-radius:3px; font-family:var(--sans); font-weight:600; font-size:0.82rem; cursor:pointer;
+  }
+  .btn-primary{background:var(--ink); color:var(--paper); border:none;}
+  .btn-primary:hover{background:#333f57;}
+  .btn-ghost{background:none; border:1px solid #d8d0b4; color:var(--ink-soft);}
+  .btn-ghost:hover{background:var(--pad-yellow);}
+  .test-result{font-size:0.78rem; margin-top:8px; font-family:var(--mono);}
+  .test-result.ok{color:var(--green);}
+  .test-result.fail{color:var(--margin-red);}
+
+  /* ---------- Scorecard (inside modal-wide) ---------- */
+  .criterion{
+    border-top:1px solid #eee3c4;
+    padding:14px 0;
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:6px 14px;
+    align-items:baseline;
+  }
+  .criterion .name{font-weight:600; font-size:0.9rem;}
+  .criterion .band{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    text-transform:uppercase;
+    padding:3px 9px;
+    border-radius:2px;
+    white-space:nowrap;
+  }
+  .band-outstanding{background:var(--green-soft); color:var(--green);}
+  .band-mastering{background:#e3edf5; color:#2b5f86;}
+  .band-developing{background:var(--brass-soft); color:var(--brass);}
+  .band-beginning{background:#f5dede; color:var(--margin-red);}
+  .criterion .note{
+    grid-column:1 / -1;
+    font-size:0.85rem;
+    color:var(--ink-soft);
+    line-height:1.5;
+  }
+  .overall{
+    margin-top:18px;
+    padding:16px;
+    background:var(--pad-yellow);
+    border-radius:3px;
+  }
+  .overall .band{font-size:0.85rem;}
+  .overall .score{
+    font-family:var(--serif);
+    font-size:1.6rem;
+    font-weight:700;
+  }
+  .overall p{font-size:0.88rem; line-height:1.55; margin:8px 0 0;}
+  .scorecard-actions{margin-top:18px; display:flex; gap:10px; flex-wrap:wrap;}
+  .scorecard-actions button{
+    padding:9px 16px; border-radius:3px; font-family:var(--sans); font-weight:600; font-size:0.82rem; cursor:pointer;
+  }
+  .scorecard-hint{
+    font-size:0.72rem;
+    color:var(--ink-soft);
+    margin-top:8px;
+    line-height:1.5;
+  }
+
+  .footer-note{
+    max-width:980px; margin:0 auto 40px; padding:0 20px;
+    font-size:0.72rem; color:var(--ink-soft); line-height:1.6;
+  }
+</style>
+</head>
+<body>
+
+<div class="file-tab-wrap">
+  <div class="file-tab">
+    <div>
+      <div class="title">Advise Dave</div>
+      <div class="meta">FILE NO. LAW65004-C2 · INTELLECTUAL PROPERTY LAW · TOPIC 2: COPYRIGHT · <span id="versionTag"></span></div>
+    </div>
+    <div class="stamp" id="stampEl">In Progress</div>
+  </div>
+  <div class="toolbar">
+    <span><span class="status-dot" id="statusDot"></span><span id="statusText">Not connected</span></span>
+    <span class="mood-pill" id="moodPill"><span class="mood-dot" id="moodDot"></span><span id="moodLabel">Dave's mood: Frustrated</span></span>
+    <div class="spacer"></div>
+    <button id="viewAssessmentBtn" style="display:none;">View assessment</button>
+    <button id="settingsBtn">Server settings</button>
+    <button id="restartBtn">Restart consultation</button>
+  </div>
+  <div class="mood-bar-track"><div class="mood-bar-fill" id="moodBarFill"></div></div>
+</div>
+
+<div class="layout">
+  <div class="panel brief" id="briefPanel">
+    <button class="brief-toggle" id="briefToggle">📁 Case brief (tap to expand)</button>
+    <div class="brief-body">
+      <h2>Case Brief</h2>
+      <div class="field-label">Client</div>
+      <p>Dave — new client, first consultation.</p>
+      <div class="field-label">Reason for visit</div>
+      <p>Copyright / IP dispute with a friend, over a photograph. That's all intake noted — the rest is for you to draw out of Dave yourself.</p>
+
+      <h2 style="margin-top:18px;">Case File</h2>
+      <p class="case-file-empty" id="caseFileEmpty">Nothing recorded yet — this fills in as Dave shares more during the conversation.</p>
+      <div id="caseFileContent"></div>
+    </div>
+  </div>
+
+  <div class="panel chat-panel">
+    <div class="chat-scroll" id="chatScroll"></div>
+    <div class="typing" id="typingIndicator" style="visibility:hidden;">Dave is typing…</div>
+    <div class="input-row">
+      <textarea id="userInput" placeholder="Advise Dave…" rows="2"></textarea>
+      <button id="sendBtn">Send</button>
+    </div>
+    <div class="end-session-row">
+      <button id="endBtn">End consultation & get assessment</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="scorecardOverlay">
+  <div class="modal modal-wide">
+    <h2>Consultation Assessment</h2>
+    <div class="rubric-name">Adapted from LAW65004 Class Participation Rubric — Taylor's University School of Law and Governance</div>
+    <div id="criteriaList"></div>
+    <div class="overall" id="overallBox"></div>
+    <div class="scorecard-actions">
+      <button class="btn-primary" id="exportBtn">Download scorecard (.txt)</button>
+      <button class="btn-ghost" id="emailLecturerBtn">Email to lecturer</button>
+      <button class="btn-ghost" id="backToChatBtn">Close</button>
+    </div>
+    <div class="scorecard-hint">"Email to lecturer" opens your email app with the scorecard summary pre-filled — mailto links can't attach files automatically, so download the .txt above first and attach it manually if you want the full transcript included.</div>
+  </div>
+</div>
+
+<div class="footer-note">
+  This is a training simulation for the LAW65004 Intellectual Property Law module (<span id="versionTagFooter"></span>). Dave's responses are generated by a locally hosted language model and may occasionally be legally imprecise — verify your reasoning against the Copyright Act 1987 and the module's reading list. The Case File panel and Dave's mood meter are populated automatically as the conversation goes and, like the assessment, may occasionally miss or misjudge something — they're study aids, not a substitute for your own notes and judgment.
+</div>
+
+<!-- Settings modal -->
+<div class="modal-overlay" id="settingsOverlay">
+  <div class="modal">
+    <h3>Server settings</h3>
+    <p class="sub">Points this page at your local Lemonade endpoint.</p>
+    <div class="field">
+      <label for="endpointInput">Chat completions URL</label>
+      <input id="endpointInput" type="text" placeholder="https://vortex-ai.tailfeee99.ts.net/v1/chat/completions">
+      <div class="hint">Your Lemonade server's OpenAI-compatible endpoint, reachable over Tailscale. If this page is served over HTTPS (e.g. GitHub Pages) but your server is plain HTTP, the browser will block the request — use an HTTPS Tailscale Funnel URL in that case.</div>
+    </div>
+    <div class="field">
+      <label for="modelInput">Model name</label>
+      <input id="modelInput" type="text" placeholder="Qwen2.5-7B-Instruct-GGUF-Q4_K_M">
+    </div>
+    <div class="field">
+      <label for="lecturerEmailInput">Lecturer email (optional)</label>
+      <input id="lecturerEmailInput" type="email" placeholder="lecturer@university.edu">
+      <div class="hint">Used to pre-fill the "Email to lecturer" button on the assessment popup. Stored only in your browser.</div>
+    </div>
+    <button class="btn-ghost" id="testConnBtn" style="width:100%;">Test connection</button>
+    <div class="test-result" id="testResult"></div>
+    <div class="modal-actions">
+      <button class="btn-ghost" id="settingsCancel">Cancel</button>
+      <button class="btn-primary" id="settingsSave">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   APP VERSION
+   Bump this whenever the deployed file changes meaningfully. It's shown in
+   the header/footer, and stamped into every exported assessment filename
+   and emailed report, so test results can always be traced back to the
+   exact version of the app that produced them.
+
+   v1.1: fixed a bug where the overall score/band on the scorecard could
+   contradict every individual criterion (e.g. six criteria all graded
+   "Developing" but the overall shown as "Outstanding 20/20"). The overall
+   score is now derived mathematically from the per-criterion scores
+   instead of trusting the model's own overall_score field.
+
+   v1.2: rescaled each of the six rubric criteria from /20 to /10, and
+   changed the overall from an "X/20" score to a percentage (0-100%),
+   derived as the average of the six criterion scores. This is the content
+   portion of the lecturer's grading breakdown (40% content / 20%
+   communication / 40% research) — communication and research aren't
+   separately graded by this app, so the percentage shown here reflects
+   content coverage only, not the student's full module grade.
+
+   v1.3: fixed intermittent scorecard failures on longer consultations
+   ("Could not generate the automatic scorecard (Could not parse scorecard
+   response)"). Root cause confirmed live: on a 12-exchange transcript, the
+   grading model's response was getting cut off mid-string (right before
+   the final closing brace) even at the existing 1800-token retry ceiling —
+   a genuine truncation, not a JSON formatting bug. Added a third, larger
+   retry attempt (3000 tokens) as a safety net for longer sessions.
+
+   v1.4: the "peace of mind" behavior (asking for a similar case, the exact
+   statute/section name, or pushing the advisor to elaborate on Greg's
+   claims) was previously left to the model's own judgment ("every so
+   often"), and a live test showed it can simply not fire for an entire
+   session. It's now mechanically forced every other Dave reply — rotating
+   through case example / statute name / elaboration in turn — regardless
+   of whether Dave is otherwise satisfied, since a careful client keeps
+   asking for backup even once reassured on the substance.
+
+   v1.5: fixed Dave repeating a PROCEDURAL question near-verbatim (e.g.
+   "can you send me the draft letter, and what if Greg doesn't respond,
+   will we meet again?") three or more times in a row, even after it had
+   already been answered. Root cause: the existing loop-breaker
+   (STALL_LIMIT/stallStreak) only tracks the six graded rubric checklist
+   items — it has no awareness of practical/logistics questions that
+   aren't part of that checklist, so once Dave runs out of new rubric
+   points to raise, the model has nothing stopping it from recycling the
+   same wrap-up question. Added a general instruction telling Dave not to
+   re-ask anything he's already gotten an answer to, PLUS a mechanical
+   backstop: each new reply is compared against Dave's own last two
+   messages, and if it's a near-repeat, the app silently regenerates it
+   once with an explicit "you already asked this" correction before
+   showing it to the student.
+   ============================================================ */
+const APP_VERSION = "v1.5";
+
+/* ============================================================
+   CONFIG
+   ============================================================ */
+const DEFAULT_ENDPOINT = "https://vortex-ai.tailfeee99.ts.net/v1/chat/completions";
+const DEFAULT_MODEL = "Qwen2.5-7B-Instruct-GGUF-Q4_K_M";
+
+let config = {
+  endpoint: localStorage.getItem("advisedave_endpoint") || DEFAULT_ENDPOINT,
+  model: localStorage.getItem("advisedave_model") || DEFAULT_MODEL,
+  lecturerEmail: localStorage.getItem("advisedave_lecturer_email") || "",
+};
+
+/* ============================================================
+   CASE DATA
+   (This is the simulation's ground truth, used to role-play Dave and to
+   grade the student. It is intentionally NOT what's shown in the sidebar —
+   see FACT_DEFS below for what the student actually gets to see, and only
+   once Dave has actually said it.)
+   ============================================================ */
+const CASE_FACTS = `
+Dave and Tom went on holiday to visit the Mulu Caves in Sarawak, Malaysia. Dave and Tom live and work in Singapore.
+They visited the caves accompanied by a guide. They took many photographs on their mobile phones before entering
+the caves, inside the caves, and outside the caves, to remember the trip and to share with family and friends.
+They posted the photographs on their Facebook pages.
+
+Greg is Dave's friend. Greg saw Dave's photographs on Dave's Facebook page and admired them. Greg knew the Sarawak
+Tourism Board was running a competition inviting photographs of the Mulu Caves, with a RM5,000 prize for the best
+photograph, to be used in a promotional campaign. Without telling Dave, Greg submitted several of Dave's
+photographs to the competition. One of them was chosen as the best photograph. Greg collected the RM5,000 prize at
+a ceremony, and a picture of him receiving it appeared in the newspapers. Many of Greg's friends congratulated him.
+
+Dave found out and was very upset on seeing Greg's picture in the newspaper with the winning photograph, which
+Dave recognised as his own. Dave called Greg and demanded that Greg publicly acknowledge the photograph was
+Dave's, and that Greg hand over the prize money.
+
+Greg's response: Dave cannot own any rights in a photograph; even if he could, he surrendered those rights by
+posting it on Facebook where it was accessible to many people; and Dave's photos were probably much like Tom's
+from the same trip, taken with no real skill or effort — "just snapping" on a phone, with one shot turning out
+well by chance.
+`.trim();
+
+const CHECKLIST_DEFS = [
+  { key: "subsistence", label: "Subsistence of copyright", detail: "Whether copyright subsists in the photograph at all — the originality threshold (skill, labour, effort, judgement) under the Copyright Act 1987, and why 'just snapping a phone photo' does not defeat this." },
+  { key: "ownership", label: "Ownership / authorship", detail: "That Dave, as the photographer, is the author and first owner of copyright in the photographs he took." },
+  { key: "facebook_waiver", label: "Facebook posting ≠ waiver", detail: "Correctly rebutting the claim that posting to Facebook surrenders copyright — distinguishing a platform's licence to host/display content from any transfer or abandonment of the underlying copyright." },
+  { key: "infringement", label: "Infringement by Greg", detail: "Identifying Greg's unauthorised reproduction and communication/dealing with the work (submitting it to the competition) as acts restricted to the copyright owner." },
+  { key: "moral_rights", label: "Moral rights / false attribution", detail: "Recognising Dave's right to be identified as author and/or his right against false attribution, engaged by Greg taking credit for the work." },
+  { key: "remedies", label: "Remedies available", detail: "Advising on the practical remedies actually open to Dave against Greg — e.g. damages/account of profits, acknowledgment, and the realistic prospects of recovering the prize money." },
+];
+
+let checklist = {};
+CHECKLIST_DEFS.forEach(c => checklist[c.key] = false);
+
+/* ============================================================
+   CASE FILE (dynamic sidebar)
+   Each entry is a discrete fact from CASE_FACTS. It only appears in the
+   sidebar once Dave has actually said it in the conversation — the sidebar
+   starts almost empty, like a real first client meeting.
+   ============================================================ */
+const FACT_DEFS = [
+  { key: "trip_location", category: "facts", text: "Dave and his friend Tom visited the Mulu Caves in Sarawak on holiday, with a guide." },
+  { key: "photos_taken", category: "facts", text: "Dave took numerous photographs on his phone before, inside, and outside the caves, to remember the trip and share with family and friends." },
+  { key: "posted_facebook", category: "facts", text: "Dave posted the photos to his Facebook page." },
+  { key: "greg_saw_photos", category: "dispute", text: "Greg, Dave's friend, saw the photos on Dave's Facebook page." },
+  { key: "greg_submitted", category: "dispute", text: "Without telling Dave, Greg submitted several of the photos to a Sarawak Tourism Board photo competition (RM5,000 prize)." },
+  { key: "photo_won", category: "dispute", text: "One of Dave's photos was chosen as the winning entry." },
+  { key: "greg_collected_prize", category: "dispute", text: "Greg collected the prize at a ceremony and was pictured in the newspapers receiving it." },
+  { key: "wants_acknowledgment_and_money", category: "wants", text: "Public acknowledgment that it was his photograph, and the RM5,000 prize money." },
+  { key: "greg_arg_no_rights", category: "greg", text: "Dave cannot own rights in a photograph at all." },
+  { key: "greg_arg_facebook", category: "greg", text: "Even if he could, he gave up any rights by posting it on Facebook, where it was accessible to many people." },
+  { key: "greg_arg_skill", category: "greg", text: "Dave's photo is probably much like Tom's from the same trip — no real skill or effort, \"just snapping,\" one shot happened to turn out well." },
+];
+
+const CASE_FILE_CATEGORIES = [
+  { key: "facts", label: "The trip" },
+  { key: "dispute", label: "The dispute" },
+  { key: "wants", label: "What Dave wants" },
+  { key: "greg", label: "Greg's position (disputed)" },
+];
+
+let factState = {};
+FACT_DEFS.forEach(f => factState[f.key] = false);
+
+/* ============================================================
+   MOOD METER
+   Dave starts angry and impatient (not neutral). Each exchange nudges his
+   mood up or down based on whether the advisor's answer was clear, correct
+   and justified, or vague/wrong/evasive. "same" still decays slightly,
+   since a difficult, impatient client isn't satisfied by treading water.
+   ============================================================ */
+const MOOD_BANDS = [
+  { max: 19, label: "Furious", cls: "mood-furious" },
+  { max: 39, label: "Frustrated", cls: "mood-frustrated" },
+  { max: 59, label: "Wary", cls: "mood-wary" },
+  { max: 79, label: "Warming up", cls: "mood-warming" },
+  { max: 100, label: "Reassured", cls: "mood-reassured" },
+];
+let moodScore = 30;
+
+/* Counts consecutive turns where the advisor's message didn't move things
+   forward (mood_shift "same" or "worsen"). Once this hits STALL_LIMIT, Dave
+   is told (once) to grudgingly drop whatever he's been repeating and move
+   on, instead of looping on the same request indefinitely. */
+const STALL_LIMIT = 3;
+let stallStreak = 0;
+
+/* Forces a "peace of mind" ask (case example / statute name / elaborate on
+   Greg's claim) into Dave's reply on a fixed cadence, rotating through the
+   three types in order. This used to be left entirely to the model's own
+   judgment ("every so often"), but that meant it could simply not happen
+   for an entire session — see daveSystemPrompt() below for how this is
+   applied and PEACE_OF_MIND_TYPES for the rotation. */
+const PEACE_OF_MIND_INTERVAL = 2; // force it on every Nth Dave reply
+const PEACE_OF_MIND_TYPES = [
+  "ask for a similar case or real example where something like this happened before, so you're not just taking your advisor's word for it",
+  "ask for the exact statute and section name involved — or, if one was already given, ask whether there's another relevant section you should know about too",
+  "push your advisor to elaborate further on exactly why one of Greg's specific claims is wrong, rather than accepting a short dismissal",
+];
+let daveTurnCount = 0; // counts Dave replies generated so far (not counting the scripted opening line)
+
+function moodBandFor(score) {
+  return MOOD_BANDS.find(b => score <= b.max) || MOOD_BANDS[MOOD_BANDS.length - 1];
+}
+
+function renderMood() {
+  const band = moodBandFor(moodScore);
+  const dot = document.getElementById("moodDot");
+  const label = document.getElementById("moodLabel");
+  const fill = document.getElementById("moodBarFill");
+  if (!dot || !label || !fill) return;
+  MOOD_BANDS.forEach(b => { dot.classList.remove(b.cls); fill.classList.remove(b.cls); });
+  dot.classList.add(band.cls);
+  fill.classList.add(band.cls);
+  label.textContent = "Dave's mood: " + band.label;
+  fill.style.width = moodScore + "%";
+}
+
+function applyMoodShift(shift) {
+  if (shift === "improve") moodScore += 12;
+  else if (shift === "worsen") moodScore -= 15;
+  else moodScore -= 4; // "same" — stalling still costs a little patience
+  moodScore = Math.max(0, Math.min(100, moodScore));
+  renderMood();
+}
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let history = []; // {role: 'dave'|'you', content: string}
+let sessionEnded = false;
+let busy = false;
+
+/* ============================================================
+   DOM refs
+   ============================================================ */
+const chatScroll = document.getElementById("chatScroll");
+const typingIndicator = document.getElementById("typingIndicator");
+const userInput = document.getElementById("userInput");
+const sendBtn = document.getElementById("sendBtn");
+const endBtn = document.getElementById("endBtn");
+const stampEl = document.getElementById("stampEl");
+const statusDot = document.getElementById("statusDot");
+const statusText = document.getElementById("statusText");
+
+/* ============================================================
+   RENDERING
+   ============================================================ */
+function renderMessage(role, text) {
+  const wrap = document.createElement("div");
+  wrap.className = "msg " + (role === "dave" ? "dave" : role === "you" ? "you" : "system-note");
+  const who = document.createElement("div");
+  who.className = "who";
+  who.textContent = role === "dave" ? "Dave" : role === "you" ? "You (Counsel)" : "";
+  const bubble = document.createElement("div");
+  bubble.className = "bubble";
+  bubble.textContent = text;
+  if (role !== "system-note") wrap.appendChild(who);
+  wrap.appendChild(bubble);
+  chatScroll.appendChild(wrap);
+  chatScroll.scrollTop = chatScroll.scrollHeight;
+}
+
+function setBusy(state) {
+  busy = state;
+  sendBtn.disabled = state || sessionEnded;
+  typingIndicator.style.visibility = state ? "visible" : "hidden";
+}
+
+function setStatus(ok, text) {
+  statusDot.classList.toggle("ok", ok);
+  statusText.textContent = text;
+}
+
+/* Renders the dynamic "Case File" section of the sidebar from whatever
+   facts have been marked disclosed in factState so far. Starts empty
+   (shows the placeholder) and only fills in as items become true. Each
+   category is a collapsible <details> group so the sidebar stays tidy as
+   it grows. */
+function renderCaseFile() {
+  const container = document.getElementById("caseFileContent");
+  const emptyMsg = document.getElementById("caseFileEmpty");
+  if (!container || !emptyMsg) return;
+  const revealed = FACT_DEFS.filter(f => factState[f.key]);
+  container.innerHTML = "";
+  if (revealed.length === 0) {
+    emptyMsg.style.display = "block";
+    return;
+  }
+  emptyMsg.style.display = "none";
+
+  CASE_FILE_CATEGORIES.forEach(cat => {
+    const items = revealed.filter(f => f.category === cat.key);
+    if (items.length === 0) return;
+
+    const details = document.createElement("details");
+    details.className = "case-file-group";
+    details.open = true;
+    const summary = document.createElement("summary");
+    summary.textContent = cat.label;
+    details.appendChild(summary);
+
+    if (cat.key === "greg") {
+      const box = document.createElement("div");
+      box.className = "greg-box";
+      const ul = document.createElement("ul");
+      items.forEach(f => {
+        const li = document.createElement("li");
+        li.textContent = f.text;
+        ul.appendChild(li);
+      });
+      box.appendChild(ul);
+      details.appendChild(box);
+    } else {
+      items.forEach(f => {
+        const p = document.createElement("p");
+        p.textContent = f.text;
+        details.appendChild(p);
+      });
+    }
+    container.appendChild(details);
+  });
+}
+
+/* ============================================================
+   LLM CALL HELPER
+   ============================================================ */
+async function callLLM(messages, { temperature = 0.8, max_tokens = 350 } = {}) {
+  const res = await fetch(config.endpoint, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: config.model,
+      messages,
+      temperature,
+      max_tokens,
+    }),
+  });
+  if (!res.ok) throw new Error("Server responded " + res.status);
+  const data = await res.json();
+  const content = data?.choices?.[0]?.message?.content;
+  if (typeof content !== "string") throw new Error("Unexpected response shape");
+  return content.trim();
+}
+
+/* Robust JSON extraction: strips code fences, tries direct parse, then
+   regex-extracts the first {...} block, then gives up. */
+function extractJSON(raw) {
+  if (!raw) return null;
+  let text = raw.trim();
+  text = text.replace(/```json/gi, "").replace(/```/g, "").trim();
+  try { return JSON.parse(text); } catch (e) {}
+  const match = text.match(/\{[\s\S]*\}/);
+  if (match) {
+    try { return JSON.parse(match[0]); } catch (e) {}
+  }
+  return null;
+}
+
+/* ============================================================
+   REPETITION GUARD
+   Detects when Dave's newly generated reply is a near-repeat of his own
+   last one or two messages — e.g. re-asking "will you send the letter,
+   what if Greg doesn't respond" three turns in a row. This is deliberately
+   separate from the STALL_LIMIT/stallStreak mechanism above, which only
+   tracks progress on the six graded rubric checklist items: procedural or
+   logistics questions aren't part of that checklist, so a client who's
+   run out of new legal points to raise could otherwise loop on a wrap-up
+   question forever with nothing to stop it.
+   ============================================================ */
+function significantWords(text) {
+  return (text || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, " ")
+    .split(/\s+/)
+    .filter(w => w.length > 3);
+}
+
+// Rough Jaccard-style overlap: what fraction of the SMALLER message's
+// significant words also appear in the other message. Cheap, no extra LLM
+// call, good enough to catch near-verbatim repeats without flagging normal
+// short replies that just happen to share a few common words.
+function textSimilarity(a, b) {
+  const wa = new Set(significantWords(a));
+  const wb = new Set(significantWords(b));
+  if (wa.size === 0 || wb.size === 0) return 0;
+  let overlap = 0;
+  wa.forEach(w => { if (wb.has(w)) overlap += 1; });
+  return overlap / Math.min(wa.size, wb.size);
+}
+
+const REPEAT_SIMILARITY_THRESHOLD = 0.4;
+
+/* ============================================================
+   PROMPT BUILDERS
+   ============================================================ */
+function unresolvedItems() {
+  return CHECKLIST_DEFS.filter(c => !checklist[c.key]);
+}
+
+function daveSystemPrompt() {
+  const unresolved = unresolvedItems();
+  const unresolvedText = unresolved.length
+    ? unresolved.map(c => "- " + c.label + ": " + c.detail).join("\n")
+    : "You believe your advisor has now covered everything you were worried about.";
+  const moodBand = moodBandFor(moodScore).label;
+
+  const stuckNote = stallStreak >= STALL_LIMIT
+    ? `\n\nIMPORTANT — YOU'VE BEEN GOING IN CIRCLES: you've pushed on the same point several times now without
+getting a fully satisfying answer. You're still not 100% happy about it, but you're done repeating yourself for
+now. Grudgingly drop this specific point (in your own words — e.g. "Fine, whatever, let's move on" / "Okay, I'll
+let that go for now") and shift to your next worry from the list above, or to wrapping up if nothing's left. Do
+NOT ask about this exact same thing again this session.`
+    : "";
+
+  const closingCheck = unresolved.length === 0
+    ? `\n\nBEFORE YOU AGREE YOU'RE DONE: don't just accept a vague "does that help?" and say yes. Ask your advisor
+to walk you through the whole plan, in order, in their own words — from where things stand now to exactly what
+happens next (e.g. "Okay, walk me through this from the start — what do I actually do, in what order?"). Only
+agree you're satisfied and ready to move forward once they've actually laid out the plan clearly for you, not
+before.`
+    : "";
+
+  // Force a "peace of mind" ask on a fixed cadence (see PEACE_OF_MIND_INTERVAL
+  // above), rotating through the three types in order, regardless of whether
+  // Dave is otherwise satisfied — a careful client keeps asking for backup
+  // even once reassured on the substance, not just while still worried.
+  const upcomingTurn = daveTurnCount + 1;
+  const forcePeaceOfMind = upcomingTurn % PEACE_OF_MIND_INTERVAL === 0;
+  const peaceOfMindOccurrence = Math.floor(upcomingTurn / PEACE_OF_MIND_INTERVAL) - 1;
+  const peaceOfMindPick = PEACE_OF_MIND_TYPES[((peaceOfMindOccurrence % PEACE_OF_MIND_TYPES.length) + PEACE_OF_MIND_TYPES.length) % PEACE_OF_MIND_TYPES.length];
+  const peaceOfMindNote = forcePeaceOfMind
+    ? `\n\nIMPORTANT — ASK FOR MORE PROOF THIS TURN: no matter how satisfied you already are with the substance of
+what's been said so far, work this into THIS reply, in your own words, alongside whatever else you're saying:
+${peaceOfMindPick}. Being reassured on the law doesn't mean you've stopped wanting concrete backup — a careful
+client keeps double-checking. Do not skip this.`
+    : "";
+
+  return `You are role-playing as DAVE, a client at a university law clinic, in a live text conversation with a law
+student who is advising you. Stay in character as Dave at all times. Never break character, never explain the law
+yourself, never say you are an AI or a simulation, and never mention "checklists", "rubrics", "assessment", or
+"mood".
+
+CASE FACTS (this happened to you):
+${CASE_FACTS}
+
+YOUR PERSONALITY: You are ANGRY, not just mildly upset. Greg humiliated you publicly — his face is in the
+newspaper next to YOUR photo — and you feel like a fool in front of everyone who knows you both. You are
+impatient and a bit pressuring: you want fast, clear, confident answers, and if your advisor hedges, rambles, or
+is slow to get to the point, call it out and push them to just tell you straight. You are NOT a pushover client —
+you are difficult on purpose. You do not accept a claim just because your advisor states it confidently: if they
+assert something without explaining WHY or HOW they know it, ask them to justify it ("How do you know that?" /
+"What makes you sure?" / "Explain that to me properly") before you treat it as settled. You only calm down once
+you actually understand the reasoning, not just the conclusion, and once you're clear on what happens next. You
+also refuse to let your advisor end the meeting on a vague, non-committal answer — if they try to wrap up without
+having actually given you clear, concrete answers, push back and insist on getting real answers first.
+
+YOUR CURRENT MOOD: ${moodBand}. Let this show in your tone — the angrier/more frustrated you are, the sharper,
+more clipped, and more pressuring you should sound; the calmer/more reassured you are, the more you can ease up,
+though you should still stay a bit guarded and thorough throughout (you're a difficult client the whole way, not
+just early on).
+
+WHAT'S STILL WORRYING YOU (bring these up naturally, in your own words, one or two at a time, NOT as a list, NOT
+using legal jargon, NOT all at once — pick whichever feels most natural given the conversation so far, and ask in
+a way that forces your advisor to actually explain it rather than just confirm it):
+${unresolvedText}
+
+Natural ways to raise each of these (use your own words, don't recite these verbatim, and always frame it as a
+worried, angry client talking, never as a lawyer or student would):
+- Ownership / whether you even own it at all: "Greg says I can't own rights in a photo at all — is that even a
+  real thing people can say? Walk me through why he's wrong, properly."
+- Facebook: "He said I gave up my rights by putting it on Facebook. Did I? How does that even work?"
+- Whether the photo itself even counts / Greg's "just snapping" jab: "He says my photo's probably no different
+  from Tom's — nothing special, I just got lucky. Does that actually matter legally, or is he just being nasty?"
+- What Greg actually did wrong: "Okay but in actual legal terms, what did he do wrong? Is there a law he broke,
+  or is this just me being upset about something that's technically fine?"
+- The newspaper photo / him taking credit: "What about him standing there in the paper like it's his photo? Does
+  that count for anything on its own, separate from the money?"
+- What you can actually do: "Fine, say you're right about all this — what can I actually DO about it? Is there
+  an actual case I can bring, or am I just supposed to ask nicely and hope Greg feels bad?"
+
+ON TOP OF your specific worries, you also want concrete proof and backup, not just reassurance — you're the kind
+of client who keeps double-checking even things you already believe. You'll be told below, turn by turn, when to
+work one of these in — but the flavor is:
+- Ask if this has happened to someone else before, or if there's a similar case or example your advisor can point
+  to, so you're not just taking their word for it.
+- Ask what the actual law is called — the specific statute and section, not just "the law" — so you have
+  something concrete to hold onto or look up yourself later. If your advisor already named one provision, ask
+  whether there are other relevant sections or statutes you should know about too.
+- Push your advisor to elaborate on Greg's specific claims rather than just dismissing them — you want to
+  understand exactly why Greg is wrong, not just be told that he is.
+
+CONVERSATION RULES:
+- If your advisor's last answer was vague, incomplete, dodged one of your worries, or just asserted something
+  without explaining it, push back on THAT specific point in your own words, ask them to explain further, or
+  bring up Greg's exact argument again if it wasn't properly answered.
+- If the advisor gave you a clear, correct, complete, well-explained answer on something, accept it in a natural
+  way ("Oh, okay, that actually makes sense.") and move on to your next worry, or ask a natural practical
+  follow-up — but you're still a difficult client overall, so don't become instantly warm and trusting.
+- Never lecture. Never use section numbers or case names yourself — you're the client, not the lawyer.
+- Do NOT ask something you've already asked and gotten a real answer to, even reworded — that includes practical
+  questions like "will you send the letter," "what if Greg doesn't respond," or "will we meet again," not just the
+  legal points above. Re-read what's already been said before you ask anything. If you're genuinely out of new
+  things to raise, say so and move toward being satisfied instead of recycling an old question.
+- Keep replies short: 2-4 sentences, conversational, spoken register, with your current mood coming through.
+- Do not resolve the conversation yourself or announce that you're "satisfied" with everything at once — resolve
+  one concern at a time, and only agree you're ready to move forward once you've actually been walked through
+  everything and you're clear on next steps.${stuckNote}${closingCheck}${peaceOfMindNote}`;
+}
+
+function assessmentSystemPrompt() {
+  const items = CHECKLIST_DEFS.map(c => `"${c.key}"`).join(", ");
+  return `You are a silent grading engine for a law school simulation (LAW65004 Intellectual Property Law,
+Taylor's University). You will be shown the case facts, the checklist of legal points a competent answer should
+cover, which points are already marked resolved, and the single latest exchange (the advisor's message to Dave,
+and Dave's reply). Decide whether the advisor's LATEST message substantively and CORRECTLY addressed any
+currently-unresolved checklist point. Do not mark something resolved on a vague, partial, or legally incorrect
+explanation — it must be reasonably complete and accurate for a law student's oral answer.
+
+You are ALSO tracking Dave's mood as a client. Dave is an angry, impatient, distrustful client who does not accept
+assertions without justification. Decide whether the advisor's LATEST message should make Dave's mood "improve"
+(clear, correct, complete, reassuring, actually explains WHY — not just what), "worsen" (vague, evasive,
+incorrect, contradicts something said earlier, dismissive, or fails to justify a claim Dave pushed back on), or
+stay "same" (on-topic but incomplete, or minor small talk that doesn't really move things forward).
+
+CASE FACTS:
+${CASE_FACTS}
+
+CHECKLIST ITEMS AND WHAT THEY REQUIRE:
+${CHECKLIST_DEFS.map(c => `- ${c.key}: ${c.label} — ${c.detail}`).join("\n")}
+
+Respond with ONLY a raw JSON object, no markdown fences, no commentary, in exactly this shape (checklist keys:
+${items}, each a boolean — true only if the LATEST advisor message newly and adequately addressed that point):
+{"subsistence": false, "ownership": false, "facebook_waiver": false, "infringement": false, "moral_rights": false, "remedies": false, "mood_shift": "improve|worsen|same", "note": "one short sentence on what the advisor just got right or missed"}`;
+}
+
+function factDisclosureSystemPrompt() {
+  const items = FACT_DEFS.map(f => `"${f.key}"`).join(", ");
+  return `You are a silent case-file tracker for a law school client-consultation simulation. You will be shown
+the full transcript so far of a conversation between a law student (the advisor) and their client, Dave. Your only
+job is to detect which specific case facts DAVE (the client) has himself clearly stated or confirmed at some point
+in the transcript — not facts the advisor merely asserted, guessed, or asked about without Dave confirming them,
+and not facts you happen to know from elsewhere. Err on the side of NOT marking a fact disclosed unless Dave's own
+words in the transcript clearly convey it.
+
+CANDIDATE FACTS:
+${FACT_DEFS.map(f => `- ${f.key}: ${f.text}`).join("\n")}
+
+Respond with ONLY a raw JSON object, no markdown fences, no commentary, in exactly this shape (keys: ${items}, each
+a boolean — true only if Dave has clearly stated or confirmed that fact at some point in the transcript so far):
+{${FACT_DEFS.map(f => `"${f.key}": false`).join(", ")}}`;
+}
+
+function finalScorecardPrompt(transcriptText) {
+  return `You are grading a law student's performance in a client-consultation simulation against Taylor's
+University's official LAW65004 Class Participation rubric, adapted for a one-on-one consultation (the original
+"teamwork" criterion is dropped). This score covers the CONTENT portion of the student's grade only. Bands:
+Outstanding 8-10, Mastering 6-7, Developing 3-5, Beginning 1-2 (each criterion is scored out of 10).
+
+CASE FACTS:
+${CASE_FACTS}
+
+FULL TRANSCRIPT:
+${transcriptText}
+
+CHECKLIST STATE AT END OF SESSION:
+${CHECKLIST_DEFS.map(c => `- ${c.label}: ${checklist[c.key] ? "addressed" : "not adequately addressed"}`).join("\n")}
+
+Grade the student against these six criteria, each independently banded and scored 1-10, with specific feedback
+that references what the student actually said or failed to say (not generic praise):
+${CHECKLIST_DEFS.map(c => `- ${c.label}: ${c.detail}`).join("\n")}
+
+IMPORTANT — grade the whole trajectory, not just the final position on each point:
+- Read the ENTIRE transcript for each criterion, not only the advisor's last word on it. If the advisor stated
+  something legally incorrect, fabricated a fact that is not in the CASE FACTS, or conceded a point to Greg's
+  disputed position before later correcting themselves, that false start must lower the score for that criterion
+  even though the final answer ended up correct. A client-facing professional getting it right only after a
+  wrong first attempt is not the same as getting it right the first time — do not treat them as equivalent.
+- Each "note" is specific to THIS transcript and THIS criterion only: name the actual incorrect claim, fabricated
+  fact, or concession if one happened for that specific point, in addition to what was eventually done well. Do
+  not copy or reuse a note (or near-identical wording) from one criterion onto another — a false start on the
+  Facebook point, for example, must never be cited as the reason for a low score on a different, unrelated
+  criterion where no such false start happened.
+- Keep every "note" to one, tightly-written sentence — specific over long.
+- "score" MUST be an integer between 1 and 10 inclusive for every criterion, never any other range. Double-check
+  this before responding — a value like 15 is invalid and will break the display. The overall percentage shown to
+  the student is calculated automatically from your six criterion scores, so you do NOT need to separately compute
+  an overall score or band — just make sure every individual criterion score honestly reflects that criterion
+  alone.
+
+Respond with ONLY a raw JSON object, no markdown fences, no commentary, in exactly this shape:
+{
+ "criteria": [
+   {"key":"subsistence","band":"Outstanding|Mastering|Developing|Beginning","score":0,"note":"..."},
+   {"key":"ownership","band":"...","score":0,"note":"..."},
+   {"key":"facebook_waiver","band":"...","score":0,"note":"..."},
+   {"key":"infringement","band":"...","score":0,"note":"..."},
+   {"key":"moral_rights","band":"...","score":0,"note":"..."},
+   {"key":"remedies","band":"...","score":0,"note":"..."}
+ ],
+ "summary":"2-3 sentences of overall feedback, consistent with the criterion scores above"
+}`;
+}
+
+/* ============================================================
+   CONVERSATION FLOW
+   ============================================================ */
+const OPENING_LINE = "Thanks for seeing me. I still can't believe this happened — my mate Greg entered my own holiday photo into a competition behind my back, won RM5,000 with it, and now he's telling me I don't even have any rights over my own picture. Is that actually true? Can he really just do that?";
+
+function startSession() {
+  history = [{ role: "dave", content: OPENING_LINE }];
+  renderMessage("dave", OPENING_LINE);
+}
+
+async function sendUserMessage() {
+  const text = userInput.value.trim();
+  if (!text || busy || sessionEnded) return;
+  userInput.value = "";
+  history.push({ role: "you", content: text });
+  renderMessage("you", text);
+  setBusy(true);
+
+  try {
+    // If the "you've been going in circles" note is about to fire, clear the
+    // streak now so it only fires once and doesn't re-trigger every turn.
+    const wasStuck = stallStreak >= STALL_LIMIT;
+    // Capture Dave's own last couple of messages BEFORE this turn's reply is
+    // generated, so the repetition guard below has something to compare
+    // against (see REPETITION GUARD section for why this exists).
+    const priorDaveMessages = history.filter(h => h.role === "dave").slice(-2).map(h => h.content);
+    const daveMessages = [
+      { role: "system", content: daveSystemPrompt() },
+      ...history.map(h => ({ role: h.role === "dave" ? "assistant" : "user", content: h.content })),
+    ];
+    let reply = await callLLM(daveMessages, { temperature: 0.85, max_tokens: 300 });
+
+    // Repetition guard: if this reply is a near-repeat of something Dave
+    // himself already said, silently regenerate once with an explicit
+    // correction rather than showing the student a repeated question.
+    const maxPriorSimilarity = priorDaveMessages.reduce(
+      (max, prev) => Math.max(max, textSimilarity(reply, prev)), 0
+    );
+    if (maxPriorSimilarity >= REPEAT_SIMILARITY_THRESHOLD) {
+      const mostSimilarPrior = priorDaveMessages.reduce(
+        (best, prev) => (textSimilarity(reply, prev) > textSimilarity(reply, best) ? prev : best),
+        priorDaveMessages[0]
+      );
+      try {
+        const antiRepeatMessages = [
+          { role: "system", content: daveSystemPrompt() + `\n\nCRITICAL — YOU ALREADY SAID THIS: your own last
+message was essentially "${mostSimilarPrior}", and your advisor has already responded to it. Do not ask that
+same thing again, even in different words. React to what your advisor just said instead, raise something new, or
+if you're genuinely out of things to ask, say you're satisfied and ready to move forward.` },
+          ...history.map(h => ({ role: h.role === "dave" ? "assistant" : "user", content: h.content })),
+        ];
+        const retryReply = await callLLM(antiRepeatMessages, { temperature: 0.9, max_tokens: 300 });
+        if (textSimilarity(retryReply, mostSimilarPrior) < maxPriorSimilarity) {
+          reply = retryReply;
+        }
+      } catch (err) {
+        // If the retry itself fails, fall back to the original reply rather than losing the turn.
+        console.warn("Repetition-guard retry failed:", err.message);
+      }
+    }
+
+    history.push({ role: "dave", content: reply });
+    renderMessage("dave", reply);
+    setStatus(true, "Connected");
+    daveTurnCount += 1;
+    if (wasStuck) stallStreak = 0;
+
+    // fire-and-forget background updates — neither blocks the chat
+    updateAssessment(text, reply);
+    updateFactDisclosure();
+  } catch (err) {
+    renderMessage("system-note", "⚠ Could not reach the local model (" + err.message + "). Check server settings.");
+    setStatus(false, "Connection error");
+  } finally {
+    setBusy(false);
+  }
+}
+
+async function updateAssessment(userText, daveReply) {
+  try {
+    const messages = [
+      { role: "system", content: assessmentSystemPrompt() },
+      { role: "user", content: `LATEST EXCHANGE:\nAdvisor: ${userText}\nDave: ${daveReply}` },
+    ];
+    const raw = await callLLM(messages, { temperature: 0.1, max_tokens: 250 });
+    const parsed = extractJSON(raw);
+    if (!parsed) return;
+    CHECKLIST_DEFS.forEach(c => {
+      if (parsed[c.key] === true) checklist[c.key] = true;
+    });
+    if (parsed.mood_shift === "improve" || parsed.mood_shift === "worsen" || parsed.mood_shift === "same") {
+      applyMoodShift(parsed.mood_shift);
+      if (parsed.mood_shift === "improve") {
+        stallStreak = 0;
+      } else {
+        stallStreak += 1;
+      }
+    }
+  } catch (err) {
+    // Silent fail — checklist/mood just don't update this turn; prior state is preserved.
+    console.warn("Assessment update failed:", err.message);
+  }
+}
+
+/* Checks the FULL transcript so far against FACT_DEFS and updates the
+   sidebar's Case File. Runs after every Dave reply, and once at the start
+   to pick up whatever the opening line itself already reveals. */
+async function updateFactDisclosure() {
+  try {
+    const transcriptText = history.map(h => (h.role === "dave" ? "Dave: " : "Advisor: ") + h.content).join("\n");
+    const messages = [
+      { role: "system", content: factDisclosureSystemPrompt() },
+      { role: "user", content: `TRANSCRIPT SO FAR:\n${transcriptText}` },
+    ];
+    const raw = await callLLM(messages, { temperature: 0.1, max_tokens: 300 });
+    const parsed = extractJSON(raw);
+    if (!parsed) return;
+    FACT_DEFS.forEach(f => {
+      if (parsed[f.key] === true) factState[f.key] = true;
+    });
+    renderCaseFile();
+  } catch (err) {
+    // Silent fail — case file just doesn't update this turn; prior state is preserved.
+    console.warn("Fact disclosure update failed:", err.message);
+  }
+}
+
+/* ============================================================
+   END SESSION / SCORECARD
+   ============================================================ */
+async function endSession() {
+  if (sessionEnded) return;
+  sessionEnded = true;
+  sendBtn.disabled = true;
+  endBtn.disabled = true;
+  stampEl.textContent = "Consultation Complete";
+  stampEl.classList.add("complete");
+  renderMessage("system-note", "— Consultation ended. Generating assessment… —");
+  setBusy(true);
+
+  const transcriptText = history.map(h => (h.role === "dave" ? "Dave: " : "Advisor: ") + h.content).join("\n");
+
+  // Retry with progressively larger token budgets if a pass gets truncated
+  // before valid JSON completes — longer transcripts / more detailed grading
+  // instructions can need more room than a single fixed budget provides.
+  const attempts = [900, 1800, 3000];
+  let lastErr = null;
+  for (const max_tokens of attempts) {
+    try {
+      const messages = [
+        { role: "system", content: "You output only raw JSON, nothing else." },
+        { role: "user", content: finalScorecardPrompt(transcriptText) },
+      ];
+      const raw = await callLLM(messages, { temperature: 0.2, max_tokens });
+      const parsed = extractJSON(raw);
+      if (!parsed) throw new Error("Could not parse scorecard response");
+      renderScorecard(parsed);
+      lastErr = null;
+      break;
+    } catch (err) {
+      lastErr = err;
+    }
+  }
+  if (lastErr) {
+    renderMessage("system-note", "⚠ Could not generate the automatic scorecard (" + lastErr.message + "). You can still review the transcript manually against the rubric.");
+  }
+  setBusy(false);
+}
+
+let lastScorecard = null;
+
+/* Clamp any numeric score the model returns into the rubric's 1-10 scale.
+   Small local models sometimes ignore range instructions (e.g. returning 15
+   instead of a 1-10 value) — this guarantees what's displayed is always
+   valid, regardless of what the model sends back. */
+function clampScore(v, fallback = 5) {
+  const n = Math.round(Number(v));
+  if (!Number.isFinite(n)) return fallback;
+  return Math.min(10, Math.max(1, n));
+}
+
+/* Derives the rubric band from a (already-clamped) 1-10 criterion score, so
+   the colored badge and the number next to it can never contradict each
+   other — independent of whatever band label the model itself returned. */
+function bandFromScore(score) {
+  if (score >= 8) return "Outstanding";
+  if (score >= 6) return "Mastering";
+  if (score >= 3) return "Developing";
+  return "Beginning";
+}
+
+/* Same band cutoffs as bandFromScore, but for the 0-100 overall percentage
+   (i.e. the /10 thresholds doubled: 8→80, 6→60, 3→30). Kept as a separate
+   function so the two scales can never accidentally get mixed up. */
+function bandFromPercentage(pct) {
+  if (pct >= 80) return "Outstanding";
+  if (pct >= 60) return "Mastering";
+  if (pct >= 30) return "Developing";
+  return "Beginning";
+}
+
+/* Normalizes a raw scorecard object from the model before it's ever rendered
+   or exported.
+   The overall score/band are never taken from the model directly — a small
+   model can grade every individual criterion honestly (e.g. six "Developing"
+   rows) while still returning a wildly inconsistent overall figure, because
+   it fails to synthesize its own per-criterion grading into a coherent
+   summary number. Clamping alone can't catch this, since a wrong-but-in-range
+   value can still "look" valid. Instead, the overall is always derived
+   mathematically as a percentage from the average of the (already-clamped)
+   per-criterion /10 scores, so the headline grade can never contradict the
+   detail beneath it. This percentage represents CONTENT coverage only (per
+   the lecturer's 40% content / 20% communication / 40% research grading
+   breakdown) — communication and research aren't graded by this app. */
+function normalizeScorecard(raw) {
+  const criteria = (raw.criteria || []).map(c => {
+    const score = clampScore(c.score);
+    return { ...c, score, band: bandFromScore(score) };
+  });
+
+  let overall_score;
+  if (criteria.length > 0) {
+    const avg = criteria.reduce((sum, c) => sum + c.score, 0) / criteria.length; // out of 10
+    overall_score = Math.round(Math.min(100, Math.max(0, avg * 10))); // as a percentage
+  } else {
+    // Fallback only if the model somehow returned no criteria at all.
+    overall_score = clampScore(raw.overall_score) * 10;
+  }
+
+  return {
+    ...raw,
+    criteria,
+    overall_score,
+    overall_band: bandFromPercentage(overall_score),
+  };
+}
+
+function bandClass(band) {
+  const b = (band || "").toLowerCase();
+  if (b.includes("outstanding")) return "band-outstanding";
+  if (b.includes("master")) return "band-mastering";
+  if (b.includes("develop")) return "band-developing";
+  return "band-beginning";
+}
+
+/* Assessment is shown as a popup modal (not an inline page section) so it
+   doesn't push the page layout around — closing it returns straight to the
+   chat exactly where you left it. */
+function renderScorecard(rawData) {
+  const data = normalizeScorecard(rawData);
+  lastScorecard = data;
+  const list = document.getElementById("criteriaList");
+  list.innerHTML = "";
+  (data.criteria || []).forEach(c => {
+    const def = CHECKLIST_DEFS.find(d => d.key === c.key);
+    const row = document.createElement("div");
+    row.className = "criterion";
+    row.innerHTML = `
+      <div class="name">${def ? def.label : c.key}</div>
+      <div class="band ${bandClass(c.band)}">${c.band || "—"} · ${c.score ?? "—"}/10</div>
+      <div class="note">${(c.note || "").replace(/</g, "&lt;")}</div>
+    `;
+    list.appendChild(row);
+  });
+  const overall = document.getElementById("overallBox");
+  overall.innerHTML = `
+    <div class="band ${bandClass(data.overall_band)}" style="display:inline-block; margin-bottom:6px;">${data.overall_band || "—"}</div>
+    <div class="score">${data.overall_score ?? "—"}%</div>
+    <p>${(data.summary || "").replace(/</g, "&lt;")}</p>
+  `;
+  document.getElementById("scorecardOverlay").classList.add("open");
+  const viewBtn = document.getElementById("viewAssessmentBtn");
+  if (viewBtn) viewBtn.style.display = "inline-block";
+}
+
+/* Formats "now" as YYYY-MM-DD_HH-MM-SS for filenames — safe on all OSes
+   (no colons) and sorts correctly, so repeated test runs stay in order. */
+function timestampForFilename() {
+  const d = new Date();
+  const pad = n => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}_${pad(d.getHours())}-${pad(d.getMinutes())}-${pad(d.getSeconds())}`;
+}
+
+function exportScorecard() {
+  if (!lastScorecard) return;
+  const lines = [];
+  lines.push("ADVISE DAVE — CONSULTATION ASSESSMENT");
+  lines.push("");
+  lines.push("App version: " + APP_VERSION);
+  lines.push("Module: LAW65004 Intellectual Property Law — Topic 2: Copyright");
+  lines.push("Rubric: Adapted Class Participation Rubric, Taylor's University School of Law and Governance");
+  lines.push("Note: this score reflects CONTENT only, per the lecturer's 40% content / 20% communication / 40% research breakdown.");
+  lines.push("Date: " + new Date().toLocaleString());
+  lines.push("");
+  lines.push("------------------------------------------------------------");
+  lines.push("");
+  (lastScorecard.criteria || []).forEach(c => {
+    const def = CHECKLIST_DEFS.find(d => d.key === c.key);
+    lines.push((def ? def.label : c.key).toUpperCase());
+    lines.push(`Band: ${c.band}   Score: ${c.score}/10`);
+    lines.push("");
+    lines.push(c.note || "");
+    lines.push("");
+  });
+  lines.push("------------------------------------------------------------");
+  lines.push("OVERALL (CONTENT)");
+  lines.push(`Band: ${lastScorecard.overall_band}   Score: ${lastScorecard.overall_score}%`);
+  lines.push("");
+  lines.push(lastScorecard.summary || "");
+  lines.push("");
+  lines.push("------------------------------------------------------------");
+  lines.push("FULL TRANSCRIPT");
+  lines.push("");
+  history.forEach(h => {
+    lines.push((h.role === "dave" ? "DAVE: " : "ADVISOR: ") + h.content);
+    lines.push("");
+  });
+
+  const blob = new Blob([lines.join("\n")], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "advise-dave-assessment_" + APP_VERSION + "_" + timestampForFilename() + ".txt";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+/* Opens the user's email client with the scorecard summary pre-filled.
+   mailto: links can't attach files (a browser security restriction, not
+   something fixable client-side) so the full transcript isn't included —
+   the hint text next to the button tells the student to attach the
+   downloaded .txt manually if they want the lecturer to see it. */
+function emailLecturer() {
+  if (!lastScorecard) return;
+  const stamp = timestampForFilename();
+  const subject = `Advise Dave Assessment — ${APP_VERSION} — ${stamp}`;
+  const bodyLines = [];
+  bodyLines.push(`App version: ${APP_VERSION}`);
+  bodyLines.push(`Overall (content): ${lastScorecard.overall_band} (${lastScorecard.overall_score}%)`);
+  bodyLines.push("");
+  bodyLines.push(lastScorecard.summary || "");
+  bodyLines.push("");
+  (lastScorecard.criteria || []).forEach(c => {
+    const def = CHECKLIST_DEFS.find(d => d.key === c.key);
+    bodyLines.push(`${def ? def.label : c.key}: ${c.band} (${c.score}/10)`);
+    bodyLines.push(c.note || "");
+    bodyLines.push("");
+  });
+  bodyLines.push("(Full transcript not included here — mailto links can't attach files. Please attach the downloaded advise-dave-assessment_" + APP_VERSION + "_" + stamp + ".txt if you'd like the lecturer to see the full transcript.)");
+  const body = bodyLines.join("\n");
+  const mailto = `mailto:${encodeURIComponent(config.lecturerEmail || "")}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.location.href = mailto;
+}
+
+/* ============================================================
+   SETTINGS MODAL
+   ============================================================ */
+const settingsOverlay = document.getElementById("settingsOverlay");
+const endpointInput = document.getElementById("endpointInput");
+const modelInput = document.getElementById("modelInput");
+const lecturerEmailInput = document.getElementById("lecturerEmailInput");
+const testResult = document.getElementById("testResult");
+
+function openSettings() {
+  endpointInput.value = config.endpoint;
+  modelInput.value = config.model;
+  lecturerEmailInput.value = config.lecturerEmail;
+  testResult.textContent = "";
+  testResult.className = "test-result";
+  settingsOverlay.classList.add("open");
+}
+function closeSettings() { settingsOverlay.classList.remove("open"); }
+
+document.getElementById("settingsBtn").addEventListener("click", openSettings);
+document.getElementById("settingsCancel").addEventListener("click", closeSettings);
+document.getElementById("settingsSave").addEventListener("click", () => {
+  config.endpoint = endpointInput.value.trim() || DEFAULT_ENDPOINT;
+  config.model = modelInput.value.trim() || DEFAULT_MODEL;
+  config.lecturerEmail = lecturerEmailInput.value.trim();
+  localStorage.setItem("advisedave_endpoint", config.endpoint);
+  localStorage.setItem("advisedave_model", config.model);
+  localStorage.setItem("advisedave_lecturer_email", config.lecturerEmail);
+  closeSettings();
+  checkConnection();
+});
+document.getElementById("testConnBtn").addEventListener("click", async () => {
+  testResult.textContent = "Testing…";
+  testResult.className = "test-result";
+  try {
+    const tempConfig = { endpoint: endpointInput.value.trim(), model: modelInput.value.trim() };
+    const prevEndpoint = config.endpoint, prevModel = config.model;
+    config.endpoint = tempConfig.endpoint; config.model = tempConfig.model;
+    await callLLM([{ role: "user", content: "Reply with the single word: OK" }], { max_tokens: 10 });
+    testResult.textContent = "✓ Connected successfully.";
+    testResult.className = "test-result ok";
+    config.endpoint = prevEndpoint; config.model = prevModel;
+  } catch (err) {
+    testResult.textContent = "✗ " + err.message;
+    testResult.className = "test-result fail";
+  }
+});
+
+async function checkConnection() {
+  try {
+    await callLLM([{ role: "user", content: "Reply with the single word: OK" }], { max_tokens: 10 });
+    setStatus(true, "Connected to " + config.model);
+  } catch (err) {
+    setStatus(false, "Not connected — check server settings");
+  }
+}
+
+/* ============================================================
+   MOBILE BRIEF TOGGLE
+   ============================================================ */
+document.getElementById("briefToggle").addEventListener("click", () => {
+  document.getElementById("briefPanel").classList.toggle("collapsed");
+});
+
+/* ============================================================
+   EVENT WIRING
+   ============================================================ */
+sendBtn.addEventListener("click", sendUserMessage);
+userInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    sendUserMessage();
+  }
+});
+endBtn.addEventListener("click", endSession);
+document.getElementById("exportBtn").addEventListener("click", exportScorecard);
+document.getElementById("emailLecturerBtn").addEventListener("click", emailLecturer);
+document.getElementById("backToChatBtn").addEventListener("click", () => {
+  document.getElementById("scorecardOverlay").classList.remove("open");
+});
+document.getElementById("viewAssessmentBtn").addEventListener("click", () => {
+  document.getElementById("scorecardOverlay").classList.add("open");
+});
+document.getElementById("restartBtn").addEventListener("click", () => {
+  if (!confirm("Restart the consultation from the beginning? This will clear the current transcript.")) return;
+  chatScroll.innerHTML = "";
+  CHECKLIST_DEFS.forEach(c => checklist[c.key] = false);
+  FACT_DEFS.forEach(f => factState[f.key] = false);
+  renderCaseFile();
+  moodScore = 30;
+  stallStreak = 0;
+  daveTurnCount = 0;
+  renderMood();
+  document.getElementById("viewAssessmentBtn").style.display = "none";
+  document.getElementById("scorecardOverlay").classList.remove("open");
+  sessionEnded = false;
+  sendBtn.disabled = false;
+  endBtn.disabled = false;
+  stampEl.textContent = "In Progress";
+  stampEl.classList.remove("complete");
+  startSession();
+  updateFactDisclosure();
+});
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.querySelectorAll("#versionTag, #versionTagFooter").forEach(el => {
+  el.textContent = el.id === "versionTag" ? APP_VERSION : "App " + APP_VERSION;
+});
+if (document.getElementById("briefPanel")) {
+  document.getElementById("briefPanel").classList.add("collapsed");
+}
+startSession();
+renderCaseFile();
+renderMood();
+checkConnection();
+updateFactDisclosure();
+</script>
+</body>
+</html>
