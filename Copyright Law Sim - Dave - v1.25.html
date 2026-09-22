@@ -1,0 +1,3340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advise Dave — IP Law Client Consultation | LAW65004</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#20293a;
+    --ink-soft:#4a5468;
+    --paper:#faf8f1;
+    --pad-yellow:#f7efc7;
+    --pad-yellow-deep:#efe3a0;
+    --rule-blue:#c7d3e6;
+    --margin-red:#a13d3d;
+    --brass:#9c7a2e;
+    --brass-soft:#e4d6a7;
+    --green:#3f6b4f;
+    --green-soft:#dbe8de;
+    --shadow:0 8px 24px rgba(32,41,58,0.12);
+    --radius:3px;
+    --serif:"Source Serif 4", Georgia, serif;
+    --sans:"Public Sans", -apple-system, sans-serif;
+    --mono:"IBM Plex Mono", monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    font-family:var(--sans);
+    color:var(--ink);
+    min-height:100vh;
+    background-image:
+      linear-gradient(var(--paper), var(--paper)),
+      repeating-linear-gradient(to bottom, transparent 0, transparent 33px, var(--rule-blue) 33px, var(--rule-blue) 34px);
+    background-blend-mode:normal;
+  }
+
+  a{color:var(--brass);}
+
+  /* ---------- Header / case tab ---------- */
+  .file-tab-wrap{
+    max-width:980px;
+    margin:0 auto;
+    padding:20px 20px 0;
+  }
+  .file-tab{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:var(--radius) var(--radius) 0 0;
+    padding:14px 22px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .file-tab .title{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:1.25rem;
+    letter-spacing:0.01em;
+  }
+  .file-tab .meta{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    color:#c9cfdd;
+    letter-spacing:0.03em;
+  }
+  .stamp{
+    font-family:var(--mono);
+    font-weight:600;
+    font-size:0.68rem;
+    letter-spacing:0.08em;
+    padding:6px 12px;
+    border:2px solid var(--margin-red);
+    color:var(--margin-red);
+    border-radius:2px;
+    transform:rotate(-3deg);
+    text-transform:uppercase;
+    background:rgba(161,61,61,0.06);
+    white-space:nowrap;
+  }
+  .stamp.complete{
+    border-color:var(--green);
+    color:var(--green);
+    background:rgba(63,107,79,0.08);
+  }
+
+  .toolbar{
+    background:#fff;
+    border:1px solid #e4ddc7;
+    border-top:none;
+    padding:8px 18px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    flex-wrap:wrap;
+    font-size:0.82rem;
+  }
+  .toolbar button{
+    background:none;
+    border:1px solid #d8d0b4;
+    color:var(--ink-soft);
+    padding:6px 12px;
+    border-radius:2px;
+    cursor:pointer;
+    font-family:var(--sans);
+    font-size:0.78rem;
+    font-weight:600;
+    transition:background 0.15s, color 0.15s;
+  }
+  .toolbar button:hover{background:var(--pad-yellow);color:var(--ink);}
+  .toolbar .spacer{flex:1;}
+  .toolbar .status-dot{
+    width:8px;height:8px;border-radius:50%;
+    background:#c94b4b; display:inline-block; margin-right:6px;
+  }
+  .toolbar .status-dot.ok{background:var(--green);}
+
+  /* ---------- Mood meter ---------- */
+  .mood-pill{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:0.78rem;
+    color:var(--ink-soft);
+    white-space:nowrap;
+  }
+  .mood-dot{
+    width:9px;height:9px;border-radius:50%;
+    display:inline-block;
+    background:#c9754b;
+    transition:background 0.4s ease;
+  }
+  .mood-dot.mood-furious{background:#a13d3d;}
+  .mood-dot.mood-frustrated{background:#c9754b;}
+  .mood-dot.mood-wary{background:var(--brass);}
+  .mood-dot.mood-warming{background:#4b7fc9;}
+  .mood-dot.mood-reassured{background:var(--green);}
+
+  .mood-bar-track{
+    max-width:980px;
+    margin:0 auto;
+    height:4px;
+    background:#e4ddc7;
+    overflow:hidden;
+  }
+  .mood-bar-fill{
+    height:100%;
+    width:30%;
+    background:#c9754b;
+    transition:width 0.5s ease, background 0.4s ease;
+  }
+  .mood-bar-fill.mood-furious{background:#a13d3d;}
+  .mood-bar-fill.mood-frustrated{background:#c9754b;}
+  .mood-bar-fill.mood-wary{background:var(--brass);}
+  .mood-bar-fill.mood-warming{background:#4b7fc9;}
+  .mood-bar-fill.mood-reassured{background:var(--green);}
+
+  /* ---------- Layout ---------- */
+  .layout{
+    max-width:980px;
+    margin:0 auto 60px;
+    padding:0 20px;
+    display:grid;
+    grid-template-columns:260px 1fr;
+    gap:18px;
+    align-items:start;
+  }
+  @media (max-width:760px){
+    .layout{grid-template-columns:1fr;}
+  }
+
+  .panel{
+    background:#fffdf6;
+    border:1px solid #e4ddc7;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+  }
+
+  /* ---------- Case brief ---------- */
+  .brief{
+    padding:16px 16px 18px;
+    position:sticky;
+    top:20px;
+    max-height:calc(100vh - 40px);
+    overflow-y:auto;
+  }
+  .brief h2{
+    font-family:var(--serif);
+    font-size:0.95rem;
+    margin:0 0 10px;
+    border-bottom:1px solid var(--brass-soft);
+    padding-bottom:6px;
+    color:var(--ink);
+  }
+  .brief .field-label{
+    font-family:var(--mono);
+    font-size:0.62rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--brass);
+    margin-top:12px;
+  }
+  .brief p{
+    font-size:0.82rem;
+    line-height:1.5;
+    color:var(--ink-soft);
+    margin:4px 0 0;
+  }
+  .case-file-empty{
+    font-size:0.78rem;
+    font-style:italic;
+    color:var(--ink-soft);
+    margin-top:6px;
+    line-height:1.5;
+  }
+  .case-file-group{
+    margin-top:12px;
+  }
+  .case-file-group summary{
+    font-family:var(--mono);
+    font-size:0.62rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--brass);
+    cursor:pointer;
+    outline:none;
+  }
+  .case-file-group summary::marker{color:var(--brass);}
+  .case-file-group p{margin:6px 0 0;}
+  .case-file-group .greg-box{margin-top:6px;}
+  .greg-box{
+    margin-top:14px;
+    background:var(--pad-yellow);
+    border-left:3px solid var(--margin-red);
+    padding:10px 10px 10px 12px;
+    border-radius:2px;
+  }
+  .greg-box .field-label{margin-top:0;color:var(--margin-red);}
+  .greg-box ul{
+    margin:6px 0 0;
+    padding-left:16px;
+    font-size:0.78rem;
+    line-height:1.5;
+    color:var(--ink);
+  }
+  .brief-toggle{
+    display:none;
+  }
+  @media (max-width:760px){
+    .brief{position:static; max-height:none;}
+    .brief.collapsed .brief-body{display:none;}
+    .brief-toggle{
+      display:block; width:100%; text-align:left; background:none; border:none;
+      font-family:var(--serif); font-size:0.95rem; padding:14px 16px; cursor:pointer; color:var(--ink);
+    }
+  }
+
+  /* ---------- Chat ---------- */
+  .chat-panel{display:flex; flex-direction:column; min-height:560px;}
+  .chat-scroll{
+    flex:1;
+    padding:20px 20px 6px;
+    overflow-y:auto;
+    max-height:62vh;
+  }
+  .msg{
+    max-width:80%;
+    margin-bottom:14px;
+    display:flex;
+    flex-direction:column;
+  }
+  .msg .who{
+    font-family:var(--mono);
+    font-size:0.62rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:4px;
+  }
+  .msg .bubble{
+    padding:10px 13px;
+    border-radius:6px;
+    font-size:0.92rem;
+    line-height:1.5;
+    white-space:pre-wrap;
+  }
+  .msg.dave{align-items:flex-start;}
+  .msg.dave .bubble{
+    background:#fff;
+    border:1px solid #e4ddc7;
+    border-top-left-radius:2px;
+    color:var(--ink);
+  }
+  .msg.you{align-items:flex-end; margin-left:auto;}
+  .msg.you .bubble{
+    background:var(--ink);
+    color:var(--paper);
+    border-top-right-radius:2px;
+  }
+  .msg.you .who{text-align:right;}
+  .msg.coach{align-items:flex-start;}
+  .msg.coach .who{color:#2b5f86;}
+  .msg.coach .bubble{
+    background:#eef4fa;
+    border:1px solid #c7d9ea;
+    border-top-left-radius:2px;
+    color:var(--ink);
+  }
+  .msg.system-note{
+    max-width:100%;
+    align-items:center;
+    margin:10px 0;
+  }
+  .msg.system-note .bubble{
+    background:none;
+    color:var(--brass);
+    font-family:var(--mono);
+    font-size:0.68rem;
+    letter-spacing:0.04em;
+  }
+
+  .typing{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    color:var(--ink-soft);
+    padding:0 20px 10px;
+  }
+
+  .input-row{
+    border-top:1px solid #e4ddc7;
+    padding:14px 16px;
+    display:flex;
+    gap:10px;
+  }
+  .input-row textarea{
+    flex:1;
+    resize:none;
+    border:1px solid #d8d0b4;
+    border-radius:3px;
+    padding:10px 12px;
+    font-family:var(--sans);
+    font-size:0.92rem;
+    line-height:1.4;
+    background:var(--pad-yellow);
+    color:var(--ink);
+    min-height:44px;
+    max-height:140px;
+  }
+  .input-row textarea:focus{outline:2px solid var(--brass); outline-offset:1px;}
+  .input-row button{
+    background:var(--ink);
+    color:var(--paper);
+    border:none;
+    padding:0 20px;
+    border-radius:3px;
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:0.85rem;
+    cursor:pointer;
+  }
+  .input-row button:disabled{opacity:0.45; cursor:not-allowed;}
+  .input-row button:hover:not(:disabled){background:#333f57;}
+
+  .end-session-row{
+    padding:0 16px 16px;
+    display:flex;
+    justify-content:flex-end;
+  }
+  .end-session-row button{
+    background:none;
+    border:1px solid var(--margin-red);
+    color:var(--margin-red);
+    padding:7px 14px;
+    border-radius:3px;
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:0.78rem;
+    cursor:pointer;
+  }
+  .end-session-row button:hover{background:rgba(161,61,61,0.08);}
+
+  /* ---------- Modal (settings + assessment) ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(32,41,58,0.55);
+    display:none; align-items:center; justify-content:center; padding:20px; z-index:50;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal{
+    background:#fffdf6;
+    border-radius:var(--radius);
+    max-width:480px;
+    width:100%;
+    padding:22px 24px;
+    box-shadow:var(--shadow);
+    max-height:88vh;
+    overflow-y:auto;
+  }
+  .modal h3{
+    font-family:var(--serif);
+    margin:0 0 4px;
+  }
+  .modal .sub{
+    font-size:0.78rem;
+    color:var(--ink-soft);
+    margin:0 0 16px;
+  }
+  .modal-wide{
+    max-width:640px;
+  }
+  .modal-wide h2{
+    font-family:var(--serif);
+    font-size:1.3rem;
+    margin:0 0 2px;
+  }
+  .modal-wide .rubric-name{
+    font-family:var(--mono);
+    font-size:0.7rem;
+    color:var(--ink-soft);
+    letter-spacing:0.03em;
+    margin-bottom:18px;
+  }
+  .field{margin-bottom:14px;}
+  .field label{
+    display:block;
+    font-family:var(--mono);
+    font-size:0.68rem;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    color:var(--brass);
+    margin-bottom:5px;
+  }
+  .field input{
+    width:100%;
+    border:1px solid #d8d0b4;
+    border-radius:3px;
+    padding:8px 10px;
+    font-family:var(--mono);
+    font-size:0.82rem;
+    background:#fff;
+    color:var(--ink);
+  }
+  .field input:focus{outline:2px solid var(--brass); outline-offset:1px;}
+  .field .hint{font-size:0.72rem; color:var(--ink-soft); margin-top:4px; line-height:1.4;}
+  .modal-actions{display:flex; justify-content:flex-end; gap:8px; margin-top:6px;}
+  .modal-actions button{
+    padding:8px 16px; border-radius:3px; font-family:var(--sans); font-weight:600; font-size:0.82rem; cursor:pointer;
+  }
+  .btn-primary{background:var(--ink); color:var(--paper); border:none;}
+  .btn-primary:hover{background:#333f57;}
+  .btn-ghost{background:none; border:1px solid #d8d0b4; color:var(--ink-soft);}
+  .btn-ghost:hover{background:var(--pad-yellow);}
+  .test-result{font-size:0.78rem; margin-top:8px; font-family:var(--mono);}
+  .test-result.ok{color:var(--green);}
+  .test-result.fail{color:var(--margin-red);}
+
+  /* ---------- Learning summary (inside modal-wide) ----------
+     Deliberately NOT a scorecard: no numbers, no grade bands. Each topic
+     gets a plain qualitative tag (solid / worth revisiting / didn't come up)
+     plus a short note — this is a self-study debrief, not an assessment. */
+  .criterion{
+    border-top:1px solid #eee3c4;
+    padding:14px 0;
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:6px 14px;
+    align-items:baseline;
+  }
+  .criterion .name{font-weight:600; font-size:0.9rem;}
+  .criterion .band{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    text-transform:uppercase;
+    padding:3px 9px;
+    border-radius:2px;
+    white-space:nowrap;
+  }
+  .tag-solid{background:var(--green-soft); color:var(--green);}
+  .tag-revisit{background:var(--brass-soft); color:var(--brass);}
+  .tag-gap{background:#eee; color:var(--ink-soft);}
+  .criterion .note{
+    grid-column:1 / -1;
+    font-size:0.85rem;
+    color:var(--ink-soft);
+    line-height:1.5;
+  }
+  .criterion .quote{
+    grid-column:1 / -1;
+    font-size:0.82rem;
+    font-style:italic;
+    color:var(--ink);
+    line-height:1.45;
+  }
+  .criterion .lookup{
+    grid-column:1 / -1;
+    font-size:0.78rem;
+    color:var(--brass);
+    line-height:1.45;
+  }
+  .overall{
+    margin-top:18px;
+    padding:16px;
+    background:var(--pad-yellow);
+    border-radius:3px;
+  }
+  .overall p{font-size:0.88rem; line-height:1.55; margin:0;}
+  .scorecard-actions{margin-top:18px; display:flex; gap:10px; flex-wrap:wrap;}
+  .scorecard-actions button{
+    padding:9px 16px; border-radius:3px; font-family:var(--sans); font-weight:600; font-size:0.82rem; cursor:pointer;
+  }
+  .scorecard-hint{
+    font-size:0.72rem;
+    color:var(--ink-soft);
+    margin-top:8px;
+    line-height:1.5;
+  }
+
+  .footer-note{
+    max-width:980px; margin:0 auto 40px; padding:0 20px;
+    font-size:0.72rem; color:var(--ink-soft); line-height:1.6;
+  }
+</style>
+</head>
+<body>
+
+<div class="file-tab-wrap">
+  <div class="file-tab">
+    <div>
+      <div class="title">Advise Dave</div>
+      <div class="meta">FILE NO. LAW65004-C2 · INTELLECTUAL PROPERTY LAW · TOPIC 2: COPYRIGHT · <span id="versionTag"></span></div>
+    </div>
+    <div class="stamp" id="stampEl">In Progress</div>
+  </div>
+  <div class="toolbar">
+    <span><span class="status-dot" id="statusDot"></span><span id="statusText">Not connected</span></span>
+    <span class="mood-pill" id="moodPill"><span class="mood-dot" id="moodDot"></span><span id="moodLabel">Dave's mood: Frustrated</span></span>
+    <div class="spacer"></div>
+    <button id="viewAssessmentBtn" style="display:none;">View summary</button>
+    <button id="settingsBtn">Server settings</button>
+    <button id="restartBtn">Restart consultation</button>
+  </div>
+  <div class="mood-bar-track"><div class="mood-bar-fill" id="moodBarFill"></div></div>
+</div>
+
+<div class="layout">
+  <div class="panel brief" id="briefPanel">
+    <button class="brief-toggle" id="briefToggle">📁 Case brief (tap to expand)</button>
+    <div class="brief-body">
+      <h2>Case Brief</h2>
+      <div class="field-label">Client</div>
+      <p>Dave — new client, first consultation.</p>
+      <div class="field-label">Reason for visit</div>
+      <p>Copyright / IP dispute with a friend, over a photograph. That's all intake noted — the rest is for you to draw out of Dave yourself.</p>
+
+      <h2 style="margin-top:18px;">Case File</h2>
+      <p class="case-file-empty" id="caseFileEmpty">Nothing recorded yet — this fills in as Dave shares more during the conversation.</p>
+      <div id="caseFileContent"></div>
+    </div>
+  </div>
+
+  <div class="panel chat-panel">
+    <div class="chat-scroll" id="chatScroll"></div>
+    <div class="typing" id="typingIndicator" style="visibility:hidden;">Dave is typing…</div>
+    <div class="input-row">
+      <textarea id="userInput" placeholder="Advise Dave…" rows="2"></textarea>
+      <button id="sendBtn">Send</button>
+    </div>
+    <div class="end-session-row">
+      <button id="endBtn">End consultation & start debrief</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="scorecardOverlay">
+  <div class="modal modal-wide">
+    <h2>Learning Summary</h2>
+    <div class="rubric-name">A self-study debrief for LAW65004 Intellectual Property Law — not a grade, just a reflection on what came up</div>
+    <div id="criteriaList"></div>
+    <div class="overall" id="overallBox"></div>
+    <div class="scorecard-actions">
+      <button class="btn-primary" id="exportBtn">Download summary (.txt)</button>
+      <button class="btn-ghost" id="emailLecturerBtn">Email to lecturer</button>
+      <button class="btn-ghost" id="backToChatBtn">Close</button>
+    </div>
+    <div class="scorecard-hint">"Email to lecturer" opens your email app with this summary pre-filled — mailto links can't attach files automatically, so download the .txt above first and attach it manually if you want the full transcript included.</div>
+  </div>
+</div>
+
+<div class="footer-note">
+  This is a self-study simulation for the LAW65004 Intellectual Property Law module (<span id="versionTagFooter"></span>), meant for reinforcing what you've learned in your own time — not a graded assessment. Dave's responses, the coach's debrief, and the Case File panel are all generated by a locally hosted language model and may occasionally be legally imprecise or miss something — verify your reasoning against the Copyright Act 1987 and the module's reading list, and treat this as a study aid, not a substitute for your own notes and judgment.
+</div>
+
+<!-- Name gate modal (shown before the consultation starts) -->
+<div class="modal-overlay open" id="nameGateOverlay">
+  <div class="modal">
+    <h3>Before you begin</h3>
+    <p class="sub">Tell Dave your name (or whatever you'd like him to call you) so the consultation feels like a real client meeting.</p>
+    <div class="field">
+      <label for="studentNameInput">Your name</label>
+      <input id="studentNameInput" type="text" placeholder="e.g. Alex" autofocus>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-primary" id="nameGateStart">Begin consultation</button>
+    </div>
+  </div>
+</div>
+
+<!-- Settings modal -->
+<div class="modal-overlay" id="settingsOverlay">
+  <div class="modal">
+    <h3>Server settings</h3>
+    <p class="sub">Points this page at your local Lemonade endpoint.</p>
+    <div class="field">
+      <label for="endpointInput">Chat completions URL</label>
+      <input id="endpointInput" type="text" placeholder="https://lsctdscoma003.tailfeee99.ts.net/v1/chat/completions">
+      <div class="hint">Your Lemonade server's OpenAI-compatible endpoint, reachable over Tailscale. If this page is served over HTTPS (e.g. GitHub Pages) but your server is plain HTTP, the browser will block the request — use an HTTPS Tailscale Funnel URL in that case.</div>
+    </div>
+    <div class="field">
+      <label for="modelInput">Model name (Dave)</label>
+      <input id="modelInput" type="text" placeholder="qwen2.5-7b-instruct">
+    </div>
+    <div class="field">
+      <label for="coachModelInput">Model name (Coach)</label>
+      <input id="coachModelInput" type="text" placeholder="qwen3-4b-instruct-2507">
+      <div class="hint">Runs as a separate model from Dave's, loaded concurrently on the same server. Use a non-thinking (instruct) model — thinking models spend their token budget reasoning and can return empty replies. Must exactly match the model name your server reports as loaded.</div>
+    </div>
+    <div class="field">
+      <label for="lecturerEmailInput">Lecturer email (optional)</label>
+      <input id="lecturerEmailInput" type="email" placeholder="lecturer@university.edu">
+      <div class="hint">Used to pre-fill the "Email to lecturer" button on the assessment popup. Stored only in your browser.</div>
+    </div>
+    <button class="btn-ghost" id="testConnBtn" style="width:100%;">Test connection</button>
+    <div class="test-result" id="testResult"></div>
+    <div class="modal-actions">
+      <button class="btn-ghost" id="settingsCancel">Cancel</button>
+      <button class="btn-primary" id="settingsSave">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   APP VERSION
+   Bump this whenever the deployed file changes meaningfully. It's shown in
+   the header/footer, and stamped into every exported assessment filename
+   and emailed report, so test results can always be traced back to the
+   exact version of the app that produced them.
+
+   v1.1: fixed a bug where the overall score/band on the scorecard could
+   contradict every individual criterion (e.g. six criteria all graded
+   "Developing" but the overall shown as "Outstanding 20/20"). The overall
+   score is now derived mathematically from the per-criterion scores
+   instead of trusting the model's own overall_score field.
+
+   v1.2: rescaled each of the six rubric criteria from /20 to /10, and
+   changed the overall from an "X/20" score to a percentage (0-100%),
+   derived as the average of the six criterion scores. This is the content
+   portion of the lecturer's grading breakdown (40% content / 20%
+   communication / 40% research) — communication and research aren't
+   separately graded by this app, so the percentage shown here reflects
+   content coverage only, not the student's full module grade.
+
+   v1.3: fixed intermittent scorecard failures on longer consultations
+   ("Could not generate the automatic scorecard (Could not parse scorecard
+   response)"). Root cause confirmed live: on a 12-exchange transcript, the
+   grading model's response was getting cut off mid-string (right before
+   the final closing brace) even at the existing 1800-token retry ceiling —
+   a genuine truncation, not a JSON formatting bug. Added a third, larger
+   retry attempt (3000 tokens) as a safety net for longer sessions.
+
+   v1.4: the "peace of mind" behavior (asking for a similar case, the exact
+   statute/section name, or pushing the advisor to elaborate on Greg's
+   claims) was previously left to the model's own judgment ("every so
+   often"), and a live test showed it can simply not fire for an entire
+   session. It's now mechanically forced every other Dave reply — rotating
+   through case example / statute name / elaboration in turn — regardless
+   of whether Dave is otherwise satisfied, since a careful client keeps
+   asking for backup even once reassured on the substance.
+
+   v1.5: fixed Dave repeating a PROCEDURAL question near-verbatim (e.g.
+   "can you send me the draft letter, and what if Greg doesn't respond,
+   will we meet again?") three or more times in a row, even after it had
+   already been answered. Root cause: the existing loop-breaker
+   (STALL_LIMIT/stallStreak) only tracks the six graded rubric checklist
+   items — it has no awareness of practical/logistics questions that
+   aren't part of that checklist, so once Dave runs out of new rubric
+   points to raise, the model has nothing stopping it from recycling the
+   same wrap-up question. Added a general instruction telling Dave not to
+   re-ask anything he's already gotten an answer to, PLUS a mechanical
+   backstop: each new reply is compared against Dave's own last two
+   messages, and if it's a near-repeat, the app silently regenerates it
+   once with an explicit "you already asked this" correction before
+   showing it to the student.
+
+   v1.6: a live test showed that when the advisor dodges Dave's question by
+   turning it back on him (e.g. "prove you took the photo" / "give me the
+   metadata" instead of actually explaining the law), Dave just goes along
+   with the new thread instead of calling out that his original question
+   was never answered. Added an explicit rule telling Dave to name the
+   dodge directly before engaging with whatever the advisor is asking of
+   him, so a student can't stall out a whole consultation by turning every
+   question back on the client without ever explaining the law.
+
+   v1.7: the v1.6 rule was unconditional, which would unfairly flag a
+   student doing legitimate fact-finding (e.g. "when did you take the
+   photo, do you have the original file?") on their very first question —
+   real lawyers ask investigative questions before explaining the law, and
+   that's not evasion. Replaced the blanket rule with an escalating one
+   tied to the existing stallStreak signal: the first time the advisor
+   turns a question back on Dave, he cooperates normally like any client
+   would; only once it's happened repeatedly with no legal ground actually
+   covered does Dave start pushing back on the pattern, tightening further
+   into the existing "drop it and move on" behavior if it keeps going.
+
+   v1.8: live testing found the v1.7 dodgeNote instruction firing even on
+   turns where the advisor gave a full, substantive legal answer with no
+   question back to Dave at all — the model was pattern-matching to the
+   presence of the instruction rather than reliably checking "did this
+   actually happen THIS turn" before using the scripted callout line.
+   dodgeNote was purely conditioned on stallStreak, a value carried over
+   from PAST turns, with no code-level check on the CURRENT message.
+   Added a deterministic guard: dodgeNote is now only included if the
+   advisor's current message actually contains a question mark (i.e. it's
+   plausibly asking Dave something rather than answering him) — a
+   statement-only reply can no longer trigger the "dodge" callout,
+   regardless of stallStreak.
+
+   v1.9: DEFAULT_ENDPOINT was pointing at the wrong Tailscale device name
+   (vortex-ai), which doesn't exist on the tailnet - the Lemonade server's
+   actual Funnel hostname is lsctdscoma003. Anyone opening the page fresh
+   (no localStorage override) got "Not connected" regardless of whether the
+   server itself was up. Corrected DEFAULT_ENDPOINT to the real hostname.
+
+   Also added best-effort server-side transcript logging (logToServer,
+   SESSION_ID, logEndpointFor): previously a transcript only existed in the
+   browser's memory until the student pressed "End consultation," so anyone
+   who closed the tab partway through lost the whole conversation. Every
+   message is now POSTed as it happens to <chat-endpoint-origin>/log (see
+   transcript_logger.py, a small standalone Flask service meant to run
+   alongside Lemonade), so a session survives even if never explicitly
+   ended. Logging failures are swallowed silently and never surface to the
+   student -- this is a safety net, not a required part of the simulation.
+
+   v1.10: four changes based on live multi-student testing.
+   (1) transcript_logger.py now writes a pretty-printed JSON array plus a
+   companion .txt transcript with real (unescaped) line breaks per session,
+   instead of a single-line-per-message .jsonl -- long Dave replies were
+   unreadable squashed onto one line with escaped \n's.
+   (2) Added a FORMATTING GUARD (looksLikeListFormatting): a small local
+   model would sometimes leak the system prompt's own "- label: detail"
+   bullet formatting directly into Dave's reply, producing a client who
+   "talks" in a dashed list. Detected mechanically and regenerated once with
+   an explicit correction, the same pattern as the existing repetition
+   guard. Also added an explicit no-markdown/no-bullets rule to
+   daveSystemPrompt itself.
+   (3) Added a name-gate modal before the consultation starts (studentName,
+   beginConsultation): the student now enters their name first, which Dave
+   is told to use naturally (not every message), and which personalizes the
+   opening line via buildOpeningLine().
+   (4) transcript_logger.py now names each session's files from that
+   student name (sanitized) + a timestamp + a random 5-digit suffix, instead
+   of a bare session UUID -- with several students testing concurrently, the
+   transcripts folder needed to be identifiable at a glance.
+
+   v1.11: live testing found Dave sometimes stating copyright law himself
+   before the advisor ever raised it (e.g. naming "originality" or "account
+   of profits" unprompted) -- breaking character, since Dave is a layperson
+   who should only pick up legal terms the advisor actually uses. Root cause
+   was the same category of bug as v1.10's formatting leak: unresolvedText
+   was built from CHECKLIST_DEFS' technical "detail" field (written for the
+   grading prompts, full of statute references and legal terminology) and
+   fed directly into Dave's own system prompt as "what to worry about" --
+   sitting right there in context for the model to copy from, regardless of
+   the "don't use legal jargon" instruction next to it. Added a separate
+   clientWorry field per checklist item (plain layperson framing of the same
+   underlying concern) and switched unresolvedText to use only that -- the
+   technical detail field is now used exclusively by assessmentSystemPrompt
+   and finalScorecardPrompt (grading, never shown to Dave). Also added an
+   explicit LEGAL KNOWLEDGE BOUNDARY rule to daveSystemPrompt: Dave knows no
+   legal terms unless the advisor used them first, and if the advisor states
+   something wrong, Dave has no way to know that himself -- he can push back
+   by demanding justification, never by asserting a competing legal claim.
+
+   Also found DEFAULT_MODEL still had the old "Qwen2.5-7B-Instruct-GGUF-
+   Q4_K_M" placeholder-style name, which the server rejects outright
+   (model_not_found) -- it only ever worked on already-tested browsers
+   because localStorage there still had the correct name saved from manual
+   testing. Any fresh device/browser would 400 on the very first message.
+   Corrected DEFAULT_MODEL to "qwen2.5-7b-instruct", the same class of bug
+   as v1.9's DEFAULT_ENDPOINT fix. Caught via local testing on a fresh
+   origin with no localStorage overrides.
+
+   v1.12: reworked the whole end-of-session flow, based on lecturer feedback
+   after the v1.11 soak test. That test found the old scorecard (a single
+   silent grading pass over the transcript) couldn't reliably catch a
+   confident student inventing statutes, doctrines, or case law -- it
+   checked whether topics were ADDRESSED, not whether they were CORRECT, and
+   in a couple of cases its written feedback described events that never
+   happened in the transcript. Separately, the lecturer clarified this is
+   meant to be an after-class self-study tool for reinforcement, not a
+   graded assessment, so scores/marks shouldn't appear at all.
+
+   Replaced the old flow (End consultation -> silent grading pass -> banded
+   scorecard with percentages) with: End consultation -> a second AI persona
+   (the COACH, coachSystemPrompt/startCoachPhase/sendCoachMessage) starts a
+   live conversational debrief right in the same chat panel, appended below
+   Dave's transcript with a new visually-distinct "COACH" style. Unlike Dave,
+   the coach is explicitly allowed to use real legal knowledge -- it works
+   through the six points conversationally, asks the student to justify what
+   they told Dave, and corrects fabrications/misunderstandings directly
+   instead of trying to silently classify a whole transcript in one static
+   pass. When the student ends the debrief (endDebrief), a final learning
+   summary is generated (learningReportPrompt/renderReport) using
+   qualitative tags only -- "Got this" / "Worth revisiting" / "Didn't come
+   up" -- with zero numbers, scores, or bands anywhere. Reused
+   CHECKLIST_DEFS' technical `detail` field as the coach's ground truth
+   (previously used only by the removed scorecard prompts), and removed
+   clampScore/bandFromScore/bandFromPercentage/normalizeScorecard/bandClass
+   entirely along with the old finalScorecardPrompt/renderScorecard.
+   Export/email (exportReport/emailLecturer) now include both the Dave
+   transcript and the coaching debrief, with the qualitative summary in
+   place of banded scores. transcript_logger.py extended with new roles
+   (coach, student-reflection, report) to log the debrief alongside the
+   original consultation in the same per-session file.
+
+   v1.13: interactive testing of the v1.12 coach found it unreliable at its
+   one job -- when fed two fabricated legal claims (that infringement here
+   is a criminal offence, that prize money transfers automatically), it not
+   only failed to catch them but actively said "That's partially right!
+   You correctly identified that Greg's actions are illegal" after being
+   asked directly, twice, whether they were correct. That's a capability
+   limit of running the coach on the same qwen2.5-7b-instruct model as
+   Dave, not something further prompting fixed on its own (a "don't probe
+   forever, eventually just state the correction" rule was added to
+   coachSystemPrompt and helped a little, but didn't fix the core accuracy
+   problem).
+
+   Added a separate, configurable coachModel (DEFAULT_COACH_MODEL,
+   config.coachModel, new Settings field) so the coach can run on a
+   different, reasoning-tuned model loaded concurrently on the same
+   server -- its job (tracking multi-turn legal claims accurately across a
+   debrief) is a harder reasoning task than Dave's (stay in character,
+   never know law unprompted) and far less latency-sensitive, so a
+   stronger model is worth the extra VRAM. callLLM() now takes an optional
+   model override (defaulting to config.model), used by every coach-related
+   call site (startCoachPhase, sendCoachMessage, fixIfCoachDump's retry,
+   endDebrief's learningReportPrompt call) to pass config.coachModel
+   instead. "Test connection" in Settings now checks both models
+   separately and reports on each.
+
+   Also discovered while dialing in the coach model: thinking-mode models
+   spend real completion tokens on their internal reasoning BEFORE writing
+   the actual answer (e.g. a trivial "reply OK" test burned 140 reasoning
+   tokens) -- with max_tokens too low, the response gets cut off
+   (finish_reason "length") with empty content and no visible error, since
+   the reasoning is returned separately as reasoning_content. Bumped every
+   coachModel call site's max_tokens accordingly (900 for normal coach
+   turns and the dump-formatting retry, first attempt of the report's
+   retry ladder raised from 900 to 1500) so a real reply has room for both
+   the thinking phase and the answer.
+
+   v1.14: corrected a wrong legal claim in the coach's ground truth. The
+   "remedies" detail (written in v1.13 from memory, not from the statute)
+   said copyright infringement here is a civil matter only, with no
+   possibility of police arrest or prosecution, and the coach repeated
+   "always a civil matter" to students. Reading the Copyright Act 1987
+   (AGC updated text as at 30 June 2022) shows that is wrong: s.41 creates
+   criminal offences (e.g. distributing infringing copies, s.41(1)(c)),
+   with investigation and arrest by Assistant Controllers/police
+   (s.50, s.50A) and prosecution only by the Public Prosecutor (s.53). What
+   IS wrong in the tested claim is that Dave can direct an arrest, or that
+   the prize money transfers automatically -- the money is recovered through
+   the civil route (s.37: injunction, damages, account of profits,
+   statutory damages; s.25(7) court-ordered correction). Rewrote the
+   remedies detail and the "check the specific mechanism" example
+   accordingly. The full statute-sourced reference sheet for the coach is
+   "Coach Reference Sheet.md" (for lecturer review); wiring it into the coach
+   per point comes with the debrief restructure.
+
+   v1.15: soak-testing v1.14 live with a script modelled on a real tester's
+   session showed the thinking coach model (qwen/qwen3-4b-thinking-2507)
+   is unusable here: on a 12-turn transcript every summary attempt (1500,
+   2500 and 3500 tokens) was spent entirely on reasoning with empty
+   content, so no summary was ever produced; 2 of 4 coach replies were
+   empty bubbles for the same reason; replies took 5-35s; and it made up
+   what a nonexistent "section 2.3" says. Switched DEFAULT_COACH_MODEL to
+   the non-thinking qwen3-4b-instruct-2507 (same size, no reasoning
+   overhead). Also fixed the empty-bubble bug itself: all coach chat calls
+   now go through callCoach(), which treats an empty reply as an error, and
+   the formatting guard no longer accepts an empty "fix".
+
+   v1.16: rebuilt the debrief so the app drives it and the model can't
+   misattribute or invent. v1.15 was fast and no longer blank, but testing
+   with a real tester's session showed the coach and the summary still
+   credited the student with things they never said (Greg's and Dave's
+   lines, the coach's own), praised a made-up "section 2", and invented what
+   "section 2" says. Prompt tuning didn't fix it: four different models all
+   failed at open-ended judging of a student's legal claims (a first version
+   of this rebuild, with the model picking quotes and writing the feedback
+   and notes, still wrote "You incorrectly stated..." about things never
+   said, and marked every topic "revisit"). So the model no longer judges or
+   explains anything; the new COACH DEBRIEF section works like this:
+   - the app picks the topic and finds the student's replies about it by
+     keyword (pickEvidence) and pastes them in verbatim, so nothing can be
+     attributed to the student that they didn't write;
+   - each topic has vetted "key points" (one is the core) and "common
+     mistakes with corrections" (COACH_POINTS), written from the Act and the
+     Facebook Terms (see "Coach Reference Sheet.md", including the appendix
+     listing them for lecturer review);
+   - the model's only job is separate yes/no questions about the student's
+     own words (checkPoints/yesNo, phrasings in POINT_QUESTIONS): several
+     literal phrasings per point since the small model is very literal, told
+     that "you" in the text means Dave, and a mistake is only flagged if the
+     student "says it" AND does not say its explicit opposite;
+   - all feedback wording, the per-topic verdict (Got this / Worth
+     revisiting / Didn't come up) and the summary are assembled by code from
+     that vetted text (composeFeedback/composeVerdict/buildSummaryText), with
+     mistakes always worded "could be read as", never as an accusation, and
+     a "look up" pointer per topic;
+   - section numbers the student cited are checked by code against the Act's
+     real section list (SECTION_TITLES, analyseCitations), so "section 2.3"
+     is flagged without a model;
+   - a communication and tone topic is included, grounded in quoted replies;
+   - after the last topic the student can ask follow-up questions, answered
+     only from the Act excerpts (answerQuestion; any section number outside
+     the excerpts is rejected and replaced with a "can't confirm" line).
+   No model call is needed to produce the summary, so it can't fail. The
+   transcript logger needed no change (same roles).
+   v1.17: Dave no longer stacks questions or loops. Testers' transcripts
+   showed Dave firing 3-4 questions in one reply, re-asking the same
+   question several turns running, accepting one-word answers, narrating his
+   own emotions and inventing things Greg said. Causes: the forced
+   "ask for more proof" turn (every 2nd reply) was added ON TOP of a worry
+   question, the old repetition guard only compared whole messages, and
+   nothing told Dave when to stop. Changes: at most one question per reply,
+   enforced in code (keepOneQuestion) as well as in the prompt; questions
+   Dave has already asked are listed in his prompt and checked by code
+   (repeatedQuestion, one retry, else the question is dropped); the
+   peace-of-mind ask now REPLACES the worry question and comes every 3rd
+   turn; a curt, reasonless answer to a question is challenged (vagueNote);
+   once all worries are resolved and Dave has asked for the closing
+   walkthrough, the next turn is a wrap-up with no question (wrapUpNote);
+   prompt forbids inventing Greg claims and narrating emotions. Also: model
+   calls now time out after 2 minutes instead of leaving the chat on
+   "typing..." forever if the server stalls, and a transient 400/5xx from the
+   server is retried once before the student sees an error. Dave's next reply
+   also waits for the previous turn's background checklist updates, so he
+   works from a current checklist and calls don't pile up on the server.
+   v1.18: speed. Dave's prompt now puts the unchanging text first and the
+   per-turn text (mood, worries, notes) last, so LM Studio can reuse its cached
+   copy of the static start; and only the last 12 messages are sent to Dave
+   (DAVE_HISTORY_LIMIT), since worries and already-asked questions travel in
+   the prompt.
+   v1.19: load. Each student turn used to make 3 model requests (Dave,
+   checklist/mood update, case-file update). A 10-tab load test showed the
+   server, not the app, is the limit, so the case-file sidebar is now filled
+   by keyword matching on Dave's own messages (FACT_PATTERNS) with no model
+   request -- 2 requests per turn -- and the checklist answer is shorter (no
+   "note" field). (Folding the case-file check into the checklist request
+   was tried first; the small model dropped that part of the answer.)
+   v1.20: lecturer feedback. Dave was too aggressive; the brief was courteous,
+   curious, and asking more probing questions specifically about the law
+   (what rights does Dave/Greg have, under which law, what does it mean).
+   Personality rewritten from angry/impatient to worried-but-polite and eager
+   to learn; mood band labels softened (Furious/Frustrated/Wary/Warming up ->
+   Anxious/Uneasy/Curious/Settling in); the "push back on unexplained claims"
+   trait is kept (it drives quality answers) but reframed as genuine
+   curiosity, never confrontation. New standing rule: whenever the advisor
+   states a right/rule/outcome without saying which law it comes from or what
+   it practically means, Dave asks for whichever is missing. Checklist
+   clientWorry text and the peace-of-mind question rotation were reworded to
+   match (statute/section question now first and includes "what does that
+   mean"; added "does Greg have rights of his own" to the ownership worry).
+   v1.21: more Socratic follow-up (lecturer feedback). v1.20 asked "which law"
+   and "what does it mean" once each, then moved on -- not the sustained
+   digging the brief wanted (what does the act state, what does it cover,
+   what does it NOT cover, explain further -- before moving to next steps,
+   and then the same for the steps themselves). Added a code-enforced probe
+   layer on top of the existing checklist: checklistCandidate holds the
+   assessment model's raw "adequately addressed" signal; checklist[key] (what
+   actually drops a worry from Dave's list) only flips true once Dave has
+   also asked PROBE_ROUNDS_REQUIRED (2) forced Socratic follow-ups about it
+   -- coverage/limits, then explain-further-and-apply-it -- via
+   pendingProbeItem()/PROBE_QUESTIONS. The closing walkthrough gets the same
+   treatment (CLOSING_PROBE_ROUNDS_REQUIRED, CLOSING_PROBE_QUESTIONS): once
+   the advisor lays out the steps, Dave asks which law backs one step and
+   asks for one step to be unpacked further before he'll agree the meeting's
+   done. Only one forced instruction is ever included per turn now (a
+   `forcedNote` priority chain replaced the old flat concatenation of
+   dodgeNote/stuckNote/closingCheck/wrapUpNote/vagueNote/peaceOfMindNote), so
+   the small model isn't given competing directions on what to ask. Sessions
+   run longer as a result (up to ~14 extra turns across 6 checklist items
+   plus the closing); per-request latency is unaffected (see v1.19/LM Studio
+   settings). Caught in testing: deriving closingAsked from
+   unresolvedItems().length === 0 (old behaviour) let it flip true on the
+   very turn a probe round happened to resolve the last checklist item --
+   before Dave had actually asked for the walkthrough -- skipping straight to
+   closing-probe questions about steps that were never described. Fixed by
+   having the forcedNote chain record which branch it took (lastForcedKind /
+   lastForcedProbeKey), and only advancing closingAsked/probeRounds/
+   closingProbeRounds off that, not off re-derived state.
+   v1.22: reprioritised per user feedback. Greg's rebuttal, in the case
+   facts, is really three arguments ("no rights at all" / "even if so, FB
+   waived them" / "your photo's no better than Tom's"), but the checklist
+   asked about them in a different order (subsistence, ownership, facebook)
+   than the story or a real client's priorities would. The Facebook "posted
+   online = free for all" claim is what Greg actually says when confronted,
+   and it's the most alarming one to a layperson (it sounds like it applies
+   to everything they've ever posted, not just this one photo), so it's now
+   first: CHECKLIST_DEFS and DEBRIEF_LEGAL_ORDER both lead with
+   facebook_waiver, then ownership, then subsistence. Dave's scripted
+   opening line was rewritten to match the actual story beat (saw Greg in
+   the newspaper with the prize, called him, Greg's answer was the Facebook
+   line) instead of a generic "he says I have no rights"; the CASE_FACTS
+   "Greg's response" sentence and the static "Natural ways to raise" prompt
+   text were reordered the same way for consistency.
+   v1.23: Dave was doing the student's job for them. Full-flow testing showed
+   a recurring pattern: told one point (e.g. "you own the copyright as the
+   photographer"), Dave would reply with an ELABORATED conclusion the student
+   never actually said (e.g. "so Greg's only getting recognition, not
+   ownership") -- a new inference, not a restatement. That defeats the point:
+   the exercise is for the STUDENT to spell out implications, not have Dave
+   infer them and hand them back polished. Added a prominent new rule (HOW
+   YOU UNDERSTAND THINGS, with a concrete wrong/right example) restricting
+   Dave to (a) briefly restating only the exact point just made, or (b)
+   asking a genuine question -- never adding a "so that means..." conclusion
+   of his own. Tightened the "you may repeat legal terms back" rule to cover
+   vocabulary only, not reasoning. The forced probe/closing-probe notes now
+   also say explicitly: ask it and stop, don't answer it yourself.
+   Live-tested against the exact failure seen before this fix (told "you own
+   the copyright as the photographer", Dave previously replied "so Greg's
+   only getting recognition, not ownership" -- the same reply, verbatim,
+   came back even with the new prompt rule in place. Prompt-only wasn't
+   enough (same lesson as the question-stacking fix in v1.17), so added a
+   code-level ELABORATION GUARD (looksLikeDaveElaboration): a cheap yes/no
+   model check on whether Dave's reply asserts a conclusion the advisor's
+   message didn't state, with one retry turning it into a question if so.
+   Also: the list-formatting guard only checked for line breaks, so an
+   inline, single-line "1. **X**... 2. **Y**..." (seen in the same full-flow
+   test) slipped through -- it now also flags markdown bold and inline
+   numbered enumeration.
+   Also caught while re-testing the fix above: the new elaboration guard's
+   retry sometimes turned the bad line into exactly the kind of clarifying
+   question this whole change wants ("What does that mean for me?"), but the
+   REPETITION GUARD then silently stripped it to nothing -- it matched
+   Dave's own opening question ("Sorry, why is that?") at the required
+   similarity purely because both share the single filler word "that", the
+   ONLY significant word in that short a prior question. repeatedQuestion()
+   and priorDaveQuestions() now also require the PRIOR question to have at
+   least 3 significant words before it can be used as a "you already asked
+   this" match, not just the new one.
+   ============================================================ */
+
+/* v1.24 changes (see below where each applies):
+   1. composeVerdict() only ever checked consult.errors (mistakes found in
+      the quoted consultation evidence) when deciding a topic's tag/note for
+      the Learning Summary. A live-flow test found a mistake (repeating,
+      when asked to justify remedies, that police can just arrest Greg and
+      hand the money over) that the interactive debrief chat correctly
+      caught and explained via dr.errors ("About your answer just now...")
+      -- but since composeVerdict never looked at dr.errors, the SAME error
+      never reached the tag or note, so the persisted Learning Summary
+      showed Remedies as solid/"Got this" with no trace of it. Fixed by
+      having composeVerdict check dr.errors too when consult.errors is
+      clean, crediting it either way (repeating a mistake under direct
+      questioning is stronger evidence of it, not weaker).
+   2. Dave's Socratic probing (see PROBE_QUESTIONS in the earlier v1.21/
+      v1.23 comments) always assumed a law had already been named and jumped
+      straight to "what does it cover". User feedback: Dave was accepting
+      too much -- a student can give a fully correct-sounding ruling without
+      ever naming a law or section, and nothing forced Dave to ask for one.
+      Split into PROBE_QUESTIONS_WITH_LAW and _NO_LAW (mentionsLawOrSection
+      checks the advisor's message for a section number/statute/"the Act");
+      round 0 now asks "is this based on a law, and if so which one" when
+      none was named, and only moves to "what does it cover" once one has
+      been. This only fires once a point is a checklistCandidate (i.e. the
+      assessment judged the explanation adequate) -- a bare, incomplete
+      ruling the assessment itself doesn't yet accept still relies on the
+      standing (unenforced) prompt rule, not this code-level gate. */
+
+/* v1.25: found by the user re-reading a v1.24 transcript -- a student cited
+   "section 36" for infringement, and Dave's next line was about a totally
+   different topic (credit/recognition), not section 36 at all. Root cause:
+   the WITH_LAW probe question said "ask what THAT LAW covers" with no literal
+   anchor, so the small model fell back on the most memorable concrete phrase
+   still sitting in its own context -- the worked example under HOW YOU
+   UNDERSTAND THINGS, which happened to be about Greg/credit/ownership,
+   almost verbatim regardless of the actual topic. Two changes: (a) that
+   example is now from an unrelated tenant/landlord case, so there's nothing
+   in-domain to literally copy; (b) extractLawMention() pulls the exact
+   citation ("section 36", "s.13(2)(a)", ...) out of the advisor's message
+   and probeQuestionsWithLaw() bakes it into the instruction itself ("ask
+   what 'section 36' specifically covers"), remembered per topic in
+   probeCitation so round 1 still names it even if the advisor doesn't
+   repeat it. probeNote also now explicitly forbids asking about a different
+   point or the worked example.
+   Testing the fix above found the DEEPER cause: pendingProbeItem() picked
+   the wrong TOPIC, not just the wrong wording. Several checklist items often
+   turn candidate off one message (known assessment leniency), and the old
+   picker just took whichever was already mid-probe, else the first in
+   CHECKLIST_DEFS array order -- with no idea what the CURRENT message was
+   actually about. A student citing "section 36" for infringement got probed
+   about ownership instead, purely because ownership was earlier in the
+   array and had turned candidate first. Added CHECKLIST_SECTION_HINTS (the
+   section numbers each point is characteristically argued under, in this
+   fixed case study) so a cited section that matches a still-unresolved
+   candidate's hints wins outright, before falling back to the old
+   round/array-order logic. probeCitation is also now only captured at a
+   topic's own round 0, not overwritten by an unrelated citation mentioned
+   while a different topic happens to be mid-probe.
+   Chased further: even with CHECKLIST_SECTION_HINTS added, the content
+   match was only searched among checklistCandidate topics -- and that flag
+   comes from the background assessment call, which lags a turn behind. So a
+   citation for a topic the assessment hadn't flagged yet still lost out to
+   an already-candidate (but unrelated) topic. Live evidence: two full
+   rounds genuinely discussing infringement/s.36 got credited to
+   checklist.ownership (resolving it), while checklist.infringement sat
+   untouched despite being the topic actually discussed. Fixed by having
+   pendingProbeItem() check the citation against ALL unresolved topics
+   first, not just already-candidate ones -- a citation is a strong enough
+   signal to probe that topic immediately, without waiting on the assessment. */
+const APP_VERSION = "v1.25";
+
+/* ============================================================
+   CONFIG
+   ============================================================ */
+const DEFAULT_ENDPOINT = "https://lsctdscoma003.tailfeee99.ts.net/v1/chat/completions";
+const DEFAULT_MODEL = "qwen2.5-7b-instruct";
+// The coach runs as a separate model from Dave, loaded concurrently on the same
+// server (see the COACH DEBRIEF section for how it is used). It is deliberately
+// a NON-thinking instruct model: the thinking variant (qwen3-4b-thinking-2507)
+// spent its whole token budget reasoning and returned empty replies and empty
+// summaries on realistic transcripts (see v1.15 changelog).
+const DEFAULT_COACH_MODEL = "qwen3-4b-instruct-2507";
+
+let config = {
+  endpoint: localStorage.getItem("advisedave_endpoint") || DEFAULT_ENDPOINT,
+  model: localStorage.getItem("advisedave_model") || DEFAULT_MODEL,
+  coachModel: localStorage.getItem("advisedave_coach_model") || DEFAULT_COACH_MODEL,
+  lecturerEmail: localStorage.getItem("advisedave_lecturer_email") || "",
+};
+
+/* ============================================================
+   SERVER-SIDE TRANSCRIPT LOGGING
+   Best-effort autosave of every message to a small logging endpoint on the
+   same host as the Lemonade server, so a transcript survives even if the
+   student closes the tab before pressing "End consultation" — see
+   transcript_logger.py. Derived from config.endpoint's origin rather than
+   a separate constant, so it always follows wherever the chat endpoint is
+   pointed. Never blocks the UI and never surfaces an error to the student:
+   this is a safety net, not a required part of the simulation.
+   ============================================================ */
+const SESSION_ID = (crypto.randomUUID ? crypto.randomUUID() : (Date.now() + "-" + Math.random().toString(36).slice(2)));
+
+function logEndpointFor(chatEndpoint) {
+  try { return new URL(chatEndpoint).origin + "/log"; } catch (e) { return null; }
+}
+
+function logToServer(role, content) {
+  const url = logEndpointFor(config.endpoint);
+  if (!url) return;
+  fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ session_id: SESSION_ID, student_name: studentName, role, content }),
+    keepalive: true,
+  }).catch(() => {});
+}
+
+/* ============================================================
+   CASE DATA
+   (This is the simulation's ground truth, used to role-play Dave and to
+   grade the student. It is intentionally NOT what's shown in the sidebar —
+   see FACT_DEFS below for what the student actually gets to see, and only
+   once Dave has actually said it.)
+   ============================================================ */
+const CASE_FACTS = `
+Dave and Tom went on holiday to visit the Mulu Caves in Sarawak, Malaysia. Dave and Tom live and work in Singapore.
+They visited the caves accompanied by a guide. They took many photographs on their mobile phones before entering
+the caves, inside the caves, and outside the caves, to remember the trip and to share with family and friends.
+They posted the photographs on their Facebook pages.
+
+Greg is Dave's friend. Greg saw Dave's photographs on Dave's Facebook page and admired them. Greg knew the Sarawak
+Tourism Board was running a competition inviting photographs of the Mulu Caves, with a RM5,000 prize for the best
+photograph, to be used in a promotional campaign. Without telling Dave, Greg submitted several of Dave's
+photographs to the competition. One of them was chosen as the best photograph. Greg collected the RM5,000 prize at
+a ceremony, and a picture of him receiving it appeared in the newspapers. Many of Greg's friends congratulated him.
+
+Dave found out and was very upset on seeing Greg's picture in the newspaper with the winning photograph, which
+Dave recognised as his own. Dave called Greg and demanded that Greg publicly acknowledge the photograph was
+Dave's, and that Greg hand over the prize money.
+
+Greg's response, when Dave confronted him: Facebook is public, so once Dave posted the photo there, anyone was
+free to use it — that's the main thing Greg says. Greg also says Dave cannot own any rights in a photograph in
+the first place, and that Dave's photos were probably much like Tom's from the same trip, taken with no real
+skill or effort — "just snapping" on a phone, with one shot turning out well by chance.
+`.trim();
+
+const CHECKLIST_DEFS = [
+  { key: "facebook_waiver", label: "Facebook posting ≠ waiver", detail: "Correctly rebutting the claim that posting to Facebook surrenders copyright — distinguishing a platform's licence to host/display content from any transfer or abandonment of the underlying copyright.", clientWorry: "this is the thing Greg said straight to your face when you called him, and it's what's bothering you most -- whether posting the photo on Facebook, where loads of people could see it, means you already gave up whatever rights you had over it" },
+  { key: "ownership", label: "Ownership / authorship", detail: "That Dave, as the photographer, is the author and first owner of copyright in the photographs he took.", clientWorry: "whether you can even own rights in a photo at all -- Greg's flatly telling you that's not a real thing -- and, if you do, exactly what those rights are called, which law they come from, and whether Greg has picked up any rights of his own by entering it and winning" },
+  { key: "subsistence", label: "Subsistence of copyright", detail: "Whether copyright subsists in the photograph at all — the originality threshold (skill, labour, effort, judgement) under the Copyright Act 1987, and why 'just snapping a phone photo' does not defeat this.", clientWorry: "whether a quick phone snap even counts as something you can own rights over in the first place, given Greg's jab that it's no different from Tom's photos and you just got lucky -- and if it does count, what that's actually called under the law" },
+  { key: "infringement", label: "Infringement by Greg", detail: "Identifying Greg's unauthorised reproduction and communication/dealing with the work (submitting it to the competition) as acts restricted to the copyright owner.", clientWorry: "what Greg actually did wrong in real, concrete terms -- whether there's an actual rule he broke, what that rule is called, or you're just upset about something that's technically fine" },
+  { key: "moral_rights", label: "Moral rights / false attribution", detail: "Recognising Dave's right to be identified as author and/or his right against false attribution, engaged by Greg taking credit for the work.", clientWorry: "whether it counts for anything on its own that Greg's standing there in the newspaper looking like it's his photo, separate from the prize money" },
+  { key: "remedies", label: "Remedies available", detail: "Advising on the practical remedies actually open to Dave against Greg — e.g. damages/account of profits, acknowledgment, and the realistic prospects of recovering the prize money. Civil route (Copyright Act 1987 s.37(1)): the owner sues for an injunction, damages, an account of profits, or statutory damages (up to RM25,000 per work, RM500,000 in aggregate); damages, account of profits and statutory damages are alternatives except that an account may top up damages for profits not already counted (s.37(3)-(4)); for false attribution the court may also order a correction to be published (s.25(7)). Nothing is automatic: Dave must bring, or credibly threaten, a claim (a demand letter and negotiation are the usual first steps), and any prize money is recovered through damages, an account of profits, or a settlement. Criminal route: the Act does create offences (s.41, e.g. 'distributes infringing copies', with a good-faith defence; fines and up to 5 years' imprisonment), so saying infringement is never criminal is WRONG. But investigation, arrest and prosecution are for the authorities (s.50, s.50A) and only the Public Prosecutor can prosecute (s.53): Dave cannot direct an arrest or prosecution, and a criminal outcome does not hand the prize money to him. A student who says the prize money transfers 'automatically', or that police will arrest Greg on Dave's say-so, has this point WRONG; one who says infringement is 'a crime' as a certainty has overstated it.", clientWorry: "what you can actually, concretely do about all this if you're right — whether there's something real you can pursue or you're just supposed to hope Greg feels bad" },
+];
+
+let checklist = {};
+CHECKLIST_DEFS.forEach(c => checklist[c.key] = false);
+
+/* checklistCandidate holds the assessment model's raw "adequately addressed"
+   signal; checklist[key] only flips to true once Dave has also drilled into
+   it with PROBE_ROUNDS_REQUIRED Socratic follow-ups (see pendingProbeItem()
+   and daveSystemPrompt() below). Added per lecturer feedback (v1.21): Dave
+   was accepting a first explanation and moving straight on, when the brief
+   was for him to interrogate what a cited law actually covers, what it
+   doesn't, and ask the student to explain further before moving on. */
+let checklistCandidate = {};
+CHECKLIST_DEFS.forEach(c => checklistCandidate[c.key] = false);
+let probeRounds = {};
+CHECKLIST_DEFS.forEach(c => probeRounds[c.key] = 0);
+const PROBE_ROUNDS_REQUIRED = 2;
+
+/* ============================================================
+   CASE FILE (dynamic sidebar)
+   Each entry is a discrete fact from CASE_FACTS. It only appears in the
+   sidebar once Dave has actually said it in the conversation — the sidebar
+   starts almost empty, like a real first client meeting.
+   ============================================================ */
+const FACT_DEFS = [
+  { key: "trip_location", category: "facts", text: "Dave and his friend Tom visited the Mulu Caves in Sarawak on holiday, with a guide." },
+  { key: "photos_taken", category: "facts", text: "Dave took numerous photographs on his phone before, inside, and outside the caves, to remember the trip and share with family and friends." },
+  { key: "posted_facebook", category: "facts", text: "Dave posted the photos to his Facebook page." },
+  { key: "greg_saw_photos", category: "dispute", text: "Greg, Dave's friend, saw the photos on Dave's Facebook page." },
+  { key: "greg_submitted", category: "dispute", text: "Without telling Dave, Greg submitted several of the photos to a Sarawak Tourism Board photo competition (RM5,000 prize)." },
+  { key: "photo_won", category: "dispute", text: "One of Dave's photos was chosen as the winning entry." },
+  { key: "greg_collected_prize", category: "dispute", text: "Greg collected the prize at a ceremony and was pictured in the newspapers receiving it." },
+  { key: "wants_acknowledgment_and_money", category: "wants", text: "Public acknowledgment that it was his photograph, and the RM5,000 prize money." },
+  { key: "greg_arg_no_rights", category: "greg", text: "Dave cannot own rights in a photograph at all." },
+  { key: "greg_arg_facebook", category: "greg", text: "Even if he could, he gave up any rights by posting it on Facebook, where it was accessible to many people." },
+  { key: "greg_arg_skill", category: "greg", text: "Dave's photo is probably much like Tom's from the same trip — no real skill or effort, \"just snapping,\" one shot happened to turn out well." },
+];
+
+const CASE_FILE_CATEGORIES = [
+  { key: "facts", label: "The trip" },
+  { key: "dispute", label: "The dispute" },
+  { key: "wants", label: "What Dave wants" },
+  { key: "greg", label: "Greg's position (disputed)" },
+];
+
+let factState = {};
+FACT_DEFS.forEach(f => factState[f.key] = false);
+
+/* ============================================================
+   MOOD METER
+   Dave starts angry and impatient (not neutral). Each exchange nudges his
+   mood up or down based on whether the advisor's answer was clear, correct
+   and justified, or vague/wrong/evasive. "same" still decays slightly,
+   since a difficult, impatient client isn't satisfied by treading water.
+   ============================================================ */
+const MOOD_BANDS = [
+  { max: 19, label: "Anxious", cls: "mood-furious" },
+  { max: 39, label: "Uneasy", cls: "mood-frustrated" },
+  { max: 59, label: "Curious", cls: "mood-wary" },
+  { max: 79, label: "Settling in", cls: "mood-warming" },
+  { max: 100, label: "Reassured", cls: "mood-reassured" },
+];
+let moodScore = 30;
+
+/* Counts consecutive turns where the advisor's message didn't move things
+   forward (mood_shift "same" or "worsen"). Once this hits STALL_LIMIT, Dave
+   is told (once) to grudgingly drop whatever he's been repeating and move
+   on, instead of looping on the same request indefinitely. */
+const STALL_LIMIT = 3;
+let stallStreak = 0;
+
+/* Forces a "peace of mind" ask (statute name / case example / elaborate on
+   Greg's claim / what a right actually means) into Dave's reply on a fixed
+   cadence, rotating through the types in order. This used to be left
+   entirely to the model's own judgment ("every so often"), but that meant
+   it could simply not happen for an entire session — see daveSystemPrompt()
+   below for how this is applied and PEACE_OF_MIND_TYPES for the rotation.
+   Per lecturer feedback (v1.20), these are law-directed questions that push
+   the student to actually explain the law and what it means in practice,
+   not just proof-of-claim requests, and the statute/section question is
+   first so it comes up early and often. */
+const PEACE_OF_MIND_INTERVAL = 3; // force it on every Nth Dave reply
+const PEACE_OF_MIND_TYPES = [
+  "ask, politely and out of genuine curiosity, for the exact law and section name involved — or, if one was already given, ask what else is relevant, or what that section actually means for you in plain terms",
+  "ask what rights you (or Greg) actually have here in concrete terms — not just whether you're right, but what having that right actually lets you do",
+  "ask for a similar case or real example where something like this happened before, so you're not just taking your advisor's word for it",
+  "politely push your advisor to explain a bit further exactly why one of Greg's specific claims is wrong, rather than accepting a short dismissal",
+];
+/* The two Socratic follow-ups forced, in order, once a checklist point is
+   first substantively explained (see PROBE_ROUNDS_REQUIRED) -- what the law
+   actually covers (and doesn't), then an explain-further/apply-it-to-Dave's
+   situation push. */
+/* Whether the advisor's message actually named a law -- a section number,
+   "the Act", a named statute, etc. Used to decide the FIRST Socratic probe
+   question below: if the advisor never named a law at all (a bare ruling,
+   however correct), Dave asks for one before anything else; if a law was
+   already named, that question would be pointless, so he goes straight to
+   asking what it covers. */
+function mentionsLawOrSection(text) {
+  return /\bsection\s*\d|\bs\.?\s*\d{1,4}[a-z]{0,2}\b|\bcopyright act\b|\bthe act\b|\bstatute\b|\bprovision\b/i.test(text || "");
+}
+
+/* Pulls out the actual "section 36" / "s.13(2)(a)" / "the Copyright Act"
+   text so the probe question below can name it directly, instead of a
+   generic "that law". Found live: without a literal anchor like this, the
+   small model tended to fall back on the closest memorable phrasing in the
+   prompt (the HOW YOU UNDERSTAND THINGS worked example) regardless of what
+   was actually just cited -- e.g. the advisor citing "section 36" got a
+   question about something else entirely. Naming the exact citation in the
+   instruction makes that much harder to sidestep. */
+function extractLawMention(text) {
+  const m = (text || "").match(/\bsection\s*\d+[a-z]{0,2}(\s*\([^)]*\))*|\bs\.?\s*\d{1,4}[a-z]{0,2}(\s*\([^)]*\))*|\bcopyright act(\s*\d{4})?\b/i);
+  return m ? m[0].trim() : null;
+}
+
+// Which section/law was last cited while probing each checklist item, so
+// round 1 ("explain it further") can still name it even if the advisor's
+// reply that turn doesn't repeat the citation. Reset alongside probeRounds.
+let probeCitation = {};
+CHECKLIST_DEFS.forEach(c => probeCitation[c.key] = null);
+
+function probeQuestionsWithLaw(citation) {
+  const ref = citation ? `"${citation}" specifically (use that exact name/number back to them)` : "that law or rule";
+  return [
+    `ask what ${ref} actually covers, and just as importantly, what it does NOT cover or where its limits are -- don't just accept the conclusion, ask what's actually inside it`,
+    `ask your advisor to explain ${ref} a bit further, in their own words -- specifically how it applies to your situation with Greg, not just the general rule`,
+  ];
+}
+// Used for round 0 only, when the advisor gave a ruling/conclusion without
+// ever naming a law at all -- Dave asks for one before digging further.
+const PROBE_QUESTIONS_NO_LAW = [
+  "ask whether that's actually based on a specific law, or just their own view -- and if it IS based on a law, ask which one, by name or section",
+  "ask your advisor to explain that particular law a bit further, in their own words -- what it actually covers, and how it relates to your situation with Greg",
+];
+
+/* Same idea for the closing walkthrough itself, once the student has been
+   asked to lay out the steps (see CLOSING_PROBE_ROUNDS_REQUIRED): Dave
+   checks the legal basis for a step, then asks for one step to be unpacked
+   further, before he's willing to agree the meeting is done. */
+const CLOSING_PROBE_QUESTIONS = [
+  "ask your advisor which law or section backs up one specific step they just described -- pick one step and ask what makes them sure that step is right",
+  "ask your advisor to explain one of the steps a bit further -- what exactly happens at that step, or how it connects to the step before or after it",
+];
+
+let daveTurnCount = 0; // counts Dave replies generated so far (not counting the scripted opening line)
+let pendingUpdates = Promise.resolve(); // the previous turn's background checklist/fact updates
+let closingAsked = false; // true once Dave has asked for the closing walkthrough; the next turn he wraps up
+let closingProbeRounds = 0; // Socratic follow-ups asked about the walkthrough itself (see CLOSING_PROBE_ROUNDS_REQUIRED)
+const CLOSING_PROBE_ROUNDS_REQUIRED = 2;
+// Set by daveSystemPrompt()'s forcedNote priority chain each time it runs, so
+// sendUserMessage knows what this reply was ACTUALLY asked to do (see the
+// comment on that chain) and can advance the matching counter afterwards.
+let lastForcedKind = "none";
+let lastForcedProbeKey = null;
+
+function moodBandFor(score) {
+  return MOOD_BANDS.find(b => score <= b.max) || MOOD_BANDS[MOOD_BANDS.length - 1];
+}
+
+function renderMood() {
+  const band = moodBandFor(moodScore);
+  const dot = document.getElementById("moodDot");
+  const label = document.getElementById("moodLabel");
+  const fill = document.getElementById("moodBarFill");
+  if (!dot || !label || !fill) return;
+  MOOD_BANDS.forEach(b => { dot.classList.remove(b.cls); fill.classList.remove(b.cls); });
+  dot.classList.add(band.cls);
+  fill.classList.add(band.cls);
+  label.textContent = "Dave's mood: " + band.label;
+  fill.style.width = moodScore + "%";
+}
+
+function applyMoodShift(shift) {
+  if (shift === "improve") moodScore += 12;
+  else if (shift === "worsen") moodScore -= 15;
+  else moodScore -= 4; // "same" — stalling still costs a little patience
+  moodScore = Math.max(0, Math.min(100, moodScore));
+  renderMood();
+}
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let history = []; // {role: 'dave'|'you', content: string} -- the consultation with Dave
+let coachHistory = []; // {role: 'coach'|'you', content: string} -- the post-consultation debrief
+let sessionEnded = false; // true once the Dave consultation itself has ended (debrief may still be in progress)
+let debriefEnded = false; // true once the coach debrief has ended and the learning summary is generated
+let phase = "dave"; // "dave" | "coach" -- which conversation sendUserMessage() is currently driving
+let busy = false;
+let studentName = ""; // set once from the name-gate modal before the session starts
+
+/* ============================================================
+   DOM refs
+   ============================================================ */
+const chatScroll = document.getElementById("chatScroll");
+const typingIndicator = document.getElementById("typingIndicator");
+const userInput = document.getElementById("userInput");
+const sendBtn = document.getElementById("sendBtn");
+const endBtn = document.getElementById("endBtn");
+const stampEl = document.getElementById("stampEl");
+const statusDot = document.getElementById("statusDot");
+const statusText = document.getElementById("statusText");
+
+/* ============================================================
+   RENDERING
+   ============================================================ */
+function renderMessage(role, text) {
+  const wrap = document.createElement("div");
+  const cls = role === "dave" ? "dave" : role === "coach" ? "coach" : role === "you" ? "you" : "system-note";
+  wrap.className = "msg " + cls;
+  const who = document.createElement("div");
+  who.className = "who";
+  who.textContent = role === "dave" ? "Dave" : role === "coach" ? "Coach"
+    : role === "you" ? (phase === "coach" ? "You" : "You (Counsel)") : "";
+  const bubble = document.createElement("div");
+  bubble.className = "bubble";
+  bubble.textContent = text;
+  if (role !== "system-note") wrap.appendChild(who);
+  wrap.appendChild(bubble);
+  chatScroll.appendChild(wrap);
+  chatScroll.scrollTop = chatScroll.scrollHeight;
+}
+
+function setBusy(state) {
+  busy = state;
+  sendBtn.disabled = state || debriefEnded;
+  typingIndicator.style.visibility = state ? "visible" : "hidden";
+}
+
+function setStatus(ok, text) {
+  statusDot.classList.toggle("ok", ok);
+  statusText.textContent = text;
+}
+
+/* Renders the dynamic "Case File" section of the sidebar from whatever
+   facts have been marked disclosed in factState so far. Starts empty
+   (shows the placeholder) and only fills in as items become true. Each
+   category is a collapsible <details> group so the sidebar stays tidy as
+   it grows. */
+function renderCaseFile() {
+  const container = document.getElementById("caseFileContent");
+  const emptyMsg = document.getElementById("caseFileEmpty");
+  if (!container || !emptyMsg) return;
+  const revealed = FACT_DEFS.filter(f => factState[f.key]);
+  container.innerHTML = "";
+  if (revealed.length === 0) {
+    emptyMsg.style.display = "block";
+    return;
+  }
+  emptyMsg.style.display = "none";
+
+  CASE_FILE_CATEGORIES.forEach(cat => {
+    const items = revealed.filter(f => f.category === cat.key);
+    if (items.length === 0) return;
+
+    const details = document.createElement("details");
+    details.className = "case-file-group";
+    details.open = true;
+    const summary = document.createElement("summary");
+    summary.textContent = cat.label;
+    details.appendChild(summary);
+
+    if (cat.key === "greg") {
+      const box = document.createElement("div");
+      box.className = "greg-box";
+      const ul = document.createElement("ul");
+      items.forEach(f => {
+        const li = document.createElement("li");
+        li.textContent = f.text;
+        ul.appendChild(li);
+      });
+      box.appendChild(ul);
+      details.appendChild(box);
+    } else {
+      items.forEach(f => {
+        const p = document.createElement("p");
+        p.textContent = f.text;
+        details.appendChild(p);
+      });
+    }
+    container.appendChild(details);
+  });
+}
+
+/* ============================================================
+   LLM CALL HELPER
+   ============================================================ */
+async function callLLM(messages, opts = {}) {
+  // The server (LM Studio behind a Tailscale funnel) now and then answers a
+  // perfectly good request with a transient 400/5xx, especially when several
+  // calls overlap; one quiet retry hides that from the student.
+  try {
+    return await callLLMOnce(messages, opts);
+  } catch (err) {
+    if (!/^Server responded (400|5\d\d)$/.test(err.message)) throw err;
+    await new Promise(r => setTimeout(r, 2000));
+    return callLLMOnce(messages, opts);
+  }
+}
+
+async function callLLMOnce(messages, { temperature = 0.8, max_tokens = 350, model = config.model } = {}) {
+  // A stalled server used to leave the chat on "typing..." forever; give up
+  // after 2 minutes so the student sees the error note and can retry.
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 120000);
+  let res;
+  try {
+    res = await fetch(config.endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model,
+        messages,
+        temperature,
+        max_tokens,
+      }),
+      signal: controller.signal,
+    });
+  } catch (err) {
+    if (err.name === "AbortError") throw new Error("the model took too long to reply");
+    throw err;
+  } finally {
+    clearTimeout(timer);
+  }
+  if (!res.ok) throw new Error("Server responded " + res.status);
+  const data = await res.json();
+  const content = data?.choices?.[0]?.message?.content;
+  if (typeof content !== "string") throw new Error("Unexpected response shape");
+  return content.trim();
+}
+
+/* Robust JSON extraction: strips code fences, tries direct parse, then
+   regex-extracts the first {...} block, then gives up. */
+function extractJSON(raw) {
+  if (!raw) return null;
+  let text = raw.trim();
+  text = text.replace(/```json/gi, "").replace(/```/g, "").trim();
+  try { return JSON.parse(text); } catch (e) {}
+  const match = text.match(/\{[\s\S]*\}/);
+  if (match) {
+    try { return JSON.parse(match[0]); } catch (e) {}
+  }
+  return null;
+}
+
+/* ============================================================
+   FORMATTING GUARD
+   Small local models occasionally leak the system prompt's own bullet-point
+   formatting (used for internal instructions, e.g. unresolvedText's
+   "- Label: detail" lines) directly into Dave's reply, producing a client
+   who "talks" in a dashed list instead of natural spoken sentences. This
+   detects that failure mode so sendUserMessage can regenerate once with an
+   explicit correction.
+   ============================================================ */
+function looksLikeListFormatting(text) {
+  if (!text) return false;
+  const lines = text.split("\n");
+  const bulletLike = lines.filter(l => /^\s*([-*•]|\d+[.)])\s+/.test(l));
+  if (bulletLike.length >= 1 && lines.length >= 2) return true;
+  // Same failure mode can show up INLINE, with no line breaks at all -- e.g.
+  // "1. **Copyright Infringement**: ... 2. **False Attribution**: ..." all
+  // in one paragraph. The line-based check above can't see that, so also
+  // flag markdown bold (never appropriate in spoken dialogue) or two or
+  // more inline "N. "/"N) " enumerations.
+  if (/\*\*[^*]+\*\*/.test(text)) return true;
+  const inlineNumbered = text.match(/(?:^|\s)\d+[.)]\s+\S/g) || [];
+  return inlineNumbered.length >= 2;
+}
+
+/* Same idea as looksLikeListFormatting, but for the coach's specific
+   failure mode observed in testing: instead of a short conversational
+   turn, it produced a long markdown "report" (bold headers, "---"
+   dividers) that quoted the Dave transcript back verbatim. Checks for
+   markdown markers, transcript-quoting, or simply a message far longer
+   than the "2-4 sentences" the prompt asks for. */
+function looksLikeCoachDump(text) {
+  if (!text) return false;
+  if (/\*\*/.test(text)) return true;
+  if (/(^|\n)\s*-{3,}\s*(\n|$)/.test(text)) return true;
+  if (/\b(DAVE|ADVISOR|YOU)\s*:/.test(text)) return true;
+  if (text.length > 700) return true;
+  return false;
+}
+
+/* ============================================================
+   ELABORATION GUARD
+   Dave is a layperson who should only restate what he was just told, or ask
+   about it -- never infer or add a NEW legal conclusion of his own (see HOW
+   YOU UNDERSTAND THINGS in daveSystemPrompt). Testing found this happening
+   even with that rule stated plainly and with a concrete example: e.g. told
+   "you own the copyright as the photographer", Dave would add "so Greg's
+   only getting recognition, not ownership" -- a distinction the advisor
+   never actually drew. No regex can tell "restating" from "quietly adding a
+   conclusion", so this is a real (cheap, small) judgment call to a model,
+   the same trade-off as the assessment/fact checks elsewhere in this file.
+   ============================================================ */
+async function looksLikeDaveElaboration(advisorText, daveReply) {
+  // A bare YES/NO ask missed the exact failure it was written to catch (the
+  // model checking its own class of mistake is unreliable at it -- same
+  // lesson as the coach's yes/no checks needing literal phrasings, not
+  // abstract instructions). Naming the specific new claim first, with a
+  // worked example, catches it far more reliably than asking for a verdict
+  // straight away.
+  const prompt = `You are checking one specific mistake in a role-play reply. DAVE is a legal layperson client; his
+advisor (a law student) just told him something. Dave is NOT allowed to invent, extend, or infer any NEW legal
+claim, comparison, distinction, or consequence beyond exactly what the advisor said -- he may only restate the
+same point in simpler words, or ask a question about it.
+
+Example of the mistake to catch: advisor says "You own the copyright as the photographer." Dave replies "Got it,
+so Greg's only getting recognition for submitting it, not ownership of the photo itself." The "recognition vs
+ownership" distinction is a NEW claim Dave invented -- the advisor never said that.
+
+ADVISOR SAID: "${advisorText}"
+DAVE REPLIED: "${daveReply}"
+
+First, in one short sentence, name the single most specific new claim, comparison or distinction in Dave's reply
+that the advisor's message did not itself contain -- or say NONE if there truly isn't one. Then on a new line
+write ANSWER: YES if you named a new claim, or ANSWER: NO if there wasn't one.`;
+  try {
+    const raw = await callLLM([{ role: "user", content: prompt }], { temperature: 0, max_tokens: 80 });
+    return /ANSWER:\s*YES/i.test(raw);
+  } catch (err) {
+    return false; // fail open -- a broken check should never block the chat
+  }
+}
+
+/* ============================================================
+   REPETITION GUARD
+   Detects when Dave's newly generated reply is a near-repeat of his own
+   last one or two messages — e.g. re-asking "will you send the letter,
+   what if Greg doesn't respond" three turns in a row. This is deliberately
+   separate from the STALL_LIMIT/stallStreak mechanism above, which only
+   tracks progress on the six graded rubric checklist items: procedural or
+   logistics questions aren't part of that checklist, so a client who's
+   run out of new legal points to raise could otherwise loop on a wrap-up
+   question forever with nothing to stop it.
+   ============================================================ */
+function significantWords(text) {
+  return (text || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, " ")
+    .split(/\s+/)
+    .filter(w => w.length > 3);
+}
+
+// Rough Jaccard-style overlap: what fraction of the SMALLER message's
+// significant words also appear in the other message. Cheap, no extra LLM
+// call, good enough to catch near-verbatim repeats without flagging normal
+// short replies that just happen to share a few common words.
+function textSimilarity(a, b) {
+  const wa = new Set(significantWords(a));
+  const wb = new Set(significantWords(b));
+  if (wa.size === 0 || wb.size === 0) return 0;
+  let overlap = 0;
+  wa.forEach(w => { if (wb.has(w)) overlap += 1; });
+  return overlap / Math.min(wa.size, wb.size);
+}
+
+const REPEAT_QUESTION_THRESHOLD = 0.5;
+
+// Only the most recent messages go to Dave; older ones are dropped to keep
+// the request small. What matters from earlier (worries resolved, questions
+// already asked, case facts) is carried by the prompt itself, not the transcript.
+const DAVE_HISTORY_LIMIT = 12;
+
+function daveHistoryMessages() {
+  let recent = history.slice(-DAVE_HISTORY_LIMIT);
+  while (recent.length && recent[0].role === "dave") recent = recent.slice(1); // start on the advisor's turn
+  return recent.map(h => ({ role: h.role === "dave" ? "assistant" : "user", content: h.content }));
+}
+
+/* ============================================================
+   QUESTION GUARD
+   Dave asks at most ONE question per reply and never repeats one he has
+   already asked. The prompt says so, but the small model didn't reliably
+   follow it (3-4 stacked questions per reply, the same question three turns
+   running), so it is enforced here in code.
+   ============================================================ */
+function splitSentences(text) {
+  return (String(text || "").replace(/\s+/g, " ").trim().match(/[^.!?]+(?:[.!?]+["')\]]*|$)/g) || []).map(s => s.trim()).filter(Boolean);
+}
+
+function isQuestion(sentence) {
+  return /\?["')\]]*$/.test(sentence.trim());
+}
+
+function daveQuestions(text) {
+  return splitSentences(text).filter(isQuestion);
+}
+
+/* Keeps every statement, but only the first question (or none at all). */
+function keepOneQuestion(text, allowQuestion) {
+  let seen = 0;
+  return splitSentences(text).filter(s => {
+    if (!isQuestion(s)) return true;
+    seen += 1;
+    return allowQuestion && seen === 1;
+  }).join(" ").trim();
+}
+
+/* Questions Dave has asked so far (not counting his scripted opening line). */
+function priorDaveQuestions() {
+  const out = [];
+  history.filter(h => h.role === "dave").slice(1).forEach(h => {
+    daveQuestions(h.content).forEach(q => {
+      // Same short-question guard as repeatedQuestion() below: don't fold a
+      // genuinely new question into the list just because it happens to
+      // share one common word with a much shorter earlier one.
+      if (!out.some(p => significantWords(p).length >= 3 && textSimilarity(p, q) >= REPEAT_QUESTION_THRESHOLD)) out.push(q);
+    });
+  });
+  return out.slice(-8);
+}
+
+function repeatedQuestion(reply, prior) {
+  for (const q of daveQuestions(reply)) {
+    if (significantWords(q).length < 3) continue;
+    // The prior question must ALSO have enough significant words for the
+    // comparison to mean anything -- textSimilarity divides by the SMALLER
+    // word count, so a short prior question sharing just one common word
+    // (e.g. "Sorry, why is that?" vs. "What does that mean for me?", both
+    // sharing only "that") can hit the threshold on pure coincidence. Found
+    // live: it silently stripped a genuine, non-repeated clarifying question
+    // down to nothing, leaving Dave's generic fallback line.
+    const hit = prior.find(p => significantWords(p).length >= 3 && textSimilarity(q, p) >= REPEAT_QUESTION_THRESHOLD);
+    if (hit) return hit;
+  }
+  return null;
+}
+
+/* The advisor's reply was only a few words, with no reason, to a question
+   Dave had asked -- not an answer. */
+function isVagueReply(text) {
+  const t = (text || "").trim();
+  if (!t || /\?/.test(t) || /\b(because|since)\b/i.test(t)) return false;
+  const lastDave = [...history].reverse().find(h => h.role === "dave");
+  if (!lastDave || !/\?/.test(lastDave.content)) return false;
+  return t.split(/\s+/).length <= 8;
+}
+
+/* All worries resolved AND Dave has already asked for the closing
+   walkthrough: this turn he wraps up instead of inventing new questions. */
+function isWrapUpTurn() {
+  return unresolvedItems().length === 0 && closingAsked && closingProbeRounds >= CLOSING_PROBE_ROUNDS_REQUIRED;
+}
+
+/* Section numbers characteristically associated with each checklist point in
+   THIS fixed case study (see COACH_POINTS/CHECKLIST_DEFS) -- used only to
+   pick which candidate topic a message is actually about, below. */
+const CHECKLIST_SECTION_HINTS = {
+  facebook_waiver: ["27"],
+  ownership: ["26", "3"],
+  subsistence: ["7", "3"],
+  infringement: ["36", "13"],
+  moral_rights: ["25"],
+  remedies: ["37", "41", "50", "53"],
+};
+
+/* The checklist item Dave should currently be drilling into with Socratic
+   follow-ups: the assessment model has judged it substantively addressed
+   (checklistCandidate), but it isn't fully resolved yet (checklist is still
+   false).
+   Found live: several topics can turn candidate off ONE loosely-worded
+   message (a known assessment-leniency issue -- see the v1.24/v1.25
+   comments), and the old round/array-order fallback below then had no way
+   to tell which of those candidates the advisor's CURRENT message is
+   actually about. A student citing "section 36" for infringement got probed
+   about ownership instead, purely because ownership happened to be earlier
+   in CHECKLIST_DEFS and had already turned candidate. So: if the current
+   message cites a section number that's a hint for a still-unresolved
+   candidate, that topic wins outright (content beats position). Otherwise,
+   prefer whichever item is already mid-probe (probeRounds > 0), so Dave
+   finishes interrogating one topic before moving to the next; failing that,
+   the first candidate in array order, as before. */
+function pendingProbeItem(currentUserText) {
+  // Content beats everything, and is checked against ALL unresolved topics,
+  // not just ones checklistCandidate already flagged: that flag comes from
+  // the background assessment call, which lags a turn behind, so the topic
+  // a citation actually belongs to often isn't flagged as candidate yet.
+  // Found live: without this, two rounds of genuinely discussing
+  // infringement/s.36 (not yet flagged candidate) got credited to ownership
+  // instead (already flagged, earlier in CHECKLIST_DEFS) purely because
+  // ownership was the only eligible candidate at the time -- infringement
+  // sat untouched despite being the actual topic. A citation is a strong
+  // enough signal on its own to probe that topic immediately, without
+  // waiting for the assessment to catch up.
+  const cited = extractLawMention(currentUserText || "");
+  const num = cited ? (cited.match(/\d+/) || [])[0] : null;
+  if (num) {
+    const byContent = CHECKLIST_DEFS.find(c => !checklist[c.key] && (CHECKLIST_SECTION_HINTS[c.key] || []).includes(num));
+    if (byContent) return byContent;
+  }
+  const candidates = CHECKLIST_DEFS.filter(c => checklistCandidate[c.key] && !checklist[c.key]);
+  if (!candidates.length) return null;
+  return candidates.find(c => probeRounds[c.key] > 0) || candidates[0];
+}
+
+/* ============================================================
+   PROMPT BUILDERS
+   ============================================================ */
+function unresolvedItems() {
+  return CHECKLIST_DEFS.filter(c => !checklist[c.key]);
+}
+
+function daveSystemPrompt(currentUserText = "") {
+  const unresolved = unresolvedItems();
+  // Deliberately uses clientWorry (plain, layperson framing), never label/detail
+  // (legal terminology, statute references — used elsewhere for grading only).
+  // Feeding Dave the technical detail directly here was the actual leak: it's
+  // sitting right there in context for the model to copy from, regardless of
+  // the "don't use legal jargon" instruction below.
+  const unresolvedText = unresolved.length
+    ? unresolved.map(c => "- " + c.clientWorry).join("\n")
+    : "You believe your advisor has now covered everything you were worried about.";
+  const moodBand = moodBandFor(moodScore).label;
+  const wrapUp = isWrapUpTurn();
+  const vague = !wrapUp && isVagueReply(currentUserText);
+  const asked = priorDaveQuestions();
+
+  const stuckNote = stallStreak >= STALL_LIMIT
+    ? `\n\nIMPORTANT — YOU'VE BEEN GOING IN CIRCLES: you've asked about the same point several times now without
+getting a fully satisfying answer. You're still not 100% clear on it, but you don't want to keep pressing the
+same thing. Politely let this specific point go for now (in your own words — e.g. "Okay, let's leave that for
+now" / "Fair enough, let's move on") and shift to your next worry from your list of worries, or to wrapping up if
+nothing's left. Do NOT ask about this exact same thing again this session.`
+    : "";
+
+  // Escalating response to the advisor repeatedly turning questions back on
+  // Dave (asking for proof/evidence) without ever explaining the law. A
+  // single such question is normal fact-finding and is handled by the
+  // static rule above — this only kicks in once stallStreak shows it's
+  // happened again with no rubric progress in between, and steps aside
+  // once stallStreak reaches STALL_LIMIT so it doesn't collide with
+  // stuckNote's "drop it entirely" instruction below.
+  // Deterministic backstop: the instruction below only makes sense if the
+  // advisor's CURRENT message is plausibly asking Dave something (a
+  // question mark present) rather than answering him. Without this check
+  // the model tends to fire the scripted callout purely because the
+  // instruction is present in the prompt, even on turns where the advisor
+  // gave a full, substantive, statement-only legal answer.
+  const currentLooksLikeQuestion = /\?/.test(currentUserText);
+  const dodgeNote = (stallStreak >= 1 && stallStreak < STALL_LIMIT && currentLooksLikeQuestion)
+    ? `\n\nIMPORTANT — YOU'RE STILL WAITING ON A STRAIGHT ANSWER: you've already cooperated with at least one
+round of your advisor's questions without getting your own original question actually answered. That's fine once
+— but if your advisor asks you for more proof, evidence, or information again this turn instead of explaining the
+law, gently point that out (e.g., "Sorry, that's twice now you've asked me something instead of answering — could
+you walk me through what the law actually says here?") before deciding whether to keep playing along.`
+    : "";
+
+  const closingCheck = unresolved.length === 0 && !closingAsked
+    ? `\n\nBEFORE YOU AGREE YOU'RE DONE: don't just accept a vague "does that help?" and say yes. Politely ask your
+advisor to walk you through the whole plan, in order, in their own words — from where things stand now to exactly
+what happens next (e.g. "Could you walk me through this from the start — what do I actually do, in what order?").
+Only agree you're satisfied and ready to move forward once they've actually laid out the plan clearly for you,
+not before.`
+    : "";
+
+  // Force a "peace of mind" ask on a fixed cadence (see PEACE_OF_MIND_INTERVAL
+  // above), rotating through the three types in order, regardless of whether
+  // Dave is otherwise satisfied — a careful client keeps asking for backup
+  // even once reassured on the substance, not just while still worried.
+  const upcomingTurn = daveTurnCount + 1;
+  const forcePeaceOfMind = upcomingTurn % PEACE_OF_MIND_INTERVAL === 0 && !wrapUp && !vague;
+  const peaceOfMindOccurrence = Math.floor(upcomingTurn / PEACE_OF_MIND_INTERVAL) - 1;
+  const peaceOfMindPick = PEACE_OF_MIND_TYPES[((peaceOfMindOccurrence % PEACE_OF_MIND_TYPES.length) + PEACE_OF_MIND_TYPES.length) % PEACE_OF_MIND_TYPES.length];
+  const peaceOfMindNote = forcePeaceOfMind
+    ? `\n\nIMPORTANT — YOUR ONE QUESTION THIS TURN: instead of raising a new worry, ask this, in your own words:
+${peaceOfMindPick}. Being reassured on the law doesn't mean you've stopped wanting concrete backup — a careful
+client keeps double-checking. Do not skip this, and do not add any other question.`
+    : "";
+
+  // Socratic drill-down on whatever legal point the advisor just explained,
+  // before Dave treats it as resolved and moves to a different worry (see
+  // pendingProbeItem() and PROBE_ROUNDS_REQUIRED). Deliberately doesn't name
+  // the topic (no label/detail here either, same reason as unresolvedText
+  // above) -- the advisor's own last message is right there in the
+  // transcript for Dave to react to.
+  const pendingProbe = (!wrapUp && !vague) ? pendingProbeItem(currentUserText) : null;
+  // Round 0 specifically asks "is this even based on a law, and if so which
+  // one" when the advisor's message never named one at all -- otherwise
+  // (a law was named, or this is round 1+) it goes straight to what that
+  // SPECIFIC law covers / explaining it further, naming it by number so the
+  // question can't drift onto something unrelated (see extractLawMention).
+  // Only capture a citation at round 0, when this topic has just become the
+  // one being probed -- a later round can land on a message that's actually
+  // about something else (students often chain "on X... and separately on
+  // Y..." in one breath), and blindly overwriting the stored citation with
+  // whatever section that OTHER message happens to name would mislabel it.
+  const citedNow = extractLawMention(currentUserText);
+  if (pendingProbe && citedNow && probeRounds[pendingProbe.key] === 0) probeCitation[pendingProbe.key] = citedNow;
+  const noLawYet = pendingProbe && probeRounds[pendingProbe.key] === 0 && !citedNow && !mentionsLawOrSection(currentUserText);
+  // Prefer the stored citation (captured at this topic's own round 0) over
+  // a fresh extraction from the current message, which -- past round 0 --
+  // may belong to a different topic entirely (see the comment above).
+  const probeBank = noLawYet
+    ? PROBE_QUESTIONS_NO_LAW
+    : probeQuestionsWithLaw(pendingProbe ? (probeCitation[pendingProbe.key] || (probeRounds[pendingProbe.key] === 0 ? citedNow : null)) : null);
+  const probeNote = pendingProbe
+    ? `\n\nIMPORTANT — DIG INTO THAT BEFORE MOVING ON: your advisor just explained something legal to you. Before
+you're satisfied with it and move on to a different worry, THIS TURN ${probeBank[Math.min(probeRounds[pendingProbe.key], probeBank.length - 1)]}.
+Do this instead of raising a new worry, and don't add any other question -- do NOT ask about a different point you
+raised earlier or anything from the example above; this question must be specifically about what your advisor
+JUST told you. Ask it as a genuine, open question and then STOP — do not answer it yourself, guess at the answer,
+or add your own "so that means..." conclusion (see HOW YOU UNDERSTAND THINGS above). Ask it out of genuine
+curiosity, not suspicion.`
+    : "";
+
+  // Same idea for the closing walkthrough: once the advisor has been asked
+  // to lay out the steps (closingCheck above), Dave doesn't just accept the
+  // plan -- he checks the legal basis for it and asks for it to be unpacked
+  // further, for CLOSING_PROBE_ROUNDS_REQUIRED turns, before he's satisfied.
+  const closingProbeNote = (closingAsked && !wrapUp && !vague)
+    ? `\n\nIMPORTANT — MAKE SURE YOU ACTUALLY UNDERSTAND THE PLAN: your advisor just walked you through the steps
+(or is about to). Before you agree you're satisfied and the meeting is over, THIS TURN ${CLOSING_PROBE_QUESTIONS[Math.min(closingProbeRounds, CLOSING_PROBE_QUESTIONS.length - 1)]}.
+Do this instead of just accepting the plan, and don't add any other question. Ask it and then STOP -- do not
+answer it yourself or supply the explanation you're asking for.`
+    : "";
+
+  const wrapUpNote = wrapUp
+    ? `\n\nIMPORTANT — WRAP UP NOW: your advisor has now laid out the plan and walked you through it properly, and
+you're satisfied enough to stop. In one or two sentences, in your own warm, grateful way, say thanks, that this
+actually makes sense now, and mention the ONE thing you'll do next. Do NOT ask any question at all this turn.`
+    : "";
+
+  const vagueNote = vague
+    ? `\n\nIMPORTANT — THAT WASN'T REALLY AN ANSWER: your advisor's last reply was only a few words and didn't
+actually explain anything or answer what you asked. Say so politely but plainly (e.g. "Sorry, I don't think that
+really answers it") and make your ONE question this turn a request that they actually explain it properly.`
+    : "";
+
+  // Only one "forced next move" instruction is active per turn, in priority
+  // order, so the prompt never gives Dave two competing directions on what
+  // to say or ask (the code-level question guard in sendUserMessage would
+  // trim any extra question to one anyway, but a single clear instruction is
+  // followed far more reliably by the small model than several at once).
+  // Which branch fired is recorded in the module-level lastForcedKind (and
+  // lastForcedProbeKey) so sendUserMessage can advance probeRounds,
+  // closingProbeRounds or closingAsked based on what this reply was ACTUALLY
+  // asked to do, rather than re-deriving it from state that's already moved
+  // on by the time the reply comes back (that mismatch was a real bug: it
+  // let closingAsked flip true on the very turn a probe round happened to
+  // resolve the last checklist item, skipping the "walk me through it" ask
+  // entirely).
+  let forcedNote = "";
+  let forcedKind = "none";
+  if (wrapUp) { forcedNote = wrapUpNote; forcedKind = "wrapUp"; }
+  else if (vague) { forcedNote = vagueNote; forcedKind = "vague"; }
+  else if (stuckNote) { forcedNote = stuckNote; forcedKind = "stuck"; }
+  else if (dodgeNote) { forcedNote = dodgeNote; forcedKind = "dodge"; }
+  else if (closingAsked) { forcedNote = closingProbeNote; forcedKind = "closingProbe"; }
+  else if (pendingProbe) { forcedNote = probeNote; forcedKind = "probe"; }
+  else if (closingCheck) { forcedNote = closingCheck; forcedKind = "closingCheck"; }
+  else if (forcePeaceOfMind) { forcedNote = peaceOfMindNote; forcedKind = "peaceOfMind"; }
+  lastForcedKind = forcedKind;
+  lastForcedProbeKey = (forcedKind === "probe" && pendingProbe) ? pendingProbe.key : null;
+
+  const askedNote = asked.length && !wrapUp
+    ? `\n\nQUESTIONS YOU HAVE ALREADY ASKED — never ask any of these again, or anything that means the same, even
+reworded. If you have nothing genuinely new to ask, don't ask anything:\n${asked.map(q => "- " + q).join("\n")}`
+    : "";
+
+  const nameNote = studentName
+    ? `\n\nThe advisor's name is ${studentName}. Address them by name every so often, the way a real person would —
+e.g. when greeting them, thanking them, or making a pointed remark — but do NOT use their name in every message;
+that reads as robotic and unnatural.`
+    : "";
+
+  // Static text first, per-turn text last: LM Studio can then reuse its cached
+  // copy of the unchanging start of the prompt instead of re-reading all of it
+  // every turn (the mood, worry list and notes below change every turn).
+  return `You are role-playing as DAVE, a client at a university law clinic, in a live text conversation with a law
+student who is advising you. Stay in character as Dave at all times. Never break character, never explain the law
+yourself, never say you are an AI or a simulation, and never mention "checklists", "rubrics", "assessment", or
+"mood".
+
+FORMATTING — YOU ARE SPEAKING OUT LOUD, NOT WRITING: never use bullet points, dashes, numbered lists, headings, or
+any other markdown/document formatting in your reply. If you have more than one thing to say, say them as a real
+person would in conversation, in flowing sentences — never as a list
+with line breaks. A reply that looks like a written list instead of spoken dialogue is wrong no matter how
+accurate its content is.
+
+LEGAL KNOWLEDGE BOUNDARY — YOU ARE A COMPLETE LAYPERSON, NOT A LAWYER: you have never studied law and know
+nothing about copyright beyond ordinary common sense. You do NOT know words like "copyright," "subsistence,"
+"infringement," "moral rights," "originality," "account of profits," or any statute/section name or number,
+UNLESS your advisor has already used that specific word or reference earlier in THIS conversation — check the
+transcript before using any such term yourself. If your advisor hasn't introduced a term yet, describe your worry
+in plain, everyday words instead (see WHAT'S STILL WORRYING YOU below for exactly that framing). Once your
+advisor DOES introduce a legal term, you may use that specific WORD back to them from then on — that's you
+picking up vocabulary, not independent knowledge. It does NOT mean you can reconstruct, extend, or add to the
+REASONING they gave you (see HOW YOU UNDERSTAND THINGS below — that's the more important half of this rule).
+This cuts both ways: if your advisor says something legally wrong, confused, or contradicts something they said
+earlier, you have no way of knowing that yourself — you're not a lawyer checking their work. Don't correct them,
+don't cite a different rule, and don't act like you already knew better. Just react as a normal worried client
+would: take what they told you as what you now understand to be true, and if something feels off or you're not
+fully satisfied, push back by asking them to explain further, justify it, or clarify how it fits with something
+else they said — never by asserting your own competing legal claim, because you don't have one.
+
+CASE FACTS (this happened to you):
+${CASE_FACTS}
+
+YOUR PERSONALITY: You are WORRIED and a little embarrassed, not angry. Greg's face is in the newspaper next to
+YOUR photo and you feel foolish about it, but you came to this clinic because you genuinely want to understand
+where you stand, not to vent. You are polite and a bit tentative with your advisor -- this is a student and you
+respect that -- but you are also a genuinely curious client who wants to actually LEARN what the law says, not
+just be told the bottom line. You do not accept a claim just because your advisor states it confidently: if they
+tell you something is true but don't say WHY, or which law it comes from, ask them to walk you through it
+("Sorry, why is that?" / "How do you know that?" / "Could you explain that a bit more?") before you treat it as
+settled -- politely and out of genuine interest, never as a challenge or an attack. You calm down once you
+actually understand the reasoning, not just the conclusion, and once you're clear on what happens next. You also
+don't want to leave the meeting with a vague, non-committal answer -- if your advisor tries to wrap up without
+having actually walked you through it, ask, courteously, for the fuller picture before you agree you're done.
+
+HOW YOU UNDERSTAND THINGS -- THIS IS THE MOST IMPORTANT RULE FOR PLAYING DAVE: you cannot figure anything out,
+spot an implication, or draw a conclusion yourself -- you have no legal training and no instinct for this at all.
+The whole point of this exercise is that YOUR ADVISOR has to do that work out loud, not you. So when they explain
+something:
+- You may briefly restate, in your own words, ONLY the exact point they just made, to show you followed it.
+- Otherwise, respond with a genuine question -- asking them to clarify, justify it further, give an example, or
+  spell out what it means for you -- rather than an assertion.
+- Never add a NEW claim, comparison, consequence, or "so that means..." conclusion that they did not literally
+  just tell you, even one that seems obvious. If you catch yourself about to say something like that, turn it
+  into a question instead.
+Concrete example, from a DIFFERENT, unrelated case, just to show the pattern (do not reuse this wording -- your
+own situation is about Greg and the photo, not this):
+  A tenant is told "Your landlord has to give you 24 hours' notice before entering the flat."
+  WRONG (the tenant doing the lawyer's job for them): "Got it, so if he doesn't give notice I can just refuse to
+  let him in." -- "I can refuse to let him in" is a consequence the TENANT invented; the lawyer never said that.
+  RIGHT: "Okay... so if he just shows up without notice, what am I actually allowed to do about it?" -- a real
+  question, asking the lawyer to spell out the implication rather than supplying it themselves.
+
+Natural ways to raise each possible worry (see WHAT'S STILL WORRYING YOU at the end for which ones are still live; use your own words, don't recite these verbatim, and always frame it as a
+worried but courteous, genuinely curious client talking, never as a lawyer or student would):
+- Facebook (this is the one bothering you most, the thing Greg said straight to your face): "He said I gave up my
+  rights by putting it on Facebook. Is that really how it works? Under what law?"
+- Ownership / whether you even own it at all: "Greg says I can't own rights in a photo at all -- is that actually
+  true? And if I do have rights, what are they called, and which law says so? Does Greg have any rights over it
+  too, now that he's the one who entered it and won?"
+- Whether the photo itself even counts / Greg's "just snapping" jab: "He says my photo's probably no different
+  from Tom's -- nothing special, I just got lucky. Does that actually matter legally? What's the actual rule?"
+- What Greg actually did wrong: "Okay, so in actual legal terms, what did he do wrong? Is there an actual rule he
+  broke, and what's it called?"
+- The newspaper photo / him taking credit: "What about him standing there in the paper like it's his photo? Does
+  that count for anything on its own, separate from the money? Is there a specific rule about that?"
+- What you can actually do: "Say you're right about all this -- what can I actually do about it? Is there
+  something real I can pursue, and what would that look like in practice?"
+
+ON TOP OF your specific worries, you also want concrete proof and backup, not just reassurance — you're the kind
+of client who keeps double-checking even things you already believe. You'll be told below, turn by turn, when to
+work one of these in — but the flavor is:
+- Ask if this has happened to someone else before, or if there's a similar case or example your advisor can point
+  to, so you're not just taking their word for it.
+- Ask what the actual law is called — the specific statute and section, not just "the law" — so you have
+  something concrete to hold onto or look up yourself later. If your advisor already named one provision, ask
+  whether there are other relevant sections or statutes you should know about too.
+- Push your advisor to elaborate on Greg's specific claims rather than just dismissing them — you want to
+  understand exactly why Greg is wrong, not just be told that he is.
+
+CONVERSATION RULES:
+- You want to actually learn the law, not just hear a verdict. Whenever your advisor tells you that you do or
+  don't have some right, or that Greg does or doesn't, or that something is or isn't allowed, don't treat that as
+  a full answer by itself -- politely ask two things before you're satisfied: which law or rule that comes from
+  (its name, or the specific section if your advisor knows it), and what it actually means for you in practical
+  terms (can you stop Greg, make him pay, get credit, etc.). Ask for both across the conversation, one at a time,
+  in your own words -- not as a checklist, and not both in the same breath.
+- Don't accept an explanation as settled the first time either. After your advisor gives you an initial answer on
+  a worry, dig into it a little before moving on -- ask what it actually covers, what it doesn't, or ask them to
+  explain it further, in their own words, applied to your specific situation with Greg, not just the general
+  rule. Only move to a different worry once you've done this.
+- Once you're being walked through the final plan at the end, don't just nod along either -- ask which law backs
+  up at least one of the steps, and ask for at least one step to be explained a bit further, before you agree
+  you're satisfied and the meeting is over.
+- If your advisor's last answer was vague, incomplete, dodged one of your worries, or just asserted something
+  without explaining it, gently push back on THAT specific point in your own words, and ask them to walk you
+  through it properly -- curious, not hostile.
+- It's reasonable for your advisor to ask YOU a genuine investigative or fact-finding question before explaining
+  the law — e.g. when you took the photo, whether you have the original file. A good lawyer does that, and you
+  should answer it cooperatively like a normal client would, at least the first time. That said, being asked a
+  question isn't the same as getting one answered — see below for what to do if it keeps happening.
+- If the advisor gave you a clear, correct, complete, well-explained answer on something, accept it BRIEFLY ("Oh,
+  okay, that actually makes sense.") without restating or building on the substance yourself, then either move on
+  to your next worry or ask a genuine follow-up QUESTION (see HOW YOU UNDERSTAND THINGS above) — but you're still
+  a difficult client overall, so don't become instantly warm and trusting.
+- Never lecture. Never use section numbers or case names yourself — you're the client, not the lawyer.
+- Do NOT ask something you've already asked and gotten a real answer to, even reworded — that includes practical
+  questions like "will you send the letter," "what if Greg doesn't respond," or "will we meet again," not just the
+  legal points above. Re-read what's already been said before you ask anything. If you're genuinely out of new
+  things to raise, say so and move toward being satisfied instead of recycling an old question.
+- Keep replies short: 2-3 sentences, conversational, spoken register, courteous throughout, with your current
+  mood coming through. ASK AT MOST ONE QUESTION per reply — a real person doesn't fire off three questions at
+  once. If you have several worries, pick the most pressing one and leave the rest for later turns.
+- Only ever refer to things Greg said or did that appear in the CASE FACTS above; never invent new arguments,
+  quotes or claims for Greg. If you refer to something your advisor said, only refer to what they actually wrote.
+- Show your mood through how you speak; don't narrate your own feelings or tone (no "I'm angry", "over the anger",
+  "I'm getting frustrated").
+- Do not resolve the conversation yourself or announce that you're "satisfied" with everything at once — resolve
+  one concern at a time, and only agree you're ready to move forward once you've actually been walked through
+  everything and you're clear on next steps.
+
+YOUR CURRENT MOOD: ${moodBand}. Let this show in your tone — the more anxious/uneasy you are, the more you seek
+reassurance and ask for things to be spelled out; the more curious/settled you are, the more relaxed and warmer
+you sound, though you should stay a genuinely inquisitive client throughout, never a pushover who just says
+"okay" to everything (you're still someone who wants things properly explained the whole way, not just early on).
+
+WHAT'S STILL WORRYING YOU (bring these up naturally, in your own words, ONE at a time, NOT as a list, NOT
+using legal jargon, NOT all at once — pick whichever feels most natural given the conversation so far, and ask in
+a way that forces your advisor to actually explain it rather than just confirm it):
+${unresolvedText}
+${forcedNote}${askedNote}${nameNote}`;
+}
+
+function assessmentSystemPrompt() {
+  const items = CHECKLIST_DEFS.map(c => `"${c.key}"`).join(", ");
+  return `You are a silent grading engine for a law school simulation (LAW65004 Intellectual Property Law,
+Taylor's University). You will be shown the case facts, the checklist of legal points a competent answer should
+cover, which points are already marked resolved, and the single latest exchange (the advisor's message to Dave,
+and Dave's reply). Decide whether the advisor's LATEST message substantively and CORRECTLY addressed any
+currently-unresolved checklist point. Do not mark something resolved on a vague, partial, or legally incorrect
+explanation — it must be reasonably complete and accurate for a law student's oral answer.
+
+You are ALSO tracking Dave's mood as a client. Dave is an angry, impatient, distrustful client who does not accept
+assertions without justification. Decide whether the advisor's LATEST message should make Dave's mood "improve"
+(clear, correct, complete, reassuring, actually explains WHY — not just what), "worsen" (vague, evasive,
+incorrect, contradicts something said earlier, dismissive, or fails to justify a claim Dave pushed back on), or
+stay "same" (on-topic but incomplete, or minor small talk that doesn't really move things forward).
+
+CASE FACTS:
+${CASE_FACTS}
+
+CHECKLIST ITEMS AND WHAT THEY REQUIRE:
+${CHECKLIST_DEFS.map(c => `- ${c.key}: ${c.label} — ${c.detail}`).join("\n")}
+
+Respond with ONLY a raw JSON object, no markdown fences, no commentary, in exactly this shape (checklist keys:
+${items}, each a boolean — true only if the LATEST advisor message newly and adequately addressed that point):
+{"subsistence": false, "ownership": false, "facebook_waiver": false, "infringement": false, "moral_rights": false, "remedies": false, "mood_shift": "improve|worsen|same"}`;
+}
+
+/* ============================================================
+   COACH DEBRIEF
+   The debrief is driven by the app, not left to the model. Small local
+   models kept inventing what the student said and what the Act says when
+   asked to judge and explain, so the model is used only for narrow yes/no
+   checks and every word the student reads comes from code or vetted text:
+   - the app picks the topic and finds which STUDENT replies are about it by
+     keyword, and pastes those replies in verbatim, so nothing can be
+     misattributed to the student;
+   - each topic has vetted "key points" (one is the core) and "common
+     mistakes", written from the Act (see "Coach Reference Sheet.md":
+     Copyright Act 1987, AGC updated text as at 30 June 2022; Facebook Terms
+     s.3.3). The model only says which of them the student's own words state;
+   - feedback, verdicts and the summary are assembled by code from those
+     answers, so they can't invent anything;
+   - section numbers the student cited are checked by code against the Act's
+     real section list, and follow-up questions are answered only from the
+     Act excerpts (any section number outside them is rejected).
+   ============================================================ */
+const SECTION_TITLES = {"1":"Short title, application and commencement","2":"Extent of application","3":"Interpretation","4":"Publication","5":"Controller, Deputy Controllers and Assistant Controllers","6":"No copyright except by virtue of this Act","7":"Works eligible for copyright","8":"Derivative works","9":"Copyright in published editions of works","10":"Qualification for protection","10A":"Qualification for protection of performer","11":"Copyright in works of Government, Government organizations and international bodies","12":"Administration of Government copyright","13":"Nature of copyright in literary, musical or artistic works, films and sound recordings","13A":"Design documents and models","13B":"Effect of exploitation of design derived from artistic work","13C":"(Deleted)","14":"Nature of copyright in works of architecture","15":"Nature of copyright in broadcasts","16":"Broadcasting of works incorporated in films","16A":"Nature of performers’ right","16B":"Equitable remuneration","17":"Duration of copyright in literary, musical or artistic works","18":"Duration of copyright in published editions","19":"Duration of copyright in sound recording","20":"Duration of copyright in broadcasts","21":"(Deleted)","22":"Duration of copyright in films","23":"Duration of copyright in works of Government, Government organizations and international bodies","23A":"Duration of performers’ rights","23B":"Duration of an equitable remuneration","24":"(Deleted)","25":"Moral rights","25A":"Moral rights of a performer","26":"First ownership of copyright","26A":"Voluntary notification of copyright","26B":"Register of Copyright","26C":"Amendments to the Register of Copyright","27":"Assignment, licences and testamentary disposition","27A":"Collective management organization","27AA":"Licensing schemes to which sections 27B to 27G apply","27B":"Reference of proposed licensing scheme to Tribunal","27C":"Reference of licensing scheme to Tribunal","27D":"Further reference of licensing scheme to Tribunal","27E":"Application for grant of licence in connection with licensing scheme","27F":"Application for review of order as to entitlement to licence","27G":"Effect of order of Tribunal as to licensing scheme","27H":"Licences to which sections 27I to 27L apply","27I":"Reference to Tribunal of terms of proposed licence","27J":"Reference to Tribunal of expiring licence","27K":"Application for review of order as to licence","27L":"Effect of order of Tribunal as to licence","27M":"Guidelines","28":"Establishment and powers of Copyright Tribunal","29":"Appointment of Chairman and members of Tribunal","30":"Proceedings before the Tribunal","30A":"Reference of questions of law to High Court","31":"Licence to produce and publish translation","32":"(Deleted)","33":"Tribunal may request for information","34":"No action to lie against Tribunal","35":"Regulations relating to Tribunal","36":"Infringements","36A":"Circumvention of technological protection measure","36B":"Rights management information","37":"Action by owner of copyright and relief","38":"Proceedings in case of copyright subject to exclusive licence","39":"Restriction on importation of infringing copies","39A":"Application of sections 36, 37, 38 and 39 to performers’ right","40":"Back-up copy of computer program","41":"Offences","41A":"Compounding of offences","42":"Affidavit admissible in evidence","43":"Penalty","43A":"Offences relating to anti-camcording","43AA":"Offences relating to streaming technology","43B":"Interpretation","43C":"Transmission, routing and provision of connections","43D":"System caching","43E":"Storage and information location tools","43F":"Exemption of service provider from liability for removal of copy or other activities from network","43G":"Information on service provider","43H":"Notification by copyright owner and its effect","43I":"Maker of false notice guilty of offence and liable in damages","44":"Entry by warrant or otherwise","45":"Effecting entry, removal and detention","45A":"Access to computerized or digitalized data","46":"List of things seized","47":"Sealing of things","48":"Obstruction to search, etc.","49":"Warrant admissible notwithstanding defects, etc.","50":"Powers of investigation","50A":"Power of arrest","50B":"Power to intercept communications","51":"Admissibility of statement","51A":"Evidence of agent provocateur is admissible","51B":"Test purchase","52":"Disclosure of information","52A":"Tipping-off","52B":"Power of the Assistant Controller to require provision of information","53":"Institution of prosecution","54":"Forfeiture of articles","55":"Proportional examination of articles seized to be accepted","56":"Protection of informers from discovery","57":"Protection of Assistant Controllers and police officers","58":"(Deleted)","59":"Regulations","59A":"Extension of application of Act","59B":"Power of Minister to exclude from definition of “broadcast”","59C":"Dispute relating to royalties","60":"Savings","61":"Repeal"};
+
+const COACH_POINTS = {
+  subsistence: {
+    label: "Subsistence of copyright",
+    topic: "whether a quick phone snap is protected by copyright at all",
+    sections: ["3", "7", "10"],
+    match: /effort|origina|skill|labou?r|quality|professional|artistic|snap|eligible|protect|entitled/i,
+    lookup: "s.3 (the definitions of “artistic work” and “photograph”) and s.7, especially s.7(2) and s.7(3), of the Copyright Act 1987",
+    keyPoints: [
+      { id: "s1", core: true, text: "the test for protection is sufficient effort to make the work original in character, not artistic quality (s.7(3), s.3, s.7(2))", q: "Does the student say that putting some effort or work into making the photo is what gets it protected?" },
+      { id: "s2", text: "no registration is needed for the copyright to exist (registration is only voluntary, s.26A)" },
+      { id: "s3", text: "the photos were made in Malaysia, so copyright subsists even though Dave lives in Singapore (s.10(3))" },
+    ],
+    errors: [
+      { id: "e1", text: "a phone snap isn't protected because it isn't professional or high quality", fix: "Quality is irrelevant: a photograph is an artistic work irrespective of artistic quality (s.3, s.7(2)). What matters is sufficient effort to make it original in character (s.7(3))." },
+      { id: "e2", text: "no effort or originality is needed at all", fix: "s.7(3)(a) requires sufficient effort to make the work original in character." },
+    ],
+    act: `s.3 "artistic work" means "(a) a graphic work, photograph, sculpture or collage, irrespective of artistic quality;"
+s.3 "photograph" means "a recording of light or other radiation on any medium on which an image is produced or from which an image may by any means be produced, and which is not part of a film;"
+s.7(2) "Works shall be protected irrespective of their quality and the purpose for which they were created."
+s.7(3) "A literary, musical or artistic work shall not be eligible for copyright unless— (a) sufficient effort has been expended to make the work original in character; and (b) the work has been written down, recorded or otherwise reduced to material form."
+s.10(3) "Notwithstanding subsections (1) and (2), copyright shall subsist, subject to this Act, in every work eligible for copyright if the work is made in Malaysia."
+s.26A is headed "Voluntary notification of copyright" (registration is not a condition of protection).`,
+  },
+  ownership: {
+    label: "Ownership and authorship",
+    topic: "who owns the copyright in the photos",
+    sections: ["3", "26"],
+    match: /\bown|owner|belong|author|photographer|took (it|the (photo|picture|pic))|your photo|his photo|yours|\bmine\b/i,
+    lookup: "s.3 (the definition of “author”) and s.26 of the Copyright Act 1987",
+    keyPoints: [
+      { id: "o1", core: true, text: "Dave, as the photographer, is the author of his photos (s.3: the person who made the arrangements for taking a photograph) and so the first owner (s.26(1))", q: "Does the student say that the person who took or made the photo owns it?" },
+      { id: "o2", text: "ownership doesn't depend on registration or paperwork (s.26A is only a voluntary notification)" },
+    ],
+    errors: [
+      { id: "e1", text: "posting on Facebook is what makes someone the owner", fix: "Ownership starts with the author (s.26(1)); posting neither creates nor transfers it." },
+      { id: "e2", text: "you have to register the photo to own it", fix: "No registration is needed; s.26A is only a voluntary notification." },
+    ],
+    act: `s.3 "author", in relation to photographs, "means the person by whom the arrangements for the taking of the photograph were undertaken;"
+s.26(1) "Copyright conferred by section 10 shall vest initially in the author."
+s.26(2) transfers copyright to a commissioner or an employer where the work is commissioned by a non-employer or made in the course of employment, "subject to any agreement between the parties".
+s.26A is headed "Voluntary notification of copyright" (registration is not a condition of protection).`,
+  },
+  facebook_waiver: {
+    label: "Facebook posting is not a waiver",
+    topic: "whether posting the photos on Facebook meant giving up his rights",
+    sections: ["3", "13", "26", "27"],
+    match: /facebook|\bpost|upload|social media|online|\bshare/i,
+    lookup: "s.27(3) and s.13(1) of the Copyright Act 1987, and section 3.3 of Facebook’s Terms of Service",
+    keyPoints: [
+      { id: "f1", core: true, text: "posting on Facebook does not give up or transfer the copyright; Dave still owns it", q: "Does the student say that posting a photo on Facebook does not make the poster lose ownership of it?" },
+      { id: "f2", text: "any assignment or licence must be in writing (s.27(3)), and Facebook's terms give a licence to Facebook, not to other users like Greg" },
+      { id: "f3", text: "being publicly visible isn't consent to copying; Dave keeps the exclusive rights in s.13(1)" },
+    ],
+    errors: [
+      { id: "e1", text: "posting online gives up, waives or abandons the rights, or makes the photo free for anyone to use", fix: "Posting isn't an assignment: ownership stays with Dave (Facebook's terms say so) and any assignment or licence must be in writing (s.27(3))." },
+      { id: "e2", text: "the rights are only kept if the photo was registered", fix: "No registration is needed (s.26A is only a voluntary notification)." },
+    ],
+    act: `s.27(3) "No assignment of copyright and no licence to do an act the doing of which is controlled by copyright shall have effect unless it is in writing."
+s.13(1) copyright is "the exclusive right to control in Malaysia— (a) the reproduction in any material form; (aa) the communication to the public; ... (e) the distribution of copies to the public by sale or other transfer of ownership; ..."
+s.3 "communication to the public" means "the transmission of a work or performance through wire or wireless means to the public, including the making available of a work or performance to the public in such a way that members of the public may access the work or performance from a place and at a time individually chosen by them;"
+s.26A is headed "Voluntary notification of copyright" (registration is not a condition of protection).
+Facebook Terms section 3.3 (English rendering of the Malay page; the official wording may differ): users keep ownership of the intellectual property rights in content they create and share; by sharing it the user gives Facebook a non-exclusive, transferable, sub-licensable, royalty-free, worldwide licence to host, use, distribute, modify, run, copy, publicly perform or display it; the licence ends when the content is deleted from Facebook's systems, except where others have used it under the licence and have not deleted it.`,
+  },
+  infringement: {
+    label: "Infringement by Greg",
+    topic: "what exactly Greg did wrong in copyright terms",
+    sections: ["3", "13", "36", "37"],
+    match: /infring|\bcop(y|ied|ying)|reproduc|without (his |your |my )?(permission|consent|asking|knowing|telling)|submit|entered|enter (it|the)|use[d]? (it|the photo|your photo|his photo)|steal|stole|unauthori|licen[cs]e|\bedit/i,
+    lookup: "s.13(1) and s.36(1) of the Copyright Act 1987",
+    keyPoints: [
+      { id: "i1", core: true, text: "Greg copied the photos and submitted them without Dave's licence, which infringes because reproduction is an act controlled by copyright (s.13(1)(a), s.36(1))", q: "Does the student say that Greg copying or using the photo without permission was wrong or broke copyright?" },
+      { id: "i2", text: "fair dealing doesn't cover entering a competition for a prize (s.13(2)(a))" },
+      { id: "i3", text: "it is still infringement if Greg didn't know; that only affects the remedies (s.37(6))" },
+    ],
+    errors: [
+      { id: "e1", text: "Greg did nothing wrong, or it was fine because the photo was public", fix: "Reproducing a work without the owner's licence is infringement (s.36(1)) even if the work is publicly visible." },
+      { id: "e2", text: "it is only infringement if Greg edited or changed the photo", fix: "Copying is enough: reproduction in any material form is controlled by copyright (s.13(1)(a))." },
+    ],
+    act: `s.13(1) copyright is "the exclusive right to control in Malaysia— (a) the reproduction in any material form; (aa) the communication to the public; (b) the performance, showing or playing to the public; ... (e) the distribution of copies to the public by sale or other transfer of ownership; and (f) the commercial rental to the public, of the whole work or a substantial part thereof ..."
+s.36(1) "Copyright is infringed by any person who does, or causes any other person to do, without the licence of the owner of the copyright, an act the doing of which is controlled by copyright under this Act."
+s.3 "reproduction" means "the making of one or more copies of a work in any form or version".
+s.13(2)(a) the fair dealing exception covers "research, private study, criticism, review or the reporting of news or current events", and needs an acknowledgement of title and authorship.
+s.37(6) if the defendant "was not aware, and had no reasonable grounds for suspecting, that the act was an infringement", the plaintiff gets no damages but keeps an account of profits or statutory damages.`,
+  },
+  moral_rights: {
+    label: "Moral rights and false attribution",
+    topic: "Greg presenting the photo as his own in the newspaper",
+    sections: ["25"],
+    match: /credit|recogni[sz]|attribut|acknowledg|apolog|identif|as (his|their) own|as yours|\bmoral|claim(ed|ing)? (it|the|his|your)/i,
+    lookup: "s.25 of the Copyright Act 1987, especially s.25(2)(a), s.25(5) and s.25(7)",
+    keyPoints: [
+      { id: "m1", core: true, text: "Greg presenting the photo as his own, without identifying Dave as the author, breaches Dave's separate moral right (s.25(2)(a))", q: "Does the student say that Dave should be credited or recognised as the photographer, or that Greg passing the photo off as his own was wrong?" },
+      { id: "m2", text: "this is actionable as a breach of statutory duty (s.25(5))" },
+      { id: "m3", text: "the court can order a published correction (s.25(7)), which answers Dave's wish for public acknowledgement" },
+    ],
+    errors: [
+      { id: "e1", text: "being credited as the photographer is just part of owning the photo, not a separate right", fix: "Being identified as the author is a separate moral right under s.25(2)(a), distinct from ownership." },
+    ],
+    act: `s.25(2)(a) "... no person may, without the consent of the author ... do or authorize the doing of any of the following acts: (a) the presentation of the work, by any means whatsoever, without identifying the author or under a name other than that of the author;"
+s.25(4) the author may exercise these rights even where the copyright is not held by the author.
+s.25(5) "Any contravention or threatened contravention of this section in respect of a work shall be actionable at the suit of the author of the work ... as a breach of statutory duty."
+s.25(7) "Where in an action brought under this section a contravention of the restrictions imposed by this section is proved or admitted, the court may order the offender to publish such correction in such manner as the court may direct."`,
+  },
+  remedies: {
+    label: "Remedies",
+    topic: "what can actually be done to get acknowledgement and the prize money",
+    sections: ["25", "37", "41", "50", "50A", "53"],
+    match: /remed|damages|\bsue|court|law ?suit|legal|letter|demand|money|prize|compensat|injunction|profit|police|arrest|criminal|deadline|transfer|action/i,
+    lookup: "s.37 (civil relief) and s.25(7) (correction) of the Copyright Act 1987 and, for the criminal side, s.41, s.50A and s.53",
+    keyPoints: [
+      { id: "r1", core: true, text: "Dave's route to acknowledgement and money is a civil claim: an injunction, damages, an account of profits or statutory damages (s.37(1)); nothing transfers automatically", q: "Does the student say that Dave can get acknowledgement or money by taking legal action or making a legal claim?" },
+      { id: "r2", text: "a demand letter and negotiation are the usual first steps before suing", q: "Does the student say to send a letter or demand to Greg before going to court?" },
+      { id: "r3", text: "a published correction is available for the false attribution (s.25(7))" },
+      { id: "r4", text: "criminal offences exist (s.41), but investigation, arrest and prosecution are for the authorities (s.50, s.50A, s.53), not for Dave" },
+    ],
+    errors: [
+      { id: "e1", text: "the prize money transfers to Dave automatically", fix: "Nothing is automatic: Dave must bring, or credibly threaten, a claim, and money comes through damages, an account of profits or a settlement (s.37)." },
+      { id: "e2", text: "the police can simply arrest Greg because Dave complains", fix: "Investigation, arrest and prosecution are for the authorities (s.50, s.50A) and only the Public Prosecutor can prosecute (s.53); a criminal fine goes to the state, not to Dave." },
+      { id: "e3", text: "infringement is never a crime", fix: "The Act does create offences (s.41), though enforcing them is for the authorities." },
+    ],
+    act: `s.37(1) "... the court may grant the following types of relief: (a) an order for injunction; (b) damages; (c) an account of profits; (d) statutory damages of not more than twenty-five thousand ringgit for each work, but not more than five hundred thousand ringgit in the aggregate; or (e) any other order as the court deems fit."
+s.37(3) with an award of damages, "the court may also make an order under paragraph (1)(c) for an account of any profits attributable to the infringement ... that have not been taken into account in computing the damages."
+s.37(4) "Except as provided in subsection (3), the types of relief referred to in paragraphs (1)(b), (c) and (d) are mutually exclusive."
+s.25(7) the court "may order the offender to publish such correction in such manner as the court may direct."
+s.41(1) makes it an offence, unless the person proves good faith, to do things including "(c) distributes infringing copies" (fine of RM2,000 to RM20,000 per infringing copy, or imprisonment up to five years, or both, for paragraphs (a) to (f)).
+s.50(1) an Assistant Controller or police officer not below the rank of Inspector "shall have the power to investigate the commission of any offence under this Act".
+s.50A(1) "Any Assistant Controller may arrest without warrant any person whom he reasonably believes has committed or is attempting to commit seizable offence under this Act ..."
+s.53 "No prosecution for any offence under this Act shall be instituted except by or with the consent in writing of the Public Prosecutor."`,
+  },
+  communication: {
+    label: "Communication with Dave",
+    topic: "how you communicated with Dave",
+    sections: [],
+    lookup: "your own replies to Dave in the consultation transcript",
+    keyPoints: [
+      { id: "c1", core: true, text: "you answered the question Dave actually asked", tip: "answering the question Dave actually asked", q: "Did the student's reply answer what the client had just asked?" },
+      { id: "c2", core: true, text: "you explained in plain language and gave a reason, not just a conclusion", tip: "explaining in plain language and giving a reason, not just a conclusion", q: "Did the student explain in plain language and give a reason, not just a conclusion?" },
+      { id: "c3", text: "you acknowledged Dave's worry and stayed reassuring", tip: "acknowledging Dave's worry and staying reassuring", q: "Did the student acknowledge the client's worry or reassure them?" },
+      { id: "c4", text: "you said you would check anything you weren't sure of instead of guessing", tip: "saying you'll check anything you aren't sure of instead of guessing", q: "Did the student say they would check something they were unsure of?" },
+      { id: "c5", text: "you were clear about the next steps", tip: "being clear about the next steps", q: "Did the student state a clear next step?" },
+    ],
+    errors: [
+      { id: "e1", text: "curt or dismissive", q: "Were the student's replies curt or dismissive (short, with no reason given)?", qOpp: "Were the student's replies polite and explained, rather than curt?", read: "Your replies could come across as curt or dismissive.", fix: "Even a short reply should say why; “you're still good” with no reason leaves an anxious client with nothing to hold on to." },
+      { id: "e2", text: "dodged or ignored Dave's question", q: "Did the student dodge or ignore the client's question?", qOpp: "Did the student answer the client's question?", read: "Your replies could come across as dodging Dave's question.", fix: "Answer what was asked, or say you'll come back to it." },
+    ],
+    act: `- Answer the question the client actually asked, not a different one.
+- Explain in plain language and give a reason, not just a conclusion.
+- Acknowledge the client's concern and stay respectful and reassuring, even when the client is angry.
+- Do not bluff: if you are not sure of a section or a case, say you will check it rather than giving a citation you cannot back up.
+- Be clear about the next steps and about what is uncertain.`,
+  },
+};
+const DEBRIEF_LEGAL_ORDER = ["facebook_waiver", "ownership", "subsistence", "infringement", "moral_rights", "remedies"];
+const CITATIONS_TOPIC = { label: "Statute references", lookup: "the Arrangement of Sections at the front of the Copyright Act 1987, and s.3 and s.7" };
+const CORE_SECTIONS = ["3", "7", "13", "25", "26", "27", "36", "37"];
+const QUESTION_TEMPLATES = [
+  "What was your reasoning for saying that, and what were you relying on?",
+  "Talk me through why you told Dave that. What is the legal basis?",
+  "If Dave pushed back on that, how would you justify it?",
+];
+
+let debrief = null; // {order, i, awaiting, done, retryAsk, current, verdicts, citations}
+
+function topicMeta(key) {
+  return key === "citations" ? CITATIONS_TOPIC : COACH_POINTS[key];
+}
+
+function clip(s, n) {
+  s = String(s || "").replace(/\s+/g, " ").trim();
+  return s.length > n ? s.slice(0, n - 1) + "…" : s;
+}
+
+function cap(s) {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+/* Every STUDENT reply in the consultation, numbered, each with the Dave
+   message it answered (context only). */
+function studentExchanges() {
+  const out = [];
+  let lastDave = "";
+  history.forEach(h => {
+    if (h.role === "dave") lastDave = h.content;
+    else if (h.role === "you") out.push({ n: out.length + 1, dave: lastDave, text: h.content });
+  });
+  return out;
+}
+
+/* Section numbers a piece of text refers to, e.g. "s.7(3)" -> "7". */
+function sectionsCited(text) {
+  const set = new Set();
+  const re = /\b(?:sections?|ss?\.)\s*(\d{1,2}[A-Za-z]{0,2})/gi;
+  let m;
+  while ((m = re.exec(text || "")) !== null) set.add(m[1].toUpperCase());
+  return set;
+}
+
+function allowedSections(keys) {
+  const set = new Set();
+  keys.forEach(k => {
+    const p = COACH_POINTS[k];
+    if (!p) return;
+    p.sections.forEach(s => set.add(s));
+    sectionsCited(p.act).forEach(s => set.add(s));
+  });
+  return set;
+}
+
+function feedbackProblem(text, allowed) {
+  if (!text.trim()) return "it was empty";
+  if (looksLikeCoachDump(text)) return "it used markdown, quoted the transcript, or was too long";
+  const bad = [...sectionsCited(text)].filter(s => !allowed.has(s));
+  if (bad.length) return "it cited section " + bad.join(", ") + ", which is not in the Act text provided";
+  return null;
+}
+
+function postCoach(text) {
+  coachHistory.push({ role: "coach", content: text });
+  renderMessage("coach", text);
+  logToServer("coach", text);
+}
+
+function quotesForDisplay(quotes) {
+  const shown = quotes.map(q => `“${clip(q.text, 300)}”`);
+  return shown.length === 1 ? `On this you told Dave: ${shown[0]}` : `On this you told Dave: ${shown[0]}\nand: ${shown[1]}`;
+}
+
+/* Which student replies are about a topic, found by keyword (deterministic).
+   For communication: the two shortest replies that aren't questions, since
+   curt answers are what matter there. */
+function pickEvidence(key) {
+  const ex = studentExchanges();
+  if (key === "communication") {
+    const statements = ex.filter(e => !/\?\s*$/.test(e.text.trim()));
+    const pool = statements.length >= 2 ? statements : ex;
+    return pool.slice().sort((a, b) => a.text.split(/\s+/).length - b.text.split(/\s+/).length).slice(0, 2).sort((a, b) => a.n - b.n);
+  }
+  const re = new RegExp(COACH_POINTS[key].match.source, "gi");
+  return ex
+    .map(e => ({ e, s: (e.text.match(re) || []).length }))
+    .filter(x => x.s > 0)
+    .sort((a, b) => b.s - a.s || a.e.n - b.e.n)
+    .slice(0, 2)
+    .map(x => x.e)
+    .sort((a, b) => a.n - b.n);
+}
+
+/* ---- Section citations: checked by code, not by the model ---- */
+function analyseCitations() {
+  const relevant = new Set();
+  DEBRIEF_LEGAL_ORDER.forEach(k => COACH_POINTS[k].sections.forEach(s => relevant.add(s)));
+  const seen = new Set();
+  const out = [];
+  studentExchanges().forEach(e => {
+    const re = /\b(?:sections?|sec\.?|ss?\.)\s*(\d{1,2}[A-Za-z]{0,2})((?:\([0-9A-Za-z]+\))*)(\.\d+)?/gi;
+    let m;
+    while ((m = re.exec(e.text)) !== null) {
+      const base = m[1].toUpperCase();
+      const shown = m[0].trim();
+      const dedupe = shown.toLowerCase().replace(/\s+/g, "");
+      if (seen.has(dedupe)) continue;
+      seen.add(dedupe);
+      const title = SECTION_TITLES[base];
+      let ok = false, msg;
+      if (!title) msg = `“${shown}”: there is no section ${base} in the Copyright Act 1987 (it isn't in the Arrangement of Sections).`;
+      else if (title === "(Deleted)") msg = `“${shown}”: s.${base} has been deleted from the Act.`;
+      else if (m[3]) msg = `“${shown}”: the Act doesn't number provisions like that (subsections go in brackets, like s.7(3)). Section ${base} itself is “${title}”.`;
+      else if (!relevant.has(base)) msg = `“${shown}”: s.${base} is “${title}”, which isn't where this is dealt with.`;
+      else { ok = true; msg = `“${shown}”: s.${base} is “${title}”, a relevant provision.`; }
+      out.push({ n: e.n, shown, ok, msg });
+    }
+  });
+  return out;
+}
+
+function citationsQuestion(list) {
+  return `Topic {IDX} of {TOTAL}: ${CITATIONS_TOPIC.label}\nDave kept asking which section applies. You told him:\n${list.map(c => `- “${c.shown}”`).join("\n")}\n\nWhere did those section numbers come from? Did you check them in the Act?`;
+}
+
+function citationsFeedback(list) {
+  const core = CORE_SECTIONS.map(s => `s.${s} (${SECTION_TITLES[s]})`).join(", ");
+  return `Here is what I checked against the Act:\n${list.map(c => `- ${c.msg}`).join("\n")}\n\nFor Dave's case the provisions that matter are ${core}, and ss.41, 50A and 53 on the criminal side. When you aren't sure of a citation, tell the client you'll check it rather than giving a number you can't back up.`;
+}
+
+function citationsVerdict(list) {
+  const bad = list.filter(c => !c.ok);
+  return bad.length
+    ? { tag: "revisit", note: `You cited ${bad.map(c => "“" + c.shown + "”").join(" and ")}, which ${bad.length > 1 ? "don't" : "doesn't"} match where the Act deals with this.` }
+    : { tag: "solid", note: "The sections you cited were relevant provisions." };
+}
+
+/* Literal yes/no phrasings per point. The small model is very literal: a
+   question worded close to how a student would say it works, an abstract
+   paraphrase doesn't, so each point has a few phrasings (any "yes" counts).
+   Each common mistake also has an explicit opposite ("neg") used as a veto,
+   so a student who says the reverse is never accused of the mistake. */
+const POINT_QUESTIONS = {
+  subsistence: {
+    kp: {
+      s1: ["Does the student say that the law only asks for some effort to make the photo original?", "Does the student say that effort or work put into the photo is what matters, not how good it looks?", "Does the student say a photo is protected if the person put effort into making it?"],
+      s2: ["Does the student say no registration or paperwork is needed?"],
+      s3: ["Does the student say the photos were taken in Malaysia so Malaysian copyright applies?"],
+    },
+    err: {
+      e1: { qs: ["Does the student say a phone snap or casual photo is not protected by copyright?", "Does the student say a photo must be professional or high quality to be protected?"], neg: "a phone snap or casual photo can still be protected" },
+      e2: { qs: ["Does the student say no effort or originality is needed for copyright?"], neg: "some effort or originality is needed" },
+    },
+  },
+  ownership: {
+    kp: {
+      o1: ["Does the student say that the person who took the photo owns it?", "Does the student say that Dave is the author or owner because he took the photo?", "Does the student say that whoever created the photo owns the copyright?"],
+      o2: ["Does the student say no registration or paperwork is needed to own it?"],
+    },
+    err: {
+      e1: { qs: ["Does the student say that posting a photo on Facebook is what makes the poster its owner?"], neg: "the person who took the photo owns it, whether or not it was posted" },
+      e2: { qs: ["Does the student say you have to register the photo to own it?"], neg: "no registration is needed" },
+    },
+  },
+  facebook_waiver: {
+    kp: {
+      f1: ["Does the student say that posting a photo on Facebook does not make the poster lose ownership of it?", "Does the student say Facebook only gets a licence and the owner keeps ownership?", "Does the student say that people still own what they post on Facebook?"],
+      f2: ["Does the student say that giving away copyright or a licence has to be in writing?", "Does the student say Facebook only gets a licence, not ownership?"],
+      f3: ["Does the student say that a photo being public does not mean others can copy or use it?"],
+    },
+    err: {
+      e1: { qs: ["Does the student say that posting a photo online means the poster gives up or loses the rights to it?", "Does the student say a photo posted online is free for anyone to use?"], neg: "posting a photo online does not make the poster lose ownership" },
+      e2: { qs: ["Does the student say the rights are only kept if the photo was registered?"], neg: "no registration is needed" },
+    },
+  },
+  infringement: {
+    kp: {
+      i1: ["Does the student say that Greg copying or using the photo without permission was wrong or broke copyright?", "Does the student say Greg infringed copyright?", "Does the student say Greg entered the photo in the competition without permission and that this was not allowed?"],
+      i2: ["Does the student say fair dealing does not cover entering a competition?"],
+      i3: ["Does the student say it is still infringement even if Greg did not know?"],
+    },
+    err: {
+      e1: { qs: ["Does the student say Greg did nothing wrong?", "Does the student say it was fine for Greg to use the photo because it was public?"], neg: "Greg did something wrong" },
+      e2: { qs: ["Does the student say it is only infringement if Greg edited or changed the photo?"], neg: "copying alone is infringement" },
+    },
+  },
+  moral_rights: {
+    kp: {
+      m1: ["Does the student say Greg presented the photo as his own and this breaches a separate right to be credited?", "Does the student say Dave should be credited or recognised as the photographer?", "Does the student say Greg passing the photo off as his own is a false attribution or moral rights problem?"],
+      m2: ["Does the student say false attribution is actionable as a breach of statutory duty?"],
+      m3: ["Does the student say the court can order Greg to publish a correction?"],
+    },
+    err: {
+      e1: { qs: ["Does the student say being credited is just part of owning the photo and not a separate right?"], neg: "being credited is a separate right" },
+    },
+  },
+  remedies: {
+    kp: {
+      r1: ["Does the student say Dave can get acknowledgement or money by taking legal action or making a legal claim?", "Does the student say Dave can sue Greg or claim damages?", "Does the student say Dave would have to bring a claim to recover the prize money?", "Does the student say they will take legal action if Greg does not respond?", "Does the student say they will go to court or file a lawsuit against Greg?"],
+      r2: ["Does the student say to send a letter or demand to Greg before going to court?"],
+      r3: ["Does the student say the court can order a public correction or apology?"],
+      r4: ["Does the student say the police or authorities handle criminal offences, not Dave?"],
+    },
+    err: {
+      e1: { qs: ["Does the student say the prize money will automatically be transferred to Dave?", "Does the student say the prize money goes to Dave automatically once Greg is arrested or caught?"], neg: "Dave must bring a claim to get the money" },
+      e2: { qs: ["Does the student say the police can arrest Greg?", "Does the student say Greg can be arrested over this?"], neg: "only the authorities can decide to arrest or prosecute, not Dave" },
+      e3: { qs: ["Does the student say copyright infringement is never a crime?"], neg: "copyright infringement can be a crime" },
+    },
+  },
+};
+
+/* ---- The only model use per topic: separate yes/no questions ----
+   One narrow question per point. A "common mistake" is only flagged if the
+   model says yes to "does the student say this?" AND no to "does the text
+   say the opposite, or nothing about it?", because a false accusation is
+   the worst thing this coach can do. */
+async function yesNo(question, textBlock, toClient) {
+  const note = toClient ? ` The text is a law student speaking directly to their client, Dave, so "you" and "your" in the text mean Dave.` : "";
+  const out = await callCoach([
+    { role: "system", content: "You answer yes or no questions about a text. Reply with one word: yes or no." + note },
+    { role: "user", content: `TEXT:\n${textBlock}\n\nQUESTION: ${question}\nAnswer no if the text says the opposite, only hints at it, or does not mention it. Reply with one word: yes or no.` },
+  ], { temperature: 0, max_tokens: 4 });
+  return /^\s*yes/i.test(out);
+}
+
+async function checkPoints(key, textBlock, toClient) {
+  const p = COACH_POINTS[key];
+  const Q = POINT_QUESTIONS[key] || { kp: {}, err: {} };
+  const strip = s => s.replace(/\s*\([^)]*\)/g, "");
+  const anyYes = async qs => (await Promise.all(qs.map(q => yesNo(q, textBlock, toClient)))).some(Boolean);
+  const [says, errors] = await Promise.all([
+    Promise.all(p.keyPoints.map(async k => (await anyYes(Q.kp[k.id] || [k.q || `Does the student clearly say that ${strip(k.text)}?`])) ? k.id : null)),
+    Promise.all(p.errors.map(async e => {
+      const spec = Q.err[e.id];
+      const qs = spec ? spec.qs : [e.q || `Does the student clearly say ${strip(e.text)}?`];
+      if (!(await anyYes(qs))) return null;
+      const veto = spec && spec.neg ? await yesNo(`Does the student say that ${spec.neg}?`, textBlock, toClient) : (e.qOpp ? await yesNo(e.qOpp, textBlock, toClient) : false);
+      return veto ? null : e.id;
+    })),
+  ]);
+  return { says: says.filter(Boolean), errors: errors.filter(Boolean) };
+}
+
+function quotesAsCheckText(key, quotes) {
+  return key === "communication"
+    ? quotes.map(q => `The client had said: "${clip(q.dave, 220)}"\nThe student replied: "${clip(q.text, 500)}"`).join("\n\n")
+    : quotes.map(q => `"${clip(q.text, 500)}"`).join("\n");
+}
+
+/* Errors are always worded as "could be read as", never as a flat accusation. */
+function readAs(p, e) {
+  return e.read || `Your words could be read as saying that ${e.text}.`;
+}
+
+/* Feedback wording is assembled here from the vetted point/mistake text. */
+function composeFeedback(key, quotes, consult, dr) {
+  const p = COACH_POINTS[key];
+  const byId = id => p.keyPoints.find(k => k.id === id);
+  const lines = [];
+  if (!quotes.length) {
+    lines.push("You didn't cover this with Dave, so here is what the Act says:");
+    p.keyPoints.slice(0, 3).forEach(k => lines.push(`- ${cap(k.text)}.`));
+    if (dr.says.length) lines.push(`\nYour answer just now covered: ${dr.says.map(id => byId(id).text).join("; ")}.`);
+    p.errors.filter(e => dr.errors.includes(e.id)).forEach(e => lines.push(`\nAbout your answer just now: ${readAs(p, e)} ${e.fix}`));
+    return lines.join("\n");
+  }
+  lines.push(key === "communication" ? "Here is how your replies to Dave came across." : "Here is how what you told Dave measures up against the Act.");
+  if (consult.says.length) lines.push(`\nWhat you got right:\n${consult.says.map(id => `- ${cap(byId(id).text)}.`).join("\n")}`);
+  const missing = p.keyPoints.filter(k => !consult.says.includes(k.id));
+  const missingCore = missing.filter(k => k.core);
+  if (missingCore.length) {
+    lines.push(`\nWhat was missing:\n${missingCore.map(k => `- ${cap(k.tip || k.text)}.${dr.says.includes(k.id) ? " (You did say this just now.)" : ""}`).join("\n")}`);
+  }
+  const errs = p.errors.filter(e => consult.errors.includes(e.id));
+  if (errs.length) lines.push(`\nWorth double-checking:\n${errs.map(e => `- ${readAs(p, e)} ${e.fix}`).join("\n")}`);
+  const drErrs = p.errors.filter(e => dr.errors.includes(e.id) && !consult.errors.includes(e.id));
+  drErrs.forEach(e => lines.push(`\nAbout your answer just now: ${readAs(p, e)} ${e.fix}`));
+  const extras = missing.filter(k => !k.core).slice(0, 2);
+  if (extras.length) lines.push(`\n${key === "communication" ? "Also aim for" : "Worth knowing as well"}:\n${extras.map(k => `- ${cap(k.tip || k.text)}.`).join("\n")}`);
+  return lines.join("\n");
+}
+
+function composeVerdict(key, quotes, consult, dr) {
+  const p = COACH_POINTS[key];
+  const core = p.keyPoints.filter(k => k.core);
+  // An error is worth flagging whether it happened live with Dave (consult)
+  // or only surfaced when the student was asked to justify it just now (dr)
+  // -- repeating a mistake under direct questioning is, if anything,
+  // stronger evidence of a misunderstanding, not weaker. This used to only
+  // check consult.errors, so a mistake pickEvidence's quotes didn't happen
+  // to include -- or one made only in the debrief reply -- was correctly
+  // caught and explained in the live feedback text (composeFeedback's
+  // "About your answer just now"), but silently vanished from the verdict
+  // tag and note, and so from the persisted Learning Summary too.
+  const liveErr = p.errors.find(e => consult.errors.includes(e.id));
+  const drOnlyErr = !liveErr && p.errors.find(e => dr.errors.includes(e.id));
+  if (!quotes.length) {
+    if (drOnlyErr) {
+      return { tag: "gap", note: `This didn't come up with Dave. When you were asked just now: ${readAs(p, drOnlyErr)} ${drOnlyErr.fix}` };
+    }
+    return { tag: "gap", note: "This didn't come up with Dave." + (core.every(k => dr.says.includes(k.id)) ? " Your answer in the debrief covered the key point." : "") };
+  }
+  const err = liveErr || drOnlyErr;
+  if (err) {
+    const justNow = drOnlyErr && !liveErr ? " (This came up when you were asked to justify it just now.)" : "";
+    return { tag: "revisit", note: `To double-check: ${readAs(p, err)} ${err.fix}${justNow}` };
+  }
+  const missingCore = core.filter(k => !consult.says.includes(k.id));
+  if (missingCore.length) {
+    const later = missingCore.every(k => dr.says.includes(k.id));
+    return { tag: "revisit", note: `Missing from what you told Dave: ${missingCore.map(k => k.tip || k.text).join("; ")}.${later ? " You raised it in the debrief." : ""}` };
+  }
+  return { tag: "solid", note: `You covered the key point: ${core.map(k => k.text).join("; ")}.` };
+}
+
+async function answerQuestion(text) {
+  const keys = DEBRIEF_LEGAL_ORDER;
+  const allowed = allowedSections(keys);
+  const fallback = "I can't confirm that from the Act text I have. Check the Act itself or your notes.";
+  const system = `You are a law tutor answering a student's follow-up question at the end of a debrief. Use ONLY the Act text below. If the answer is not in it, reply exactly: "${fallback}" Answer in at most 3 plain sentences, no markdown, and only cite section numbers that appear in the text below. You cannot see the consultation here: if the student asks about their own performance or tone, say it was covered in the topic feedback and the summary.
+
+${keys.map(k => `${COACH_POINTS[k].label}:\n${COACH_POINTS[k].act}`).join("\n\n")}`;
+  const messages = [{ role: "system", content: system }, { role: "user", content: clip(text, 600) }];
+  let out = "";
+  try { out = await callCoach(messages, { temperature: 0.2, max_tokens: 300 }); } catch (err) { out = ""; }
+  return feedbackProblem(out, allowed) ? fallback : out.trim();
+}
+
+/* ---- Debrief flow ---- */
+function newDebrief() {
+  const order = [...DEBRIEF_LEGAL_ORDER];
+  const citations = analyseCitations();
+  const verdicts = {};
+  if (citations.length) order.push("citations");
+  else verdicts.citations = { key: "citations", label: CITATIONS_TOPIC.label, tag: "gap", note: "You didn't cite any section to Dave.", quotes: [], lookup: CITATIONS_TOPIC.lookup };
+  order.push("communication");
+  return { order, i: 0, awaiting: false, done: false, retryAsk: false, current: null, verdicts, citations };
+}
+
+async function askCurrentPoint() {
+  const key = debrief.order[debrief.i];
+  const total = debrief.order.length;
+  const head = `Topic ${debrief.i + 1} of ${total}: ${topicMeta(key).label}`;
+  let text, current;
+  if (key === "citations") {
+    text = citationsQuestion(debrief.citations).replace("{IDX}", debrief.i + 1).replace("{TOTAL}", total);
+    current = { quotes: [] };
+  } else {
+    const quotes = pickEvidence(key);
+    const question = key === "communication"
+      ? "How do you think that came across to Dave, given what he had just asked you?"
+      : QUESTION_TEMPLATES[debrief.i % QUESTION_TEMPLATES.length];
+    text = quotes.length
+      ? `${head}\n${quotesForDisplay(quotes)}\n\n${question}`
+      : `${head}\nOn this topic (${COACH_POINTS[key].topic}) I couldn't find an answer from you in the consultation. If Dave asked you now, what would you tell him, and why?`;
+    current = { quotes };
+  }
+  if (debriefEnded) return;
+  debrief.current = current;
+  postCoach(text);
+  debrief.awaiting = true;
+}
+
+async function giveFeedbackAndAdvance(reply) {
+  const key = debrief.order[debrief.i];
+  const cur = debrief.current;
+  let feedback, verdict;
+  if (key === "citations") {
+    feedback = citationsFeedback(debrief.citations);
+    verdict = citationsVerdict(debrief.citations);
+  } else {
+    const [consult, dr] = await Promise.all([
+      cur.quotes.length ? checkPoints(key, quotesAsCheckText(key, cur.quotes), true) : Promise.resolve({ says: [], errors: [] }),
+      checkPoints(key, `"${clip(reply, 600)}"`, false),
+    ]);
+    feedback = `${composeFeedback(key, cur.quotes, consult, dr)}\n\nTo check it yourself, read ${topicMeta(key).lookup}.`;
+    verdict = composeVerdict(key, cur.quotes, consult, dr);
+  }
+  if (debriefEnded) return;
+  postCoach(feedback);
+  debrief.verdicts[key] = {
+    key, label: topicMeta(key).label, tag: verdict.tag, note: verdict.note,
+    quotes: key === "citations" ? debrief.citations.map(c => c.shown) : cur.quotes.map(q => q.text),
+    lookup: topicMeta(key).lookup,
+  };
+  debrief.i++;
+  if (debrief.i >= debrief.order.length) {
+    debrief.done = true;
+    postCoach(`That's every topic. When you're ready, press "End debrief & get summary" for your learning summary. You can also ask me a question first; I can only answer from the Act text I have.`);
+  } else {
+    try { await askCurrentPoint(); } catch (err) { debrief.retryAsk = true; throw err; }
+  }
+}
+
+/* A student message during the debrief: an answer to the current topic, a
+   retry after a failed step, or (once every topic is done) a follow-up
+   question. */
+async function sendCoachMessage(text) {
+  coachHistory.push({ role: "you", content: text });
+  renderMessage("you", text);
+  logToServer("student-reflection", text);
+  setBusy(true);
+  try {
+    if (!debrief) return;
+    if (debrief.done) {
+      postCoach(/^\s*(thanks|thank you|ok|okay|noted|cool|got it)\b/i.test(text)
+        ? `You're welcome. Press "End debrief & get summary" whenever you're ready.`
+        : await answerQuestion(text));
+      return;
+    }
+    if (debrief.retryAsk) { debrief.retryAsk = false; try { await askCurrentPoint(); } catch (err) { debrief.retryAsk = true; throw err; } return; }
+    if (!debrief.awaiting) return;
+    debrief.awaiting = false;
+    try { await giveFeedbackAndAdvance(text); } catch (err) { debrief.awaiting = true; throw err; }
+  } catch (err) {
+    renderMessage("system-note", "⚠ Could not get the coach's reply (" + err.message + "). Send your message again to retry.");
+  } finally {
+    setBusy(false);
+  }
+}
+
+/* ============================================================
+   CONVERSATION FLOW
+   ============================================================ */
+function buildOpeningLine() {
+  const greetingName = studentName ? `, ${studentName}` : "";
+  return `Thanks for seeing me${greetingName}. I still can't believe this happened — I saw my mate Greg in the newspaper, collecting a RM5,000 prize for a photo competition, and it was MY photo, one I took on our trip to the Mulu Caves. I called him straight away about it, and all he said was that I'd posted it on my Facebook, so it's basically free for anyone to use. Is that actually true? Can he really just take it because I put it online?`;
+}
+
+function startSession() {
+  const openingLine = buildOpeningLine();
+  history = [{ role: "dave", content: openingLine }];
+  renderMessage("dave", openingLine);
+  logToServer("dave", openingLine);
+}
+
+async function sendUserMessage() {
+  const text = userInput.value.trim();
+  if (!text || busy || debriefEnded) return;
+  userInput.value = "";
+  if (phase === "coach") {
+    await sendCoachMessage(text);
+    return;
+  }
+
+  history.push({ role: "you", content: text });
+  renderMessage("you", text);
+  logToServer("you", text);
+  setBusy(true);
+
+  try {
+    // Let the previous turn's background updates finish first: otherwise Dave
+    // answers from a stale checklist, and the overlapping calls make the
+    // server return spurious 400s.
+    await pendingUpdates;
+    // If the "you've been going in circles" note is about to fire, clear the
+    // streak now so it only fires once and doesn't re-trigger every turn.
+    const wasStuck = stallStreak >= STALL_LIMIT;
+    // Capture what Dave has already asked BEFORE this turn's reply is
+    // generated, so the question guard below has something to compare against.
+    const priorQuestions = priorDaveQuestions();
+    const wrapUp = isWrapUpTurn();
+    const daveMessages = [
+      { role: "system", content: daveSystemPrompt(text) },
+      ...daveHistoryMessages(),
+    ];
+    let reply = await callLLM(daveMessages, { temperature: 0.85, max_tokens: 300 });
+
+    // Formatting guard: small local models sometimes leak the system prompt's
+    // own bullet-point formatting (used for internal instructions like
+    // unresolvedText) into Dave's reply, instead of natural spoken sentences.
+    // Regenerate once with an explicit correction rather than showing the
+    // student a client who talks like a bulleted document.
+    if (looksLikeListFormatting(reply)) {
+      try {
+        const deListMessages = [
+          { role: "system", content: daveSystemPrompt(text) + `\n\nCRITICAL — YOUR LAST DRAFT USED A BULLETED OR
+NUMBERED LIST: that is not how a person talks out loud. Say the exact same things again, but as flowing natural
+sentences — no dashes, bullets, numbers, or line breaks acting as list markers.` },
+          ...daveHistoryMessages(),
+        ];
+        const deListedReply = await callLLM(deListMessages, { temperature: 0.7, max_tokens: 300 });
+        if (!looksLikeListFormatting(deListedReply)) {
+          reply = deListedReply;
+        }
+      } catch (err) {
+        console.warn("Formatting-guard retry failed:", err.message);
+      }
+    }
+
+    // Question guard (see QUESTION GUARD): at most ONE question per reply,
+    // and never one Dave has already asked. If a repeat slips through, retry
+    // once with the repeated question named; if it still repeats, drop the
+    // question rather than show the student the same one again.
+    reply = keepOneQuestion(reply, !wrapUp);
+    let repeated = wrapUp ? null : repeatedQuestion(reply, priorQuestions);
+    if (repeated) {
+      try {
+        const antiRepeatMessages = [
+          { role: "system", content: daveSystemPrompt(text) + `\n\nCRITICAL — YOU ALREADY ASKED THIS: "${repeated}". Do not ask
+it again or anything that means the same thing, even reworded. Either ask ONE different question, or, if you have
+nothing new to ask, say you're done for now and ask nothing.` },
+          ...daveHistoryMessages(),
+        ];
+        reply = keepOneQuestion(await callLLM(antiRepeatMessages, { temperature: 0.9, max_tokens: 300 }), true);
+        repeated = repeatedQuestion(reply, priorQuestions);
+      } catch (err) {
+        console.warn("Question-guard retry failed:", err.message);
+      }
+      if (repeated) reply = keepOneQuestion(reply, false);
+    }
+
+    // Elaboration guard (see ELABORATION GUARD / looksLikeDaveElaboration):
+    // Dave sometimes "helpfully" infers a conclusion the advisor never
+    // actually stated, doing the student's reasoning for them instead of
+    // asking them to spell it out. One retry, turning it into a question;
+    // if it still elaborates, leave it -- looping further here costs more
+    // than it's worth (same one-retry trade-off as the guards above).
+    // Skipped on a wrap-up turn, where Dave is deliberately summarising the
+    // whole plan back rather than reacting to a single new point.
+    if (!wrapUp) {
+      try {
+        if (await looksLikeDaveElaboration(text, reply)) {
+          const deElaborateMessages = [
+            { role: "system", content: daveSystemPrompt(text) + `\n\nCRITICAL — YOUR LAST DRAFT ADDED YOUR OWN
+CONCLUSION: you just asserted something your advisor didn't actually say (see HOW YOU UNDERSTAND THINGS above).
+Redo this reply, but instead of stating that conclusion yourself, turn it into a genuine question asking your
+advisor to spell it out.` },
+            ...daveHistoryMessages(),
+          ];
+          const deElaborated = await callLLM(deElaborateMessages, { temperature: 0.7, max_tokens: 300 });
+          if (deElaborated.trim()) reply = keepOneQuestion(deElaborated, true);
+        }
+      } catch (err) {
+        console.warn("Elaboration-guard check failed:", err.message);
+      }
+    }
+    if (!reply.trim()) reply = "Fine. I think I've got what I need for now.";
+
+    // Advance whichever counter this reply was ACTUALLY built to move
+    // forward, per lastForcedKind (set by daveSystemPrompt's forcedNote
+    // chain -- see the comment there). Deliberately does NOT re-derive this
+    // from current state (e.g. unresolvedItems().length === 0): by the time
+    // the reply comes back, a probe round can have already resolved the
+    // last checklist item, and re-deriving from post-turn state would flip
+    // closingAsked true without Dave ever having actually asked for the
+    // walkthrough.
+    if (lastForcedKind === "closingProbe") {
+      closingProbeRounds += 1;
+    } else if (lastForcedKind === "probe" && lastForcedProbeKey) {
+      probeRounds[lastForcedProbeKey] += 1;
+      if (probeRounds[lastForcedProbeKey] >= PROBE_ROUNDS_REQUIRED) checklist[lastForcedProbeKey] = true;
+    } else if (lastForcedKind === "closingCheck") {
+      closingAsked = true;
+    }
+
+    history.push({ role: "dave", content: reply });
+    renderMessage("dave", reply);
+    logToServer("dave", reply);
+    setStatus(true, "Connected");
+    daveTurnCount += 1;
+    if (wasStuck) stallStreak = 0;
+
+    // fire-and-forget background updates — neither blocks the chat
+    updateFactDisclosure();
+    pendingUpdates = updateAssessment(text, reply);
+  } catch (err) {
+    renderMessage("system-note", "⚠ Could not reach the local model (" + err.message + "). Check server settings.");
+    setStatus(false, "Connection error");
+  } finally {
+    setBusy(false);
+  }
+}
+
+/* Builds the plain-text transcript of the Dave consultation, used both as
+   context fed to the coach and as the "official record" saved in exports. */
+function buildDaveTranscriptText() {
+  return history.map(h => (h.role === "dave" ? "DAVE: " : "ADVISOR: ") + h.content).join("\n");
+}
+
+/* Same idea for the coaching debrief itself. */
+function buildCoachTranscriptText() {
+  return coachHistory.map(h => (h.role === "coach" ? "COACH: " : "STUDENT: ") + h.content).join("\n");
+}
+
+/* Every coach-persona chat call goes through here so an empty reply is an
+   error, never a blank bubble. (v1.13/v1.14's thinking model could spend its
+   whole token budget reasoning and return empty content.) */
+async function callCoach(messages, { temperature = 0.7, max_tokens = 900 } = {}) {
+  const out = await callLLM(messages, { temperature, max_tokens, model: config.coachModel });
+  if (!out.trim()) throw new Error("the coach model returned an empty reply");
+  return out;
+}
+
+async function updateAssessment(userText, daveReply) {
+  try {
+    const messages = [
+      { role: "system", content: assessmentSystemPrompt() },
+      { role: "user", content: `LATEST EXCHANGE:\nAdvisor: ${userText}\nDave: ${daveReply}` },
+    ];
+    const raw = await callLLM(messages, { temperature: 0.1, max_tokens: 150 });
+    const parsed = extractJSON(raw);
+    if (!parsed) return;
+    CHECKLIST_DEFS.forEach(c => {
+      if (parsed[c.key] === true) checklistCandidate[c.key] = true;
+    });
+    if (parsed.mood_shift === "improve" || parsed.mood_shift === "worsen" || parsed.mood_shift === "same") {
+      applyMoodShift(parsed.mood_shift);
+      if (parsed.mood_shift === "improve") {
+        stallStreak = 0;
+      } else {
+        stallStreak += 1;
+      }
+    }
+  } catch (err) {
+    // Silent fail — checklist/mood just don't update this turn; prior state is preserved.
+    console.warn("Assessment update failed:", err.message);
+  }
+}
+
+/* Case-file sidebar: a fact is recorded once DAVE himself has said it. Dave is
+   the only source, so this is plain keyword matching on his own messages --
+   no model request (it used to be a third request every turn, which was too
+   much load with several students at once). Patterns are deliberately loose;
+   this only fills in a sidebar and feeds nothing else. */
+const FACT_PATTERNS = {
+  trip_location: /\b(mulu|caves?)\b/i,
+  photos_taken: /\b(took|taken)\b[^.?!]*\b(photos?|pics?|pictures?)\b|\bphone\b[^.?!]*\b(photos?|pics?|snaps?|shots?)\b|\b(photos?|pics?|pictures?)\b[^.?!]*\b(on|with) my phone\b/i,
+  posted_facebook: /\bfacebook\b/i,
+  greg_saw_photos: /\bgreg\b[^.?!]*\b(saw|seen|found|spotted)\b/i,
+  greg_submitted: /\b(entered|submitted|sent)\b[^.?!]*\b(competition|contest)\b|\b(competition|contest)\b/i,
+  photo_won: /\b(won|win|winning|winner)\b/i,
+  greg_collected_prize: /\b(newspaper|ceremony|in the paper|collected the prize|accepted the prize)\b/i,
+  wants_acknowledgment_and_money: /\b(i (just |really |still )?(want|need|deserve)|i'd like|give me|owed)\b[^.?!]*\b(rm ?5,?000|money|prize|credit|acknowledg\w*|recogni\w*)\b|\backnowledg\w*/i,
+  greg_arg_no_rights: /\b(don't|do not|can't|cannot)\b[^.?!]*\b(any |even have )?rights?\b|\bno rights\b/i,
+  greg_arg_facebook: /\bfacebook\b[^.?!]*\b(gave up|give up|lost|waived|accessible|anyone)\b|\b(gave up|give up|lost|waived)\b[^.?!]*\bfacebook\b/i,
+  greg_arg_skill: /\b(tom|snapp\w*|lucky|nothing special|no (real )?skill)\b/i,
+};
+
+function updateFactDisclosure() {
+  const daveText = history.filter(h => h.role === "dave").map(h => h.content).join("\n");
+  let changed = false;
+  FACT_DEFS.forEach(f => {
+    const pattern = FACT_PATTERNS[f.key];
+    if (!factState[f.key] && pattern && pattern.test(daveText)) { factState[f.key] = true; changed = true; }
+  });
+  if (changed) renderCaseFile();
+}
+
+/* ============================================================
+   END SESSION / SCORECARD
+   ============================================================ */
+/* Ends the Dave consultation and transitions straight into the coach
+   debrief -- no separate "start debrief" step, since the whole point is to
+   reflect on the consultation while it's fresh. */
+async function endSession() {
+  if (sessionEnded) return;
+  sessionEnded = true;
+  sendBtn.disabled = true;
+  endBtn.disabled = true;
+  stampEl.textContent = "Consultation Complete";
+  stampEl.classList.add("complete");
+  renderMessage("system-note", "— Consultation with Dave ended. Starting your debrief… —");
+  logToServer("session-end", "Student pressed End consultation & start debrief.");
+  phase = "coach";
+  typingIndicator.textContent = "Coach is typing…";
+  await startCoachPhase();
+}
+
+/* Starts the debrief: builds the topic list from what the student actually
+   did, then asks the first topic. Split out from endSession() so a failure
+   (e.g. a connection hiccup) can be retried via the same button without
+   re-running the Dave -> coach transition. */
+async function startCoachPhase() {
+  setBusy(true);
+  try {
+    if (!debrief) debrief = newDebrief();
+    if (!coachHistory.length) {
+      postCoach(`Let's go back over the consultation${studentName ? ", " + studentName : ""}. I'll take ${debrief.order.length} topics one at a time: I'll show you what you told Dave, ask you to explain it, then tell you straight what the Copyright Act 1987 says. Press "End debrief & get summary" whenever you like.`);
+    }
+    await askCurrentPoint();
+    endBtn.textContent = "End debrief & get summary";
+    userInput.placeholder = "Reply to your coach…";
+  } catch (err) {
+    renderMessage("system-note", "⚠ Could not start the debrief (" + err.message + "). Check server settings, then press the button below to try again.");
+    endBtn.textContent = "Retry: start debrief";
+  } finally {
+    setBusy(false);
+    endBtn.disabled = false;
+  }
+}
+
+function tagClass(tag) {
+  if (tag === "solid") return "tag-solid";
+  if (tag === "revisit") return "tag-revisit";
+  return "tag-gap";
+}
+
+function tagLabel(tag) {
+  if (tag === "solid") return "Got this";
+  if (tag === "revisit") return "Worth revisiting";
+  if (tag === "skipped") return "Not reviewed";
+  return "Didn't come up";
+}
+
+/* Plain-language reflection built directly from the stored verdicts: no
+   model call, so it can't fail or invent anything, and no scores. */
+function buildSummaryText(topics) {
+  const names = tag => topics.filter(t => t.tag === tag).map(t => t.label).join(", ");
+  const parts = [];
+  if (names("solid")) parts.push(`What held up: ${names("solid")}.`);
+  if (names("revisit")) parts.push(`Worth revisiting: ${names("revisit")}.`);
+  if (names("gap")) parts.push(`Didn't come up with Dave: ${names("gap")}.`);
+  if (names("skipped")) parts.push(`Not reviewed (you ended the debrief early): ${names("skipped")}.`);
+  const study = topics.filter(t => t.tag === "revisit" || t.tag === "gap").map(t => t.lookup).filter(Boolean);
+  if (study.length) parts.push(`Before you try again, read: ${study.join("; ")}.`);
+  parts.push("This is not a mark. It is a list of where to look next.");
+  return parts.join(" ");
+}
+
+/* Ends the debrief and shows the learning summary, built from the verdicts
+   stored as each topic was discussed (see COACH DEBRIEF above). Deliberately
+   qualitative, never a score. */
+function endDebrief() {
+  if (debriefEnded) return;
+  debriefEnded = true;
+  sendBtn.disabled = true;
+  endBtn.disabled = true;
+  renderMessage("system-note", "— Debrief ended. Here is your learning summary. —");
+  logToServer("session-end", "Student pressed End debrief & get summary.");
+  const all = [...DEBRIEF_LEGAL_ORDER, "citations", "communication"];
+  const topics = debrief
+    ? all.filter(k => debrief.verdicts[k] || debrief.order.includes(k)).map(k => debrief.verdicts[k]
+        || { key: k, label: topicMeta(k).label, tag: "skipped", note: "You ended the debrief before this topic.", quotes: [], lookup: topicMeta(k).lookup })
+    : [];
+  renderReport({ topics, summary: buildSummaryText(topics) });
+}
+
+let lastReport = null;
+
+/* Shown as a popup modal (not an inline page section) so it doesn't push
+   the page layout around — closing it returns straight to the chat
+   exactly where you left it. Deliberately no numbers anywhere: this is a
+   self-study reflection, not a scorecard. */
+function renderReport(rawData) {
+  lastReport = rawData;
+  logToServer("report", JSON.stringify(rawData));
+  const esc = s => String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;");
+  const list = document.getElementById("criteriaList");
+  list.innerHTML = "";
+  (rawData.topics || []).forEach(t => {
+    const row = document.createElement("div");
+    row.className = "criterion";
+    const said = t.key === "citations" ? "You cited: " : "You said: ";
+    const quotes = (t.quotes || []).map(q => `<div class="quote">${said}“${esc(clip(q, 300))}”</div>`).join("");
+    const lookup = t.tag === "solid" || !t.lookup ? "" : `<div class="lookup">Look up: ${esc(t.lookup)}</div>`;
+    row.innerHTML = `<div class="name">${esc(t.label)}</div><div class="band ${tagClass(t.tag)}">${tagLabel(t.tag)}</div>${quotes}<div class="note">${esc(t.note)}</div>${lookup}`;
+    list.appendChild(row);
+  });
+  const overall = document.getElementById("overallBox");
+  overall.innerHTML = `<p>${esc(rawData.summary)}</p>`;
+  document.getElementById("scorecardOverlay").classList.add("open");
+  const viewBtn = document.getElementById("viewAssessmentBtn");
+  if (viewBtn) viewBtn.style.display = "inline-block";
+}
+
+/* Formats "now" as YYYY-MM-DD_HH-MM-SS for filenames — safe on all OSes
+   (no colons) and sorts correctly, so repeated test runs stay in order. */
+function timestampForFilename() {
+  const d = new Date();
+  const pad = n => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}_${pad(d.getHours())}-${pad(d.getMinutes())}-${pad(d.getSeconds())}`;
+}
+
+function exportReport() {
+  if (!lastReport) return;
+  const lines = [];
+  lines.push("ADVISE DAVE — LEARNING SUMMARY");
+  lines.push("");
+  lines.push("App version: " + APP_VERSION);
+  lines.push("Module: LAW65004 Intellectual Property Law — Topic 2: Copyright");
+  lines.push("Note: this is a self-study reflection, not a graded assessment.");
+  lines.push("Date: " + new Date().toLocaleString());
+  lines.push("");
+  lines.push("------------------------------------------------------------");
+  lines.push("");
+  (lastReport.topics || []).forEach(t => {
+    lines.push((t.label || t.key).toUpperCase());
+    lines.push(tagLabel(t.tag));
+    (t.quotes || []).forEach(q => lines.push((t.key === "citations" ? "You cited: " : "You said: ") + "“" + q + "”"));
+    lines.push("");
+    lines.push(t.note || "");
+    if (t.tag !== "solid" && t.lookup) lines.push("Look up: " + t.lookup);
+    lines.push("");
+  });
+  lines.push("------------------------------------------------------------");
+  lines.push("OVERALL REFLECTION");
+  lines.push("");
+  lines.push(lastReport.summary || "");
+  lines.push("");
+  lines.push("------------------------------------------------------------");
+  lines.push("CONSULTATION TRANSCRIPT (with Dave)");
+  lines.push("");
+  history.forEach(h => {
+    lines.push((h.role === "dave" ? "DAVE: " : "ADVISOR: ") + h.content);
+    lines.push("");
+  });
+  lines.push("------------------------------------------------------------");
+  lines.push("COACHING DEBRIEF TRANSCRIPT");
+  lines.push("");
+  coachHistory.forEach(h => {
+    lines.push((h.role === "coach" ? "COACH: " : "STUDENT: ") + h.content);
+    lines.push("");
+  });
+
+  const blob = new Blob([lines.join("\n")], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "advise-dave-summary_" + APP_VERSION + "_" + timestampForFilename() + ".txt";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+/* Opens the user's email client with the learning summary pre-filled.
+   mailto: links can't attach files (a browser security restriction, not
+   something fixable client-side) so the full transcripts aren't included —
+   the hint text next to the button tells the student to attach the
+   downloaded .txt manually if they want the lecturer to see them. */
+function emailLecturer() {
+  if (!lastReport) return;
+  const stamp = timestampForFilename();
+  const subject = `Advise Dave Learning Summary — ${APP_VERSION} — ${stamp}`;
+  const bodyLines = [];
+  bodyLines.push(`App version: ${APP_VERSION}`);
+  bodyLines.push("Note: this is a self-study reflection, not a graded assessment.");
+  bodyLines.push("");
+  bodyLines.push(lastReport.summary || "");
+  bodyLines.push("");
+  (lastReport.topics || []).forEach(t => {
+    bodyLines.push(`${t.label || t.key}: ${tagLabel(t.tag)}`);
+    (t.quotes || []).forEach(q => bodyLines.push((t.key === "citations" ? "You cited: " : "You said: ") + "“" + q + "”"));
+    bodyLines.push(t.note || "");
+    bodyLines.push("");
+  });
+  bodyLines.push("(Full transcripts not included here — mailto links can't attach files. Please attach the downloaded advise-dave-summary_" + APP_VERSION + "_" + stamp + ".txt if you'd like the lecturer to see the full record.)");
+  const body = bodyLines.join("\n");
+  const mailto = `mailto:${encodeURIComponent(config.lecturerEmail || "")}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.location.href = mailto;
+}
+
+/* ============================================================
+   SETTINGS MODAL
+   ============================================================ */
+const settingsOverlay = document.getElementById("settingsOverlay");
+const endpointInput = document.getElementById("endpointInput");
+const modelInput = document.getElementById("modelInput");
+const coachModelInput = document.getElementById("coachModelInput");
+const lecturerEmailInput = document.getElementById("lecturerEmailInput");
+const testResult = document.getElementById("testResult");
+
+function openSettings() {
+  endpointInput.value = config.endpoint;
+  modelInput.value = config.model;
+  coachModelInput.value = config.coachModel;
+  lecturerEmailInput.value = config.lecturerEmail;
+  testResult.textContent = "";
+  testResult.className = "test-result";
+  settingsOverlay.classList.add("open");
+}
+function closeSettings() { settingsOverlay.classList.remove("open"); }
+
+document.getElementById("settingsBtn").addEventListener("click", openSettings);
+document.getElementById("settingsCancel").addEventListener("click", closeSettings);
+document.getElementById("settingsSave").addEventListener("click", () => {
+  config.endpoint = endpointInput.value.trim() || DEFAULT_ENDPOINT;
+  config.model = modelInput.value.trim() || DEFAULT_MODEL;
+  config.coachModel = coachModelInput.value.trim() || DEFAULT_COACH_MODEL;
+  config.lecturerEmail = lecturerEmailInput.value.trim();
+  localStorage.setItem("advisedave_endpoint", config.endpoint);
+  localStorage.setItem("advisedave_model", config.model);
+  localStorage.setItem("advisedave_coach_model", config.coachModel);
+  localStorage.setItem("advisedave_lecturer_email", config.lecturerEmail);
+  closeSettings();
+  checkConnection();
+});
+document.getElementById("testConnBtn").addEventListener("click", async () => {
+  testResult.textContent = "Testing…";
+  testResult.className = "test-result";
+  const prevEndpoint = config.endpoint;
+  config.endpoint = endpointInput.value.trim();
+  const results = [];
+  try {
+    await callLLM([{ role: "user", content: "Reply with the single word: OK" }], { max_tokens: 10, model: modelInput.value.trim() });
+    results.push("✓ Dave's model connected.");
+  } catch (err) {
+    results.push("✗ Dave's model: " + err.message);
+  }
+  try {
+    await callLLM([{ role: "user", content: "Reply with the single word: OK" }], { max_tokens: 10, model: coachModelInput.value.trim() });
+    results.push("✓ Coach's model connected.");
+  } catch (err) {
+    results.push("✗ Coach's model: " + err.message);
+  }
+  config.endpoint = prevEndpoint;
+  testResult.textContent = results.join("  ");
+  testResult.className = "test-result " + (results.every(r => r.startsWith("✓")) ? "ok" : "fail");
+});
+
+async function checkConnection() {
+  try {
+    await callLLM([{ role: "user", content: "Reply with the single word: OK" }], { max_tokens: 10 });
+    setStatus(true, "Connected to " + config.model);
+  } catch (err) {
+    setStatus(false, "Not connected — check server settings");
+  }
+}
+
+/* ============================================================
+   MOBILE BRIEF TOGGLE
+   ============================================================ */
+document.getElementById("briefToggle").addEventListener("click", () => {
+  document.getElementById("briefPanel").classList.toggle("collapsed");
+});
+
+/* ============================================================
+   EVENT WIRING
+   ============================================================ */
+sendBtn.addEventListener("click", sendUserMessage);
+userInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    sendUserMessage();
+  }
+});
+endBtn.addEventListener("click", () => {
+  if (phase === "dave") { endSession(); return; }
+  if (endBtn.textContent.startsWith("Retry")) { startCoachPhase(); return; }
+  endDebrief();
+});
+document.getElementById("exportBtn").addEventListener("click", exportReport);
+document.getElementById("emailLecturerBtn").addEventListener("click", emailLecturer);
+document.getElementById("backToChatBtn").addEventListener("click", () => {
+  document.getElementById("scorecardOverlay").classList.remove("open");
+});
+document.getElementById("viewAssessmentBtn").addEventListener("click", () => {
+  document.getElementById("scorecardOverlay").classList.add("open");
+});
+document.getElementById("restartBtn").addEventListener("click", () => {
+  if (!confirm("Restart the consultation from the beginning? This will clear the current transcript.")) return;
+  chatScroll.innerHTML = "";
+  CHECKLIST_DEFS.forEach(c => { checklist[c.key] = false; checklistCandidate[c.key] = false; probeRounds[c.key] = 0; probeCitation[c.key] = null; });
+  FACT_DEFS.forEach(f => factState[f.key] = false);
+  renderCaseFile();
+  moodScore = 30;
+  stallStreak = 0;
+  daveTurnCount = 0;
+  closingAsked = false;
+  closingProbeRounds = 0;
+  lastForcedKind = "none";
+  lastForcedProbeKey = null;
+  renderMood();
+  document.getElementById("viewAssessmentBtn").style.display = "none";
+  document.getElementById("scorecardOverlay").classList.remove("open");
+  coachHistory = [];
+  lastReport = null;
+  debrief = null;
+  phase = "dave";
+  sessionEnded = false;
+  debriefEnded = false;
+  sendBtn.disabled = false;
+  endBtn.disabled = false;
+  endBtn.textContent = "End consultation & start debrief";
+  userInput.placeholder = "Advise Dave…";
+  typingIndicator.textContent = "Dave is typing…";
+  stampEl.textContent = "In Progress";
+  stampEl.classList.remove("complete");
+  startSession();
+  updateFactDisclosure();
+});
+
+/* ============================================================
+   NAME GATE
+   Collects the student's name before the consultation starts, so Dave can
+   address them naturally and so server-side transcripts (see
+   transcript_logger.py) are filed under a human-readable name instead of a
+   bare UUID — useful when testing with multiple students at once.
+   ============================================================ */
+function beginConsultation() {
+  studentName = (document.getElementById("studentNameInput").value || "").trim();
+  document.getElementById("nameGateOverlay").classList.remove("open");
+  startSession();
+  renderCaseFile();
+  renderMood();
+  checkConnection();
+  updateFactDisclosure();
+}
+document.getElementById("nameGateStart").addEventListener("click", beginConsultation);
+document.getElementById("studentNameInput").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") { e.preventDefault(); beginConsultation(); }
+});
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.querySelectorAll("#versionTag, #versionTagFooter").forEach(el => {
+  el.textContent = el.id === "versionTag" ? APP_VERSION : "App " + APP_VERSION;
+});
+if (document.getElementById("briefPanel")) {
+  document.getElementById("briefPanel").classList.add("collapsed");
+}
+// startSession() and friends now run from beginConsultation(), once the
+// student has submitted (or skipped) the name gate above.
+</script>
+</body>
+</html>
