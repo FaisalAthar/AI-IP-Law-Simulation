@@ -1020,112 +1020,8 @@
    line) instead of a generic "he says I have no rights"; the CASE_FACTS
    "Greg's response" sentence and the static "Natural ways to raise" prompt
    text were reordered the same way for consistency.
-   v1.23: Dave was doing the student's job for them. Full-flow testing showed
-   a recurring pattern: told one point (e.g. "you own the copyright as the
-   photographer"), Dave would reply with an ELABORATED conclusion the student
-   never actually said (e.g. "so Greg's only getting recognition, not
-   ownership") -- a new inference, not a restatement. That defeats the point:
-   the exercise is for the STUDENT to spell out implications, not have Dave
-   infer them and hand them back polished. Added a prominent new rule (HOW
-   YOU UNDERSTAND THINGS, with a concrete wrong/right example) restricting
-   Dave to (a) briefly restating only the exact point just made, or (b)
-   asking a genuine question -- never adding a "so that means..." conclusion
-   of his own. Tightened the "you may repeat legal terms back" rule to cover
-   vocabulary only, not reasoning. The forced probe/closing-probe notes now
-   also say explicitly: ask it and stop, don't answer it yourself.
-   Live-tested against the exact failure seen before this fix (told "you own
-   the copyright as the photographer", Dave previously replied "so Greg's
-   only getting recognition, not ownership" -- the same reply, verbatim,
-   came back even with the new prompt rule in place. Prompt-only wasn't
-   enough (same lesson as the question-stacking fix in v1.17), so added a
-   code-level ELABORATION GUARD (looksLikeDaveElaboration): a cheap yes/no
-   model check on whether Dave's reply asserts a conclusion the advisor's
-   message didn't state, with one retry turning it into a question if so.
-   Also: the list-formatting guard only checked for line breaks, so an
-   inline, single-line "1. **X**... 2. **Y**..." (seen in the same full-flow
-   test) slipped through -- it now also flags markdown bold and inline
-   numbered enumeration.
-   Also caught while re-testing the fix above: the new elaboration guard's
-   retry sometimes turned the bad line into exactly the kind of clarifying
-   question this whole change wants ("What does that mean for me?"), but the
-   REPETITION GUARD then silently stripped it to nothing -- it matched
-   Dave's own opening question ("Sorry, why is that?") at the required
-   similarity purely because both share the single filler word "that", the
-   ONLY significant word in that short a prior question. repeatedQuestion()
-   and priorDaveQuestions() now also require the PRIOR question to have at
-   least 3 significant words before it can be used as a "you already asked
-   this" match, not just the new one.
    ============================================================ */
-
-/* v1.24 changes (see below where each applies):
-   1. composeVerdict() only ever checked consult.errors (mistakes found in
-      the quoted consultation evidence) when deciding a topic's tag/note for
-      the Learning Summary. A live-flow test found a mistake (repeating,
-      when asked to justify remedies, that police can just arrest Greg and
-      hand the money over) that the interactive debrief chat correctly
-      caught and explained via dr.errors ("About your answer just now...")
-      -- but since composeVerdict never looked at dr.errors, the SAME error
-      never reached the tag or note, so the persisted Learning Summary
-      showed Remedies as solid/"Got this" with no trace of it. Fixed by
-      having composeVerdict check dr.errors too when consult.errors is
-      clean, crediting it either way (repeating a mistake under direct
-      questioning is stronger evidence of it, not weaker).
-   2. Dave's Socratic probing (see PROBE_QUESTIONS in the earlier v1.21/
-      v1.23 comments) always assumed a law had already been named and jumped
-      straight to "what does it cover". User feedback: Dave was accepting
-      too much -- a student can give a fully correct-sounding ruling without
-      ever naming a law or section, and nothing forced Dave to ask for one.
-      Split into PROBE_QUESTIONS_WITH_LAW and _NO_LAW (mentionsLawOrSection
-      checks the advisor's message for a section number/statute/"the Act");
-      round 0 now asks "is this based on a law, and if so which one" when
-      none was named, and only moves to "what does it cover" once one has
-      been. This only fires once a point is a checklistCandidate (i.e. the
-      assessment judged the explanation adequate) -- a bare, incomplete
-      ruling the assessment itself doesn't yet accept still relies on the
-      standing (unenforced) prompt rule, not this code-level gate. */
-
-/* v1.25: found by the user re-reading a v1.24 transcript -- a student cited
-   "section 36" for infringement, and Dave's next line was about a totally
-   different topic (credit/recognition), not section 36 at all. Root cause:
-   the WITH_LAW probe question said "ask what THAT LAW covers" with no literal
-   anchor, so the small model fell back on the most memorable concrete phrase
-   still sitting in its own context -- the worked example under HOW YOU
-   UNDERSTAND THINGS, which happened to be about Greg/credit/ownership,
-   almost verbatim regardless of the actual topic. Two changes: (a) that
-   example is now from an unrelated tenant/landlord case, so there's nothing
-   in-domain to literally copy; (b) extractLawMention() pulls the exact
-   citation ("section 36", "s.13(2)(a)", ...) out of the advisor's message
-   and probeQuestionsWithLaw() bakes it into the instruction itself ("ask
-   what 'section 36' specifically covers"), remembered per topic in
-   probeCitation so round 1 still names it even if the advisor doesn't
-   repeat it. probeNote also now explicitly forbids asking about a different
-   point or the worked example.
-   Testing the fix above found the DEEPER cause: pendingProbeItem() picked
-   the wrong TOPIC, not just the wrong wording. Several checklist items often
-   turn candidate off one message (known assessment leniency), and the old
-   picker just took whichever was already mid-probe, else the first in
-   CHECKLIST_DEFS array order -- with no idea what the CURRENT message was
-   actually about. A student citing "section 36" for infringement got probed
-   about ownership instead, purely because ownership was earlier in the
-   array and had turned candidate first. Added CHECKLIST_SECTION_HINTS (the
-   section numbers each point is characteristically argued under, in this
-   fixed case study) so a cited section that matches a still-unresolved
-   candidate's hints wins outright, before falling back to the old
-   round/array-order logic. probeCitation is also now only captured at a
-   topic's own round 0, not overwritten by an unrelated citation mentioned
-   while a different topic happens to be mid-probe.
-   Chased further: even with CHECKLIST_SECTION_HINTS added, the content
-   match was only searched among checklistCandidate topics -- and that flag
-   comes from the background assessment call, which lags a turn behind. So a
-   citation for a topic the assessment hadn't flagged yet still lost out to
-   an already-candidate (but unrelated) topic. Live evidence: two full
-   rounds genuinely discussing infringement/s.36 got credited to
-   checklist.ownership (resolving it), while checklist.infringement sat
-   untouched despite being the topic actually discussed. Fixed by having
-   pendingProbeItem() check the citation against ALL unresolved topics
-   first, not just already-candidate ones -- a citation is a strong enough
-   signal to probe that topic immediately, without waiting on the assessment. */
-const APP_VERSION = "v1.25";
+const APP_VERSION = "v1.22";
 
 /* ============================================================
    CONFIG
@@ -1301,47 +1197,9 @@ const PEACE_OF_MIND_TYPES = [
    first substantively explained (see PROBE_ROUNDS_REQUIRED) -- what the law
    actually covers (and doesn't), then an explain-further/apply-it-to-Dave's
    situation push. */
-/* Whether the advisor's message actually named a law -- a section number,
-   "the Act", a named statute, etc. Used to decide the FIRST Socratic probe
-   question below: if the advisor never named a law at all (a bare ruling,
-   however correct), Dave asks for one before anything else; if a law was
-   already named, that question would be pointless, so he goes straight to
-   asking what it covers. */
-function mentionsLawOrSection(text) {
-  return /\bsection\s*\d|\bs\.?\s*\d{1,4}[a-z]{0,2}\b|\bcopyright act\b|\bthe act\b|\bstatute\b|\bprovision\b/i.test(text || "");
-}
-
-/* Pulls out the actual "section 36" / "s.13(2)(a)" / "the Copyright Act"
-   text so the probe question below can name it directly, instead of a
-   generic "that law". Found live: without a literal anchor like this, the
-   small model tended to fall back on the closest memorable phrasing in the
-   prompt (the HOW YOU UNDERSTAND THINGS worked example) regardless of what
-   was actually just cited -- e.g. the advisor citing "section 36" got a
-   question about something else entirely. Naming the exact citation in the
-   instruction makes that much harder to sidestep. */
-function extractLawMention(text) {
-  const m = (text || "").match(/\bsection\s*\d+[a-z]{0,2}(\s*\([^)]*\))*|\bs\.?\s*\d{1,4}[a-z]{0,2}(\s*\([^)]*\))*|\bcopyright act(\s*\d{4})?\b/i);
-  return m ? m[0].trim() : null;
-}
-
-// Which section/law was last cited while probing each checklist item, so
-// round 1 ("explain it further") can still name it even if the advisor's
-// reply that turn doesn't repeat the citation. Reset alongside probeRounds.
-let probeCitation = {};
-CHECKLIST_DEFS.forEach(c => probeCitation[c.key] = null);
-
-function probeQuestionsWithLaw(citation) {
-  const ref = citation ? `"${citation}" specifically (use that exact name/number back to them)` : "that law or rule";
-  return [
-    `ask what ${ref} actually covers, and just as importantly, what it does NOT cover or where its limits are -- don't just accept the conclusion, ask what's actually inside it`,
-    `ask your advisor to explain ${ref} a bit further, in their own words -- specifically how it applies to your situation with Greg, not just the general rule`,
-  ];
-}
-// Used for round 0 only, when the advisor gave a ruling/conclusion without
-// ever naming a law at all -- Dave asks for one before digging further.
-const PROBE_QUESTIONS_NO_LAW = [
-  "ask whether that's actually based on a specific law, or just their own view -- and if it IS based on a law, ask which one, by name or section",
-  "ask your advisor to explain that particular law a bit further, in their own words -- what it actually covers, and how it relates to your situation with Greg",
+const PROBE_QUESTIONS = [
+  "ask what that law or rule actually covers, and just as importantly, what it does NOT cover or where its limits are -- don't just accept the conclusion, ask what's actually inside it",
+  "ask your advisor to explain that a bit further, in their own words -- specifically how it applies to your situation with Greg, not just the general rule",
 ];
 
 /* Same idea for the closing walkthrough itself, once the student has been
@@ -1566,16 +1424,9 @@ function extractJSON(raw) {
 function looksLikeListFormatting(text) {
   if (!text) return false;
   const lines = text.split("\n");
+  if (lines.length < 2) return false;
   const bulletLike = lines.filter(l => /^\s*([-*•]|\d+[.)])\s+/.test(l));
-  if (bulletLike.length >= 1 && lines.length >= 2) return true;
-  // Same failure mode can show up INLINE, with no line breaks at all -- e.g.
-  // "1. **Copyright Infringement**: ... 2. **False Attribution**: ..." all
-  // in one paragraph. The line-based check above can't see that, so also
-  // flag markdown bold (never appropriate in spoken dialogue) or two or
-  // more inline "N. "/"N) " enumerations.
-  if (/\*\*[^*]+\*\*/.test(text)) return true;
-  const inlineNumbered = text.match(/(?:^|\s)\d+[.)]\s+\S/g) || [];
-  return inlineNumbered.length >= 2;
+  return bulletLike.length >= 1;
 }
 
 /* Same idea as looksLikeListFormatting, but for the coach's specific
@@ -1591,48 +1442,6 @@ function looksLikeCoachDump(text) {
   if (/\b(DAVE|ADVISOR|YOU)\s*:/.test(text)) return true;
   if (text.length > 700) return true;
   return false;
-}
-
-/* ============================================================
-   ELABORATION GUARD
-   Dave is a layperson who should only restate what he was just told, or ask
-   about it -- never infer or add a NEW legal conclusion of his own (see HOW
-   YOU UNDERSTAND THINGS in daveSystemPrompt). Testing found this happening
-   even with that rule stated plainly and with a concrete example: e.g. told
-   "you own the copyright as the photographer", Dave would add "so Greg's
-   only getting recognition, not ownership" -- a distinction the advisor
-   never actually drew. No regex can tell "restating" from "quietly adding a
-   conclusion", so this is a real (cheap, small) judgment call to a model,
-   the same trade-off as the assessment/fact checks elsewhere in this file.
-   ============================================================ */
-async function looksLikeDaveElaboration(advisorText, daveReply) {
-  // A bare YES/NO ask missed the exact failure it was written to catch (the
-  // model checking its own class of mistake is unreliable at it -- same
-  // lesson as the coach's yes/no checks needing literal phrasings, not
-  // abstract instructions). Naming the specific new claim first, with a
-  // worked example, catches it far more reliably than asking for a verdict
-  // straight away.
-  const prompt = `You are checking one specific mistake in a role-play reply. DAVE is a legal layperson client; his
-advisor (a law student) just told him something. Dave is NOT allowed to invent, extend, or infer any NEW legal
-claim, comparison, distinction, or consequence beyond exactly what the advisor said -- he may only restate the
-same point in simpler words, or ask a question about it.
-
-Example of the mistake to catch: advisor says "You own the copyright as the photographer." Dave replies "Got it,
-so Greg's only getting recognition for submitting it, not ownership of the photo itself." The "recognition vs
-ownership" distinction is a NEW claim Dave invented -- the advisor never said that.
-
-ADVISOR SAID: "${advisorText}"
-DAVE REPLIED: "${daveReply}"
-
-First, in one short sentence, name the single most specific new claim, comparison or distinction in Dave's reply
-that the advisor's message did not itself contain -- or say NONE if there truly isn't one. Then on a new line
-write ANSWER: YES if you named a new claim, or ANSWER: NO if there wasn't one.`;
-  try {
-    const raw = await callLLM([{ role: "user", content: prompt }], { temperature: 0, max_tokens: 80 });
-    return /ANSWER:\s*YES/i.test(raw);
-  } catch (err) {
-    return false; // fail open -- a broken check should never block the chat
-  }
 }
 
 /* ============================================================
@@ -1714,10 +1523,7 @@ function priorDaveQuestions() {
   const out = [];
   history.filter(h => h.role === "dave").slice(1).forEach(h => {
     daveQuestions(h.content).forEach(q => {
-      // Same short-question guard as repeatedQuestion() below: don't fold a
-      // genuinely new question into the list just because it happens to
-      // share one common word with a much shorter earlier one.
-      if (!out.some(p => significantWords(p).length >= 3 && textSimilarity(p, q) >= REPEAT_QUESTION_THRESHOLD)) out.push(q);
+      if (!out.some(p => textSimilarity(p, q) >= REPEAT_QUESTION_THRESHOLD)) out.push(q);
     });
   });
   return out.slice(-8);
@@ -1726,14 +1532,7 @@ function priorDaveQuestions() {
 function repeatedQuestion(reply, prior) {
   for (const q of daveQuestions(reply)) {
     if (significantWords(q).length < 3) continue;
-    // The prior question must ALSO have enough significant words for the
-    // comparison to mean anything -- textSimilarity divides by the SMALLER
-    // word count, so a short prior question sharing just one common word
-    // (e.g. "Sorry, why is that?" vs. "What does that mean for me?", both
-    // sharing only "that") can hit the threshold on pure coincidence. Found
-    // live: it silently stripped a genuine, non-repeated clarifying question
-    // down to nothing, leaving Dave's generic fallback line.
-    const hit = prior.find(p => significantWords(p).length >= 3 && textSimilarity(q, p) >= REPEAT_QUESTION_THRESHOLD);
+    const hit = prior.find(p => textSimilarity(q, p) >= REPEAT_QUESTION_THRESHOLD);
     if (hit) return hit;
   }
   return null;
@@ -1755,55 +1554,16 @@ function isWrapUpTurn() {
   return unresolvedItems().length === 0 && closingAsked && closingProbeRounds >= CLOSING_PROBE_ROUNDS_REQUIRED;
 }
 
-/* Section numbers characteristically associated with each checklist point in
-   THIS fixed case study (see COACH_POINTS/CHECKLIST_DEFS) -- used only to
-   pick which candidate topic a message is actually about, below. */
-const CHECKLIST_SECTION_HINTS = {
-  facebook_waiver: ["27"],
-  ownership: ["26", "3"],
-  subsistence: ["7", "3"],
-  infringement: ["36", "13"],
-  moral_rights: ["25"],
-  remedies: ["37", "41", "50", "53"],
-};
-
 /* The checklist item Dave should currently be drilling into with Socratic
    follow-ups: the assessment model has judged it substantively addressed
    (checklistCandidate), but it isn't fully resolved yet (checklist is still
-   false).
-   Found live: several topics can turn candidate off ONE loosely-worded
-   message (a known assessment-leniency issue -- see the v1.24/v1.25
-   comments), and the old round/array-order fallback below then had no way
-   to tell which of those candidates the advisor's CURRENT message is
-   actually about. A student citing "section 36" for infringement got probed
-   about ownership instead, purely because ownership happened to be earlier
-   in CHECKLIST_DEFS and had already turned candidate. So: if the current
-   message cites a section number that's a hint for a still-unresolved
-   candidate, that topic wins outright (content beats position). Otherwise,
-   prefer whichever item is already mid-probe (probeRounds > 0), so Dave
-   finishes interrogating one topic before moving to the next; failing that,
-   the first candidate in array order, as before. */
-function pendingProbeItem(currentUserText) {
-  // Content beats everything, and is checked against ALL unresolved topics,
-  // not just ones checklistCandidate already flagged: that flag comes from
-  // the background assessment call, which lags a turn behind, so the topic
-  // a citation actually belongs to often isn't flagged as candidate yet.
-  // Found live: without this, two rounds of genuinely discussing
-  // infringement/s.36 (not yet flagged candidate) got credited to ownership
-  // instead (already flagged, earlier in CHECKLIST_DEFS) purely because
-  // ownership was the only eligible candidate at the time -- infringement
-  // sat untouched despite being the actual topic. A citation is a strong
-  // enough signal on its own to probe that topic immediately, without
-  // waiting for the assessment to catch up.
-  const cited = extractLawMention(currentUserText || "");
-  const num = cited ? (cited.match(/\d+/) || [])[0] : null;
-  if (num) {
-    const byContent = CHECKLIST_DEFS.find(c => !checklist[c.key] && (CHECKLIST_SECTION_HINTS[c.key] || []).includes(num));
-    if (byContent) return byContent;
-  }
+   false). Prefers whichever item is already mid-probe (probeRounds > 0) over
+   starting a new one, so Dave finishes interrogating one topic before moving
+   to the next rather than hopping between topics that became candidates on
+   different turns. */
+function pendingProbeItem() {
   const candidates = CHECKLIST_DEFS.filter(c => checklistCandidate[c.key] && !checklist[c.key]);
-  if (!candidates.length) return null;
-  return candidates.find(c => probeRounds[c.key] > 0) || candidates[0];
+  return candidates.find(c => probeRounds[c.key] > 0) || candidates[0] || null;
 }
 
 /* ============================================================
@@ -1886,34 +1646,12 @@ client keeps double-checking. Do not skip this, and do not add any other questio
   // the topic (no label/detail here either, same reason as unresolvedText
   // above) -- the advisor's own last message is right there in the
   // transcript for Dave to react to.
-  const pendingProbe = (!wrapUp && !vague) ? pendingProbeItem(currentUserText) : null;
-  // Round 0 specifically asks "is this even based on a law, and if so which
-  // one" when the advisor's message never named one at all -- otherwise
-  // (a law was named, or this is round 1+) it goes straight to what that
-  // SPECIFIC law covers / explaining it further, naming it by number so the
-  // question can't drift onto something unrelated (see extractLawMention).
-  // Only capture a citation at round 0, when this topic has just become the
-  // one being probed -- a later round can land on a message that's actually
-  // about something else (students often chain "on X... and separately on
-  // Y..." in one breath), and blindly overwriting the stored citation with
-  // whatever section that OTHER message happens to name would mislabel it.
-  const citedNow = extractLawMention(currentUserText);
-  if (pendingProbe && citedNow && probeRounds[pendingProbe.key] === 0) probeCitation[pendingProbe.key] = citedNow;
-  const noLawYet = pendingProbe && probeRounds[pendingProbe.key] === 0 && !citedNow && !mentionsLawOrSection(currentUserText);
-  // Prefer the stored citation (captured at this topic's own round 0) over
-  // a fresh extraction from the current message, which -- past round 0 --
-  // may belong to a different topic entirely (see the comment above).
-  const probeBank = noLawYet
-    ? PROBE_QUESTIONS_NO_LAW
-    : probeQuestionsWithLaw(pendingProbe ? (probeCitation[pendingProbe.key] || (probeRounds[pendingProbe.key] === 0 ? citedNow : null)) : null);
+  const pendingProbe = (!wrapUp && !vague) ? pendingProbeItem() : null;
   const probeNote = pendingProbe
     ? `\n\nIMPORTANT — DIG INTO THAT BEFORE MOVING ON: your advisor just explained something legal to you. Before
-you're satisfied with it and move on to a different worry, THIS TURN ${probeBank[Math.min(probeRounds[pendingProbe.key], probeBank.length - 1)]}.
-Do this instead of raising a new worry, and don't add any other question -- do NOT ask about a different point you
-raised earlier or anything from the example above; this question must be specifically about what your advisor
-JUST told you. Ask it as a genuine, open question and then STOP — do not answer it yourself, guess at the answer,
-or add your own "so that means..." conclusion (see HOW YOU UNDERSTAND THINGS above). Ask it out of genuine
-curiosity, not suspicion.`
+you're satisfied with it and move on to a different worry, THIS TURN ${PROBE_QUESTIONS[Math.min(probeRounds[pendingProbe.key], PROBE_QUESTIONS.length - 1)]}.
+Do this instead of raising a new worry, and don't add any other question. Ask it out of genuine curiosity, not
+suspicion.`
     : "";
 
   // Same idea for the closing walkthrough: once the advisor has been asked
@@ -1923,8 +1661,7 @@ curiosity, not suspicion.`
   const closingProbeNote = (closingAsked && !wrapUp && !vague)
     ? `\n\nIMPORTANT — MAKE SURE YOU ACTUALLY UNDERSTAND THE PLAN: your advisor just walked you through the steps
 (or is about to). Before you agree you're satisfied and the meeting is over, THIS TURN ${CLOSING_PROBE_QUESTIONS[Math.min(closingProbeRounds, CLOSING_PROBE_QUESTIONS.length - 1)]}.
-Do this instead of just accepting the plan, and don't add any other question. Ask it and then STOP -- do not
-answer it yourself or supply the explanation you're asking for.`
+Do this instead of just accepting the plan, and don't add any other question.`
     : "";
 
   const wrapUpNote = wrapUp
@@ -1996,9 +1733,8 @@ nothing about copyright beyond ordinary common sense. You do NOT know words like
 UNLESS your advisor has already used that specific word or reference earlier in THIS conversation — check the
 transcript before using any such term yourself. If your advisor hasn't introduced a term yet, describe your worry
 in plain, everyday words instead (see WHAT'S STILL WORRYING YOU below for exactly that framing). Once your
-advisor DOES introduce a legal term, you may use that specific WORD back to them from then on — that's you
-picking up vocabulary, not independent knowledge. It does NOT mean you can reconstruct, extend, or add to the
-REASONING they gave you (see HOW YOU UNDERSTAND THINGS below — that's the more important half of this rule).
+advisor DOES introduce a legal term or claim, you may repeat and use that specific term back to them from then on
+— that's you picking up what you were just told, not independent knowledge.
 This cuts both ways: if your advisor says something legally wrong, confused, or contradicts something they said
 earlier, you have no way of knowing that yourself — you're not a lawyer checking their work. Don't correct them,
 don't cite a different rule, and don't act like you already knew better. Just react as a normal worried client
@@ -2020,24 +1756,6 @@ settled -- politely and out of genuine interest, never as a challenge or an atta
 actually understand the reasoning, not just the conclusion, and once you're clear on what happens next. You also
 don't want to leave the meeting with a vague, non-committal answer -- if your advisor tries to wrap up without
 having actually walked you through it, ask, courteously, for the fuller picture before you agree you're done.
-
-HOW YOU UNDERSTAND THINGS -- THIS IS THE MOST IMPORTANT RULE FOR PLAYING DAVE: you cannot figure anything out,
-spot an implication, or draw a conclusion yourself -- you have no legal training and no instinct for this at all.
-The whole point of this exercise is that YOUR ADVISOR has to do that work out loud, not you. So when they explain
-something:
-- You may briefly restate, in your own words, ONLY the exact point they just made, to show you followed it.
-- Otherwise, respond with a genuine question -- asking them to clarify, justify it further, give an example, or
-  spell out what it means for you -- rather than an assertion.
-- Never add a NEW claim, comparison, consequence, or "so that means..." conclusion that they did not literally
-  just tell you, even one that seems obvious. If you catch yourself about to say something like that, turn it
-  into a question instead.
-Concrete example, from a DIFFERENT, unrelated case, just to show the pattern (do not reuse this wording -- your
-own situation is about Greg and the photo, not this):
-  A tenant is told "Your landlord has to give you 24 hours' notice before entering the flat."
-  WRONG (the tenant doing the lawyer's job for them): "Got it, so if he doesn't give notice I can just refuse to
-  let him in." -- "I can refuse to let him in" is a consequence the TENANT invented; the lawyer never said that.
-  RIGHT: "Okay... so if he just shows up without notice, what am I actually allowed to do about it?" -- a real
-  question, asking the lawyer to spell out the implication rather than supplying it themselves.
 
 Natural ways to raise each possible worry (see WHAT'S STILL WORRYING YOU at the end for which ones are still live; use your own words, don't recite these verbatim, and always frame it as a
 worried but courteous, genuinely curious client talking, never as a lawyer or student would):
@@ -2087,10 +1805,9 @@ CONVERSATION RULES:
   the law — e.g. when you took the photo, whether you have the original file. A good lawyer does that, and you
   should answer it cooperatively like a normal client would, at least the first time. That said, being asked a
   question isn't the same as getting one answered — see below for what to do if it keeps happening.
-- If the advisor gave you a clear, correct, complete, well-explained answer on something, accept it BRIEFLY ("Oh,
-  okay, that actually makes sense.") without restating or building on the substance yourself, then either move on
-  to your next worry or ask a genuine follow-up QUESTION (see HOW YOU UNDERSTAND THINGS above) — but you're still
-  a difficult client overall, so don't become instantly warm and trusting.
+- If the advisor gave you a clear, correct, complete, well-explained answer on something, accept it in a natural
+  way ("Oh, okay, that actually makes sense.") and move on to your next worry, or ask a natural practical
+  follow-up — but you're still a difficult client overall, so don't become instantly warm and trusting.
 - Never lecture. Never use section numbers or case names yourself — you're the client, not the lawyer.
 - Do NOT ask something you've already asked and gotten a real answer to, even reworded — that includes practical
   questions like "will you send the letter," "what if Greg doesn't respond," or "will we meet again," not just the
@@ -2605,28 +2322,11 @@ function composeFeedback(key, quotes, consult, dr) {
 function composeVerdict(key, quotes, consult, dr) {
   const p = COACH_POINTS[key];
   const core = p.keyPoints.filter(k => k.core);
-  // An error is worth flagging whether it happened live with Dave (consult)
-  // or only surfaced when the student was asked to justify it just now (dr)
-  // -- repeating a mistake under direct questioning is, if anything,
-  // stronger evidence of a misunderstanding, not weaker. This used to only
-  // check consult.errors, so a mistake pickEvidence's quotes didn't happen
-  // to include -- or one made only in the debrief reply -- was correctly
-  // caught and explained in the live feedback text (composeFeedback's
-  // "About your answer just now"), but silently vanished from the verdict
-  // tag and note, and so from the persisted Learning Summary too.
-  const liveErr = p.errors.find(e => consult.errors.includes(e.id));
-  const drOnlyErr = !liveErr && p.errors.find(e => dr.errors.includes(e.id));
   if (!quotes.length) {
-    if (drOnlyErr) {
-      return { tag: "gap", note: `This didn't come up with Dave. When you were asked just now: ${readAs(p, drOnlyErr)} ${drOnlyErr.fix}` };
-    }
     return { tag: "gap", note: "This didn't come up with Dave." + (core.every(k => dr.says.includes(k.id)) ? " Your answer in the debrief covered the key point." : "") };
   }
-  const err = liveErr || drOnlyErr;
-  if (err) {
-    const justNow = drOnlyErr && !liveErr ? " (This came up when you were asked to justify it just now.)" : "";
-    return { tag: "revisit", note: `To double-check: ${readAs(p, err)} ${err.fix}${justNow}` };
-  }
+  const errs = p.errors.filter(e => consult.errors.includes(e.id));
+  if (errs.length) return { tag: "revisit", note: `To double-check: ${readAs(p, errs[0])} ${errs[0].fix}` };
   const missingCore = core.filter(k => !consult.says.includes(k.id));
   if (missingCore.length) {
     const later = missingCore.every(k => dr.says.includes(k.id));
@@ -2830,32 +2530,6 @@ nothing new to ask, say you're done for now and ask nothing.` },
         console.warn("Question-guard retry failed:", err.message);
       }
       if (repeated) reply = keepOneQuestion(reply, false);
-    }
-
-    // Elaboration guard (see ELABORATION GUARD / looksLikeDaveElaboration):
-    // Dave sometimes "helpfully" infers a conclusion the advisor never
-    // actually stated, doing the student's reasoning for them instead of
-    // asking them to spell it out. One retry, turning it into a question;
-    // if it still elaborates, leave it -- looping further here costs more
-    // than it's worth (same one-retry trade-off as the guards above).
-    // Skipped on a wrap-up turn, where Dave is deliberately summarising the
-    // whole plan back rather than reacting to a single new point.
-    if (!wrapUp) {
-      try {
-        if (await looksLikeDaveElaboration(text, reply)) {
-          const deElaborateMessages = [
-            { role: "system", content: daveSystemPrompt(text) + `\n\nCRITICAL — YOUR LAST DRAFT ADDED YOUR OWN
-CONCLUSION: you just asserted something your advisor didn't actually say (see HOW YOU UNDERSTAND THINGS above).
-Redo this reply, but instead of stating that conclusion yourself, turn it into a genuine question asking your
-advisor to spell it out.` },
-            ...daveHistoryMessages(),
-          ];
-          const deElaborated = await callLLM(deElaborateMessages, { temperature: 0.7, max_tokens: 300 });
-          if (deElaborated.trim()) reply = keepOneQuestion(deElaborated, true);
-        }
-      } catch (err) {
-        console.warn("Elaboration-guard check failed:", err.message);
-      }
     }
     if (!reply.trim()) reply = "Fine. I think I've got what I need for now.";
 
@@ -3273,7 +2947,7 @@ document.getElementById("viewAssessmentBtn").addEventListener("click", () => {
 document.getElementById("restartBtn").addEventListener("click", () => {
   if (!confirm("Restart the consultation from the beginning? This will clear the current transcript.")) return;
   chatScroll.innerHTML = "";
-  CHECKLIST_DEFS.forEach(c => { checklist[c.key] = false; checklistCandidate[c.key] = false; probeRounds[c.key] = 0; probeCitation[c.key] = null; });
+  CHECKLIST_DEFS.forEach(c => { checklist[c.key] = false; checklistCandidate[c.key] = false; probeRounds[c.key] = 0; });
   FACT_DEFS.forEach(f => factState[f.key] = false);
   renderCaseFile();
   moodScore = 30;
