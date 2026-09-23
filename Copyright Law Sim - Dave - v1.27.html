@@ -1160,36 +1160,7 @@
    previously that slipped through as a "successful" reply that just
    restated the point instead of digging further. Also strengthened the
    "don't invent" rule to cover any fact/detail, not just Greg's arguments. */
-
-/* v1.28: a lecturer test transcript showed Dave ignoring the student
-   entirely -- three turns running, he never answered a direct question
-   ("Can you prove the photo was yours?", "Who is Tom?", "How can Dave prove
-   the photo was his?"), just asking his own new thing each time, and once
-   inventing a fact out of nowhere ("what if I signed my name on the back of
-   the photo") instead of answering. Every guard built so far only applies
-   inside a FORCED branch (probe/vague/dodge/...); none of those were active
-   here, so Dave ran fully unconstrained -- and unconstrained turned out to
-   be exactly when he's worst. Added a new forced branch, studentAskedNote:
-   whenever the advisor's message contains a question and dodgeNote isn't
-   already escalating the same pattern, Dave must answer it directly this
-   turn (from case facts or an ordinary personal detail, never an invented
-   one) before anything else -- ranked above his own agenda (probing/
-   closing/peace-of-mind), since none of that state decays and simply
-   resumes next turn.
-   Also from the same transcript: Dave introduced "Tom" (from CASE FACTS)
-   assuming the advisor already knew who that was -- they don't; only Dave
-   has the case file. clientWorry/example text for the "just snapping" jab
-   now says "my friend Tom" instead of a bare name, and a new standing rule
-   says to identify anyone by name the first time, the way a real person
-   naturally would.
-   Live-tested studentAskedNote alone and it wasn't reliable (same
-   prompt-only lesson yet again): asked "Can you prove that the photo was
-   yours?", Dave replied "Sorry, why is that important?" -- still dodging.
-   Added a code-level ANSWER GUARD (looksLikeDaveDodging), scoped to the
-   "answer" branch only: a cheap classifier checks whether the reply
-   actually answered, with one retry if not, mirroring the elaboration
-   guard's shape exactly. */
-const APP_VERSION = "v1.28";
+const APP_VERSION = "v1.27";
 
 /* ============================================================
    CONFIG
@@ -1269,7 +1240,7 @@ skill or effort — "just snapping" on a phone, with one shot turning out well b
 const CHECKLIST_DEFS = [
   { key: "facebook_waiver", label: "Facebook posting ≠ waiver", detail: "Correctly rebutting the claim that posting to Facebook surrenders copyright — distinguishing a platform's licence to host/display content from any transfer or abandonment of the underlying copyright.", clientWorry: "this is the thing Greg said straight to your face when you called him, and it's what's bothering you most -- whether posting the photo on Facebook, where loads of people could see it, means you already gave up whatever rights you had over it" },
   { key: "ownership", label: "Ownership / authorship", detail: "That Dave, as the photographer, is the author and first owner of copyright in the photographs he took.", clientWorry: "whether you can even own rights in a photo at all -- Greg's flatly telling you that's not a real thing -- and, if you do, exactly what those rights are called, which law they come from, and whether Greg has picked up any rights of his own by entering it and winning" },
-  { key: "subsistence", label: "Subsistence of copyright", detail: "Whether copyright subsists in the photograph at all — the originality threshold (skill, labour, effort, judgement) under the Copyright Act 1987, and why 'just snapping a phone photo' does not defeat this.", clientWorry: "whether a quick phone snap even counts as something you can own rights over in the first place, given Greg's jab that it's no different from what my friend Tom shot on the same trip and you just got lucky -- and if it does count, what that's actually called under the law" },
+  { key: "subsistence", label: "Subsistence of copyright", detail: "Whether copyright subsists in the photograph at all — the originality threshold (skill, labour, effort, judgement) under the Copyright Act 1987, and why 'just snapping a phone photo' does not defeat this.", clientWorry: "whether a quick phone snap even counts as something you can own rights over in the first place, given Greg's jab that it's no different from Tom's photos and you just got lucky -- and if it does count, what that's actually called under the law" },
   { key: "infringement", label: "Infringement by Greg", detail: "Identifying Greg's unauthorised reproduction and communication/dealing with the work (submitting it to the competition) as acts restricted to the copyright owner.", clientWorry: "what Greg actually did wrong in real, concrete terms -- whether there's an actual rule he broke, what that rule is called, or you're just upset about something that's technically fine" },
   { key: "moral_rights", label: "Moral rights / false attribution", detail: "Recognising Dave's right to be identified as author and/or his right against false attribution, engaged by Greg taking credit for the work.", clientWorry: "whether it counts for anything on its own that Greg's standing there in the newspaper looking like it's his photo, separate from the prize money" },
   { key: "remedies", label: "Remedies available", detail: "Advising on the practical remedies actually open to Dave against Greg — e.g. damages/account of profits, acknowledgment, and the realistic prospects of recovering the prize money. Civil route (Copyright Act 1987 s.37(1)): the owner sues for an injunction, damages, an account of profits, or statutory damages (up to RM25,000 per work, RM500,000 in aggregate); damages, account of profits and statutory damages are alternatives except that an account may top up damages for profits not already counted (s.37(3)-(4)); for false attribution the court may also order a correction to be published (s.25(7)). Nothing is automatic: Dave must bring, or credibly threaten, a claim (a demand letter and negotiation are the usual first steps), and any prize money is recovered through damages, an account of profits, or a settlement. Criminal route: the Act does create offences (s.41, e.g. 'distributes infringing copies', with a good-faith defence; fines and up to 5 years' imprisonment), so saying infringement is never criminal is WRONG. But investigation, arrest and prosecution are for the authorities (s.50, s.50A) and only the Public Prosecutor can prosecute (s.53): Dave cannot direct an arrest or prosecution, and a criminal outcome does not hand the prize money to him. A student who says the prize money transfers 'automatically', or that police will arrest Greg on Dave's say-so, has this point WRONG; one who says infringement is 'a crime' as a certainty has overstated it.", clientWorry: "what you can actually, concretely do about all this if you're right — whether there's something real you can pursue or you're just supposed to hope Greg feels bad" },
@@ -1711,36 +1682,6 @@ write ANSWER: YES if you named a new claim, or ANSWER: NO if there wasn't one.`;
 }
 
 /* ============================================================
-   ANSWER GUARD
-   Checks whether Dave's reply actually answered a direct question the
-   advisor just asked (see studentAskedNote in daveSystemPrompt), rather
-   than dodging it and asking something else instead. Found live (a
-   lecturer's transcript): the prompt instruction to answer was ignored
-   outright, more than once, in a session otherwise unremarkable -- the same
-   "prompt-only isn't enough" lesson as the elaboration guard, so this uses
-   the same shape: a cheap classifier call, checked before accepting Dave's
-   reply, with one retry.
-   ============================================================ */
-async function looksLikeDaveDodging(advisorText, daveReply) {
-  const prompt = `You are checking one specific mistake in a role-play reply. DAVE is a client; his advisor (a law
-student) just asked him a direct question. Dave is supposed to actually answer it -- even briefly or informally --
-before saying anything else, not ignore it and ask something different instead.
-
-ADVISOR ASKED: "${advisorText}"
-DAVE REPLIED: "${daveReply}"
-
-First, in one short sentence, say what (if anything) in Dave's reply responds to the advisor's question -- or say
-NOTHING if it doesn't respond at all. Then on a new line write ANSWER: YES if he actually answered the question,
-or ANSWER: NO if he dodged, ignored it, or just asked something else instead.`;
-  try {
-    const raw = await callLLM([{ role: "user", content: prompt }], { temperature: 0, max_tokens: 80 });
-    return /ANSWER:\s*NO/i.test(raw);
-  } catch (err) {
-    return false; // fail open -- a broken check should never block the chat
-  }
-}
-
-/* ============================================================
    REPETITION GUARD
    Detects when Dave's newly generated reply is a near-repeat of his own
    last one or two messages — e.g. re-asking "will you send the letter,
@@ -1963,26 +1904,6 @@ law, gently point that out (e.g., "Sorry, that's twice now you've asked me somet
 you walk me through what the law actually says here?") before deciding whether to keep playing along.`
     : "";
 
-  // Found live: without this, Dave routinely just ignored a direct question
-  // from the advisor and asked something else of his own instead -- in one
-  // transcript, three turns running, once even inventing a fact ("what if I
-  // signed my name on the back of the photo") to fill the gap instead of
-  // answering "who is Tom?". A real client answers what he's actually asked,
-  // at least the first couple of times (dodgeNote above is the escalation
-  // for once that keeps happening without HIS OWN worry ever getting
-  // answered back) -- this is the ordinary, cooperative default response,
-  // and takes priority over Dave's own agenda (closing/probing/peace-of-mind
-  // below) because answering what's right in front of him comes first; none
-  // of that state decays, so it simply resumes next turn.
-  const studentAskedNote = (currentLooksLikeQuestion && !dodgeNote)
-    ? `\n\nIMPORTANT — YOUR ADVISOR JUST ASKED YOU SOMETHING: answer it directly and honestly THIS TURN, in a
-sentence or two, before anything else. Use only things that are true from the CASE FACTS, or a plain, ordinary
-personal detail consistent with them (e.g. "yes, it's still on my phone") -- never invent a dramatic new fact,
-document, or hypothetical to answer with. If you genuinely don't know, or it doesn't apply to you, say so plainly
-instead of dodging or changing the subject. You may add ONE question of your own afterward, but only after you've
-actually answered them.`
-    : "";
-
   const closingCheck = unresolved.length === 0 && !closingAsked
     ? `\n\nBEFORE YOU AGREE YOU'RE DONE: don't just accept a vague "does that help?" and say yes. Politely ask your
 advisor to walk you through the whole plan, in order, in their own words — from where things stand now to exactly
@@ -2103,9 +2024,6 @@ really answers it") and make your ONE question this turn a request that they act
   } else if (dodgeNote) {
     forcedNote = dodgeNote; forcedKind = "dodge";
     fallbackReply = "Sorry, that's twice now you've asked me something instead of answering — what does the law actually say here?";
-  } else if (studentAskedNote) {
-    forcedNote = studentAskedNote; forcedKind = "answer";
-    fallbackReply = "Sorry, could you repeat that? I want to make sure I actually answer you properly.";
   } else if (closingAsked) {
     forcedNote = closingProbeNote; forcedKind = "closingProbe";
     fallbackReply = closingProbeRounds === 0
@@ -2216,8 +2134,7 @@ worried but courteous, genuinely curious client talking, never as a lawyer or st
   true? And if I do have rights, what are they called, and which law says so? Does Greg have any rights over it
   too, now that he's the one who entered it and won?"
 - Whether the photo itself even counts / Greg's "just snapping" jab: "He says my photo's probably no different
-  from what my friend Tom shot on the same trip -- nothing special, I just got lucky. Does that actually matter
-  legally? What's the actual rule?"
+  from Tom's -- nothing special, I just got lucky. Does that actually matter legally? What's the actual rule?"
 - What Greg actually did wrong: "Okay, so in actual legal terms, what did he do wrong? Is there an actual rule he
   broke, and what's it called?"
 - The newspaper photo / him taking credit: "What about him standing there in the paper like it's his photo? Does
@@ -2275,10 +2192,6 @@ CONVERSATION RULES:
   your advisor has actually told you in this conversation -- never invent a new fact, number, date, document, or
   detail about the case, Greg, yourself, or the law to fill a gap. If you don't have a detail, ask for it instead
   of making one up.
-- Your advisor has NOT read your case file -- they only know what you've actually said to them in this
-  conversation. The first time you mention someone by name who you haven't already introduced (like Tom), briefly
-  say who they are in the same breath, the way a real person naturally would -- e.g. "my friend Tom, who was on
-  the trip with me" -- not just the bare name as if your advisor already knows who that is.
 - Show your mood through how you speak; don't narrate your own feelings or tone (no "I'm angry", "over the anger",
   "I'm getting frustrated").
 - Do not resolve the conversation yourself or announce that you're "satisfied" with everything at once — resolve
@@ -3042,33 +2955,6 @@ advisor to spell it out.` },
         }
       } catch (err) {
         console.warn("Elaboration-guard check failed:", err.message);
-      }
-    }
-
-    // Answer guard (see ANSWER GUARD / looksLikeDaveDodging): when the
-    // advisor just asked Dave something directly (studentAskedNote), check
-    // whether this reply actually answered it, and if not, retry once with
-    // an explicit instruction to answer first. Scoped to that branch only --
-    // dodgeNote's whole point is Dave calling out the pattern instead of
-    // answering, so it must not be overridden here.
-    if (lastForcedKind === "answer") {
-      try {
-        if (await looksLikeDaveDodging(text, reply)) {
-          const answerRetryMessages = [
-            { role: "system", content: daveSystemPrompt(text) + `\n\nCRITICAL — YOU DODGED THE QUESTION: your
-advisor just asked you "${text}" and your last draft didn't actually answer it. Redo this reply: start by directly
-answering that question in one short sentence (from the case facts or an ordinary personal detail, never
-invented), and only then add one question of your own if you want.` },
-            ...daveHistoryMessages(),
-          ];
-          const answered = await callLLM(answerRetryMessages, { temperature: 0.7, max_tokens: 300 });
-          if (answered.trim()) {
-            reply = keepOneQuestion(answered, true);
-            if (repeatedQuestion(reply, priorQuestions)) reply = keepOneQuestion(reply, false);
-          }
-        }
-      } catch (err) {
-        console.warn("Answer-guard check failed:", err.message);
       }
     }
     // Guards can legitimately strip a reply to nothing, or (for a branch
