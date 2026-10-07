@@ -1421,13 +1421,7 @@
    law stops Greg instead, the retry didn't fix it, and the app still counted the
    walkthrough as asked. If the ask is still missing after the retry, the
    built-in walkthrough question is now used. */
-/* v1.45: a student's debrief failed with "Could not get the coach's reply
-   (NetworkError...)" every time at the Remedies topic (answering "i dunno").
-   That topic sends the most simultaneous coach requests (13 for one answer; the
-   others 6-9, doubled when the topic has consultation evidence). Coach calls
-   now go through a gate of 4 at a time. Unconfirmed as the cause: run from a
-   different browser, the same 13 requests all succeed in about 1 second. */
-const APP_VERSION = "v1.45";
+const APP_VERSION = "v1.44";
 
 /* ============================================================
    CONFIG
@@ -3813,31 +3807,8 @@ function buildCoachTranscriptText() {
 /* Every coach-persona chat call goes through here so an empty reply is an
    error, never a blank bubble. (v1.13/v1.14's thinking model could spend its
    whole token budget reasoning and return empty content.) */
-/* Each debrief answer fires many tiny yes/no requests at once (13 for the
-   Remedies topic, 26 when the topic also has consultation evidence). A student
-   in Firefox hit "NetworkError" repeatedly at exactly that topic, and earlier
-   Firefox logs showed other bursts of simultaneous requests failing together
-   and then working on retry, so the coach calls now go through a small gate:
-   at most COACH_MAX_PARALLEL in flight, the rest queue. (Not confirmed to be
-   the cause; the same 13 requests succeed in a different browser.) */
-const COACH_MAX_PARALLEL = 4;
-let coachInFlight = 0;
-const coachQueue = [];
-
-async function coachGate(task) {
-  while (coachInFlight >= COACH_MAX_PARALLEL) await new Promise(resolve => coachQueue.push(resolve));
-  coachInFlight++;
-  try {
-    return await task();
-  } finally {
-    coachInFlight--;
-    const next = coachQueue.shift();
-    if (next) next();
-  }
-}
-
 async function callCoach(messages, { temperature = 0.7, max_tokens = 900 } = {}) {
-  const out = await coachGate(() => callLLM(messages, { temperature, max_tokens, model: config.coachModel, endpoint: coachEndpointOrDefault() }));
+  const out = await callLLM(messages, { temperature, max_tokens, model: config.coachModel, endpoint: coachEndpointOrDefault() });
   if (!out.trim()) throw new Error("the coach model returned an empty reply");
   return out;
 }
